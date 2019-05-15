@@ -25,14 +25,13 @@ void HUDMenu::createStaticMenuLayout()
 
 	for (size_t i = 0; i < hotbarSlotsNumber; i++)
 	{
-		MenuItem hotbarMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(individualHotbarSize.x*i, 0)), getPixelCoordinate(individualHotbarSize)));
+		MenuItem hotbarMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(individualHotbarSize.x*i + (0.5-(individualHotbarSize.x*hotbarSlotsNumber)/2), 0)), getPixelCoordinate(individualHotbarSize)));
 		AnimatorSprite hotbarMenuItemTex;
 		hotbarMenuItemTex.textureID = Animator::getInstance().getTextureID("Inventory-Slot (Empty).png");
 		hotbarMenuItem.setTexture(hotbarMenuItemTex);
-		hotbarMenuItem.setButtonText(std::to_string(i), 0, sf::Color::Blue, 0);
+		hotbarMenuItem.setButtonText(std::to_string(i).append("  "), 0.1, sf::Color::Red, 0);
 		m_menuItems.push_back(hotbarMenuItem);
 	}
-
 	//m_availablePotions.setTexture();
 	m_updatePotions(0);
 }
