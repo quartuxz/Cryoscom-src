@@ -1,0 +1,14 @@
+wall;0;0;1000;1000;
+wall;1000;800;0;-200;
+unit;600;500;10;20;
+gear;0;100;20;2;100;2;20;
+attackCard;0;10;0;0;1;destroyBeahvoiur,1,2,5,1;
+defenceCard;0;0;1;0;1;0;0;0;0;0;0;0;
+player;400;300;45;20;
+gear;-1;1000;10;2;100;5;10;
+attackCard;-1;40;0;0;1;
+defenceCard;-1;0;1;0;1;0;0;0;0;0;0;0;
+texture;-1;0;player.png;
+texture;0;0;player.png;
+texture;-1;1;bullet.png;
+texture;0;1;bullet.png;

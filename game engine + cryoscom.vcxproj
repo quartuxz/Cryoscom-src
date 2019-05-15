@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AnimatorSprite.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="EnemyAI.cpp" />
+    <ClCompile Include="fileLoader.cpp" />
+    <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="Gear.cpp" />
+    <ClCompile Include="globalMutexes.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LevelMaker.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuItem.cpp" />
+    <ClCompile Include="MessageBus.cpp" />
+    <ClCompile Include="MessagingComponent.cpp" />
+    <ClCompile Include="Parsable.cpp" />
+    <ClCompile Include="PlayerInventory.cpp" />
+    <ClCompile Include="Serializable.cpp" />
+    <ClCompile Include="serializationUtils.cpp" />
+    <ClCompile Include="ToolTip.cpp" />
+    <ClCompile Include="unit.cpp" />
+    <ClCompile Include="unitManager.cpp" />
+    <ClCompile Include="Weapon.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="AnimatorSprite.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="cryoscom_defsAndUtils.h" />
+    <ClInclude Include="EnemyAI.h" />
+    <ClInclude Include="fileLoader.h" />
+    <ClInclude Include="GameMain.h" />
+    <ClInclude Include="Gear.h" />
+    <ClInclude Include="globalMutexes.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LevelMaker.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuItem.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="MessageBus.h" />
+    <ClInclude Include="MessagingComponent.h" />
+    <ClInclude Include="Parsable.h" />
+    <ClInclude Include="PlayerInventory.h" />
+    <ClInclude Include="Serializable.h" />
+    <ClInclude Include="serializationUtils.h" />
+    <ClInclude Include="ToolTip.h" />
+    <ClInclude Include="unit.h" />
+    <ClInclude Include="unitManager.h" />
+    <ClInclude Include="Weapon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bullet.png" />
+    <Image Include="button.png" />
+    <Image Include="chestpiece.png" />
+    <Image Include="cryo_area_1.png" />
+    <Image Include="Cryo_area_2_WIP.png" />
+    <Image Include="enemyAI.png" />
+    <Image Include="Engiewalk_back_left.png" />
+    <Image Include="Engiewalk_back_right.png" />
+    <Image Include="Engiewalk_front_left.png" />
+    <Image Include="Engiewalk_front_right.png" />
+    <Image Include="level1_v2.png" />
+    <Image Include="mapTex.png" />
+    <Image Include="player.png" />
+    <Image Include="player_back_left_idle.png" />
+    <Image Include="player_back_right_idle.png" />
+    <Image Include="player_front_left_idle.png" />
+    <Image Include="player_front_right_idle.png" />
+    <Image Include="test_map.png" />
+    <Image Include="tooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="decomposedData_python.py" />
+    <None Include="defaultScript.py" />
+    <None Include="gameSerializationUtils.dll" />
+    <None Include="test_GS.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="good times rg.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="enemy_test.txt" />
+    <Text Include="initial_progression.txt" />
+    <Text Include="large_map.txt" />
+    <Text Include="loaded_textures.txt" />
+    <Text Include="lootTable1.txt" />
+    <Text Include="mainMenu.txt" />
+    <Text Include="mainUI.txt" />
+    <Text Include="map1.txt" />
+    <Text Include="map2.txt" />
+    <Text Include="master.txt" />
+    <Text Include="message passing docs.txt" />
+    <Text Include="oldMap2.txt" />
+    <Text Include="progression.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{1c0b8137-f64c-40f0-84d9-c006bf349292}</ProjectGuid>
+    <RootNamespace>game_engine___cryoscom</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);SFML_STATIC;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\SFML-2.5.1\include;C:\boost_1_70_0;C:\Python373\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\SFML-2.5.1\lib;C:\python373\libs;C:\boost_1_70_0\stage\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;sfml-network-s-d.lib;opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);SFML_STATIC;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\SFML-2.5.1\include;C:\boost_1_70_0;C:\Python373\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\SFML-2.5.1\lib;C:\python373\libs;C:\boost_1_70_0\stage\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-network-s.lib;opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="docs">
+      <UniqueIdentifier>{6694e3c7-6c5b-4864-a36e-7ee8a43a93cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{21af8b3b-2fcc-494f-884a-9d8de07f725d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\manager/container classes">
+      <UniqueIdentifier>{7a39c3f5-6ad9-41d3-b8ea-b5a1d89f7f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\messaging">
+      <UniqueIdentifier>{d6f22bb9-477a-4bb7-9c28-d6292e4057b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\collision and units">
+      <UniqueIdentifier>{e51b3b1b-e24b-44b1-a919-9fd6b175cb74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\combat&amp;mechanics">
+      <UniqueIdentifier>{2e9c9256-ba8c-426e-9593-81d3436bd2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{aa09c6a9-5921-4188-9a72-6eef998ea1f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{7fc13db8-98c3-4236-8fa2-1a66f0dac1d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\serialization&amp;file I/O">
+      <UniqueIdentifier>{cd131e2c-f663-453a-baf8-5852c48616c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\messaging\subclasses">
+      <UniqueIdentifier>{da4cdabe-48ab-4d55-b4ec-940a70889ee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\subclasses">
+      <UniqueIdentifier>{ba5cb630-0fd8-4dee-94cc-a8882c1f97fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\collision and units\AI">
+      <UniqueIdentifier>{436afdcb-b5d5-4062-9eb9-b29e5106569c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\main">
+      <UniqueIdentifier>{fe8ecc56-9173-4c37-a9b9-9528af75f691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\tex">
+      <UniqueIdentifier>{48c9f992-094b-4449-a1aa-7eb4f5f57ee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\script">
+      <UniqueIdentifier>{3b1f86f2-f093-40f6-9feb-8ccfde0ac1db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\rsc">
+      <UniqueIdentifier>{2053ae81-8337-4e48-9716-030046ce28cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\txt">
+      <UniqueIdentifier>{12929ac3-42a7-4a55-97d0-298f4bd264ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AnimatorSprite.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="unit.cpp">
+      <Filter>Source Files\collision and units</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolTip.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="unitManager.cpp">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuItem.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBus.cpp">
+      <Filter>Source Files\messaging</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\collision and units</Filter>
+    </ClCompile>
+    <ClCompile Include="MessagingComponent.cpp">
+      <Filter>Source Files\messaging</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializable.cpp">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsable.cpp">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="serializationUtils.cpp">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="Gear.cpp">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="globalMutexes.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMain.cpp">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelMaker.cpp">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClCompile>
+    <ClCompile Include="fileLoader.cpp">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\collision and units</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files\messaging\subclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInventory.cpp">
+      <Filter>Source Files\UI\subclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAI.cpp">
+      <Filter>Source Files\collision and units\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animator.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatorSprite.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializable.h">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClInclude>
+    <ClInclude Include="serializationUtils.h">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolTip.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsable.h">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClInclude>
+    <ClInclude Include="unit.h">
+      <Filter>Source Files\collision and units</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBus.h">
+      <Filter>Source Files\messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Source Files\messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="unitManager.h">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Source Files\collision and units</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelMaker.h">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMain.h">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="globalMutexes.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="cryoscom_defsAndUtils.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuItem.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MessagingComponent.h">
+      <Filter>Source Files\messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="Gear.h">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="fileLoader.h">
+      <Filter>Source Files\serialization&amp;file I/O</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Source Files\collision and units</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Source Files\messaging\subclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInventory.h">
+      <Filter>Source Files\UI\subclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAI.h">
+      <Filter>Source Files\collision and units\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bullet.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="button.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="chestpiece.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="cryo_area_1.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Cryo_area_2_WIP.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="enemyAI.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Engiewalk_back_left.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Engiewalk_back_right.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Engiewalk_front_left.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Engiewalk_front_right.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="player_front_right_idle.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="player_back_left_idle.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="player_back_right_idle.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="player_front_left_idle.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="player.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="tooltip.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="test_map.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="mapTex.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="level1_v2.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="decomposedData_python.py">
+      <Filter>Resource Files\script</Filter>
+    </None>
+    <None Include="defaultScript.py">
+      <Filter>Resource Files\script</Filter>
+    </None>
+    <None Include="gameSerializationUtils.dll">
+      <Filter>Resource Files\script</Filter>
+    </None>
+    <None Include="test_GS.py">
+      <Filter>Resource Files\script</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="message passing docs.txt">
+      <Filter>docs</Filter>
+    </Text>
+    <Text Include="enemy_test.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="initial_progression.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="large_map.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="loaded_textures.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="lootTable1.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="mainMenu.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="mainUI.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="map1.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="map2.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="master.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="oldMap2.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="progression.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="good times rg.ttf">
+      <Filter>Resource Files\rsc</Filter>
+    </Font>
+  </ItemGroup>
+</Project>

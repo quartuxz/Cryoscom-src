@@ -1,0 +1,4 @@
+gearPiece;0;0;gloves;50;200;3;10;3;10;0.05;uniques;chestpiece.png;0.5;
+attackCard;gloves;10;0;0;1;
+defenceCard;gloves;0;1;0;1;0;0;0;0;0;0;0;
+bag;0;0;

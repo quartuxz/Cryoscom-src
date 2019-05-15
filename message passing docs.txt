@@ -1,0 +1,66 @@
+key:
+the terms MessageData and message are interchangeable for most intents and purposes.
+To be more specific, the data of the message is the former and the whole process of sending the message + its data is the latter.
+
+a decomposedData object is composed of the following(all strings):
+																-a type
+																-a name
+																-data indexes(a vector/array)
+																-childrenObjects indexes(a vector/array) of the decomposedData type(a tree of sorts)
+																*this object can be serialized and deserialized fully into a 
+																string and back into its object form, both in python and c++.
+																*there are interfaces that make it possible to make every object you create
+																in c++ serializable and reasily readable from python
+																(Serializable.h and decomposedData_python.py) through simple function calls.
+
+first data`s index is index 0 or decomposedData::data[0], its of string type.
+
+a MessagingComponent receives and processes MessageData according to its type and data,
+all python scripts are treated as individual MessagingComponent`s(called gameScripts, a sub-class of MessagingComponent) 
+and the MessageBus sends every MessageData(or individual message) to every individual MessagingComponents with the notify() function -unless otherwise specified by the MessageData.
+
+a MessageData is the return value of every python script and the core unit for messaging, its whats sent to the MesageBus::addMessage() function, it is composed of the following:
+																						-a messageType(the functional type of the message)
+																						-a senderID (who sends the emssage)
+																						-an intendedReceiverID (where it is intended to go)
+																						-a yet not fully fledged whoReceives member
+																							(determines wether just to send it to intendedReceiverID, to intendedReceiverID+senderID or to all)
+																						-and messageContents of the decomposedData type.
+																						*when used in a python function it has the following return value syntax:
+																						return(messageType, intendedReceiverID, messageContentsFirst+";"+messageContentsSecond+";"...+";")
+first MessageContent`s index is index 0 or MessageContent[0].
+
+the type of something can refer to the decomposedData type or an actual object`s type, in any case, the decomposedData type almost always refers to an acutal object`s type.
+
+messageTypes:
+
+
+
+there are a few different messageTypes of core messages in Gold Standard Game Engine;
+	"messages":this type converts all of its MessageContent`s into other messages. which in turn convert their childrenObjects into their MessageContent`s,
+				their first data index into the messageType, their second data index into their senderID and their third data index into their intendedReceiver. The messages are then sent individually.
+	"echoMessage": resends this message converted to the type "messages" minus its first MessageContent`s index, which carries information about the delay after which the message is sent.
+					the message then behaves as the "messages" messageType.
+	"triggerNotification": triggers a message bus notification, takes no arguments.
+	"launchSript": launches the specified script in the first index of the MessageContent`s in the first index of data.
+					then deletes the first index of MessageContent`s and resends the message to the script. The return value of the python function is sent back to the MessageBus to be processed.
+	"editGameData": edits the gameData(of decomposedData object type) of the sending(senderID) python script with the first index of the MessageContent`s.
+					this data is resent to the script every time the it is called.
+	"addLevelGameScript": adds a permanent-until-end-of-current-level script that receives and sends messages like any other gameScript.
+							the first data index in the first messageContent`s index is the name of the script, the function must be called gameScript.
+
+there are a few messageTypes a script may receive, with information about the state of the game or Input;
+	"onProgramStart": message sent when the program starts.
+
+	"playerPosition": is sent periodically, showing the player position in pixels. the first data index in the first messageContent`s index is the x position and the second data index is the y.
+	"interactionKeyPressed": indicates when the interaction key is pressed(default:`e´), sends the same data as the playerPosition messageType.
+
+there are few different messageTypes for gameplay and gameplay related interactions;
+*this area is incomplete, please refer to the pv_processMessage function in GameMain.cpp to check out other self-documenting message types
+	"applyEffectOnPlayer": the first data index in the first messageContent`s index is the effect Type, of which there are:
+																														-"damageOverTime"[hit points per second]
+																														-"staminaRegen"[stamina points per second]
+																														-"root"[static effect, not additive, move speed debuff in px/s]
+																														-"manaRegen"(not yet implemented)[mana points per second]
+							the second data index of the first messageContent`s is the amount of the effect in he respective unit.
+							the third data index of the first messageContent`s is the duration of the effect in seconds.
