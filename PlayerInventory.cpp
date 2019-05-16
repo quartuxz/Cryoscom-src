@@ -115,8 +115,8 @@ void PlayerInventory::createStaticMenuLayout()
 	{
 		for (size_t o = 0; o < m_maxRows; o++)
 		{
-			std::cout << i << ", "<< m_maxColumns << std::endl;
-			std::cout << float(i) / m_maxColumns << std::endl;
+			//std::cout << i << ", "<< m_maxColumns << std::endl;
+			//std::cout << float(i) / m_maxColumns << std::endl;
 			inventoryItem tempInventoryItem;
 			tempInventoryItem.itemType = emptySlot;
 			m_items.push_back(tempInventoryItem);

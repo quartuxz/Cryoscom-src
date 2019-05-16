@@ -62,6 +62,11 @@ size_t HUDMenu::addSkill(skillParam *sParam)
 	throw skillsFullException();
 }
 
+skillParam* HUDMenu::getSkill(size_t skillSlotID)
+{
+	return m_usedSkills[skillSlotID];
+}
+
 void HUDMenu::onDraw(bool beforeDraw, sf::Vector2f viewDisplacement) {
 	if (beforeDraw) {
 		sf::Vector2f initialPosition = m_availablePotions.getPosition();

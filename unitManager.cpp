@@ -326,11 +326,6 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 			}
 
 
-	}
-	else
-	if (tokens[0] == "gearPiece") {
-		GearPiece tempGearPiece = GearPiece::makeGearPiece(tokens);
-		placeGearOnMap(sf::Vector2f(std::atof(tokens[1].c_str()) * m_levelScale, std::atof(tokens[2].c_str()) * m_levelScale), tempGearPiece);
 	}else
 	if (tokens[0] == "worldTextureTile") {
 		sf::Texture* tempTexture = new sf::Texture();

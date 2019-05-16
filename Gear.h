@@ -84,8 +84,6 @@ struct GearPiece : public Serializable {
 
 	~GearPiece();
 
-	static GearPiece makeGearPiece(std::vector<std::string>);
-
 	struct GearPieceCompare
 	{
 		bool operator() (const GearPiece& lhs, const GearPiece& rhs) const

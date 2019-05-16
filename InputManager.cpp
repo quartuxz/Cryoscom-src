@@ -45,6 +45,24 @@ std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()
 	}if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
 		retVal.push_back(dash);
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+		retVal.push_back(hotbar1);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+		retVal.push_back(hotbar2);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+		retVal.push_back(hotbar3);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
+		retVal.push_back(hotbar4);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
+		retVal.push_back(hotbar5);
+	}
+
+
 	//from down here until the end, only mouse events
 	retVal.push_back(noInputEvent);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -62,7 +80,7 @@ void InputManager::m_waitForEvents()
 	sf::Event event;
 	m_window = new sf::RenderWindow();
 	m_window->create(sf::VideoMode(1200, 1000), "SFML works!");
-	m_window->setFramerateLimit(60);
+	//m_window->setFramerateLimit(60);
 	m_window->setActive(false);
 	m_isWindowCreated = true;
 	std::cout << "wait loop started"<< std::endl;

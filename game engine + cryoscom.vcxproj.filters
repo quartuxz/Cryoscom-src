@@ -64,6 +64,9 @@
     <Filter Include="Resource Files\txt">
       <UniqueIdentifier>{12929ac3-42a7-4a55-97d0-298f4bd264ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\DLLs &amp; py libs">
+      <UniqueIdentifier>{fa61dea3-2d7a-48ff-947b-c5b3880ac2a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatorSprite.cpp">
@@ -289,6 +292,21 @@
     <Image Include="Psi_Ability-Pyrokinesis.png">
       <Filter>Resource Files\tex</Filter>
     </Image>
+    <Image Include="Inventory-Helmet.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Inventory-Jumpsuit.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Inventory-Slot (Empty).png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Inventory-Boots.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Inventory-Chest Armor.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="decomposedData_python.py">
@@ -302,6 +320,18 @@
     </None>
     <None Include="test_GS.py">
       <Filter>Resource Files\script</Filter>
+    </None>
+    <None Include="boost_python37-vc142-mt-x32-1_70.dll">
+      <Filter>Resource Files\DLLs &amp; py libs</Filter>
+    </None>
+    <None Include="boost_python37-vc142-mt-gd-x32-1_70.dll">
+      <Filter>Resource Files\DLLs &amp; py libs</Filter>
+    </None>
+    <None Include="python37.dll">
+      <Filter>Resource Files\DLLs &amp; py libs</Filter>
+    </None>
+    <None Include="gameSerializationUtils.pyd">
+      <Filter>Resource Files\DLLs &amp; py libs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

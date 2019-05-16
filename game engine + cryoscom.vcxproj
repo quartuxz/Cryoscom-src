@@ -86,6 +86,11 @@
     <Image Include="Engiewalk_back_right.png" />
     <Image Include="Engiewalk_front_left.png" />
     <Image Include="Engiewalk_front_right.png" />
+    <Image Include="Inventory-Boots.png" />
+    <Image Include="Inventory-Chest Armor.png" />
+    <Image Include="Inventory-Helmet.png" />
+    <Image Include="Inventory-Jumpsuit.png" />
+    <Image Include="Inventory-Slot (Empty).png" />
     <Image Include="level1_v2.png" />
     <Image Include="mapTex.png" />
     <Image Include="player.png" />
@@ -98,9 +103,13 @@
     <Image Include="tooltip.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="boost_python37-vc142-mt-gd-x32-1_70.dll" />
+    <None Include="boost_python37-vc142-mt-x32-1_70.dll" />
     <None Include="decomposedData_python.py" />
     <None Include="defaultScript.py" />
     <None Include="gameSerializationUtils.dll" />
+    <None Include="gameSerializationUtils.pyd" />
+    <None Include="python37.dll" />
     <None Include="test_GS.py" />
   </ItemGroup>
   <ItemGroup>

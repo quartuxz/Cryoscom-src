@@ -37,7 +37,7 @@ public:
 
 	void createMenuFromFile(std::string);
 	std::vector<behaviourParameters> onClick(sf::Vector2f, bool);
-
+	
 	virtual void onDraw(bool, sf::Vector2f);
 
 	//first argument is current size in pixels, second argument is desired size in window coverage%.

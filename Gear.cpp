@@ -143,9 +143,3 @@ void GearPiece::unequipGearPiece(combatModule *target) const
 GearPiece::~GearPiece()
 {
 }
-
-GearPiece GearPiece::makeGearPiece(std::vector<std::string> tokens)
-{
-
-	
-}

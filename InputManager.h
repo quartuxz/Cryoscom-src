@@ -10,7 +10,8 @@ class InputManager
 {
 public:
 	enum InputEventTypes {
-		noInputEvent, windowClosed, moveForward, moveBackward, moveLeft, moveRight, shoot, interactKeyPressed, escapeKeyPressed, inventoryKeyPressed, pickUpKeyPressed, showToolTipsKeyPressed, generalKeyReleased, useItem, dash, shiftKeyPressed, dashForward, dashBackward, dashLeft, dashRight
+		noInputEvent, windowClosed, moveForward, moveBackward, moveLeft, moveRight, shoot, interactKeyPressed, escapeKeyPressed, inventoryKeyPressed, pickUpKeyPressed, showToolTipsKeyPressed, generalKeyReleased, useItem, dash, shiftKeyPressed, dashForward, dashBackward, dashLeft, dashRight,
+		hotbar1, hotbar2, hotbar3, hotbar4, hotbar5
 	};
 
 	struct InputEvent {

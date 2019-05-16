@@ -404,6 +404,7 @@ void GameMain::gameLoop()
 	dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->addSkill(HUDSParam);
 	//m_window = m_inputManager.getWindow();
 
+	m_window->setFramerateLimit(0);
 
 	std::cout << "mainLoop" << std::endl;
 	while (m_window->isOpen())
@@ -440,6 +441,15 @@ void GameMain::gameLoop()
 
 		InputManager::InputEvent inputEvent;
 		while ((inputEvent = m_inputManager.getEvent()).InputEventType != InputManager::noInputEvent) {
+			if (inputEvent.InputEventType <= InputManager::hotbar5 && inputEvent.InputEventType >= InputManager::hotbar1) {
+				skillParam *tempSParam = dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->getSkill(inputEvent.InputEventType - InputManager::hotbar1);
+				if (tempSParam != nullptr) {
+					skillParam* actualSkillParam = new skillParam(*tempSParam);
+					m_currentLevel->getWeapon()->addSkillToQueue(actualSkillParam);
+				}
+				
+			}
+			
 			skillParam* tempSParam;
 			Menu* tempMenu;
 			inventoryItem pickedUpItem;
@@ -721,7 +731,7 @@ void GameMain::gameLoop()
 		//		m_currentLevel->getPlayer()->stopMovement();
 		//	}
 		//}
-        //std::cout << 1/currentTime.asSeconds() << std::endl;
+        std::cout << 1/currentTime.asSeconds() << std::endl;
 
 		//m_gameBus.notify();
 

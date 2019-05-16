@@ -14,9 +14,12 @@ private:
 public:
 	using Menu::Menu;
 
-	//returns the ID of the passed skill
+	//returns the ID of the skill slot
 	size_t addSkill(skillParam*);
-	
+	//requires the ID of the skill slot
+	skillParam *getSkill(size_t);
+
+	void removeSkill(size_t);
 
 	void onDraw(bool, sf::Vector2f)override;
 	void createStaticMenuLayout()override;
