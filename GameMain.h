@@ -13,23 +13,10 @@
 #include "Logger.h"
 #include "PlayerInventory.h"
 #include "InputManager.h"
+#include "HUDMenu.h"
 
 
 
-class HUDMenu : public Menu {
-private:
-    ToolTip m_availablePotions;
-    void m_updatePotions(unsigned int);
-
-public:
-	using Menu::Menu;
-
-
-    void onDraw(bool, sf::Vector2f)override;
-	void createStaticMenuLayout()override;
-
-	void update(updateEvent)override;
-};
 
 class GameMain : public MessagingComponent
 {

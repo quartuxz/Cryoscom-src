@@ -10,6 +10,7 @@ texture;Inventory-Helmet.png;
 texture;Inventory-Chest Armor.png;
 texture;Inventory-Jumpsuit.png; 
 texture;Inventory-Boots.png;
+texture;Psi_Ability-Pyrokinesis.png;
 texture;button.png;
 
 texture;player_back_left_idle.png;

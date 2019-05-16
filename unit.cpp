@@ -143,7 +143,8 @@ AnimatorSprite unit::getAnimatorSprite()
 
 void unit::setAnimatorSprite(AnimatorSprite aSprite, float additionalScale)
 {
-	aSprite.scale = body[0].second / (Animator::getInstance().getTexture(aSprite.textureID)->getSize().x / 2);
+
+	aSprite.scale = body[0].second / min(Animator::getInstance().getTexture(aSprite.textureID)->getSize().x / 2, Animator::getInstance().getTexture(aSprite.textureID)->getSize().y / 2);
 	aSprite.scale += additionalScale;
 	animatorSprite = aSprite;
 }

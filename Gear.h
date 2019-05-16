@@ -53,7 +53,7 @@ struct combatModule : public Serializable {
 	float damage = 20;
 	bool isMelee = false;
 	float bulletSpeed = 200;
-	float bulletSize = 10;
+	float bulletSize = 2;
 	float bulletDuration = 4;
 	float fireRate = 10;
 	float inaccuracy = 10;

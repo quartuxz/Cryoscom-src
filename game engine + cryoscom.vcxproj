@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -27,6 +27,7 @@
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Gear.cpp" />
     <ClCompile Include="globalMutexes.cpp" />
+    <ClCompile Include="HUDMenu.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelMaker.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Gear.h" />
     <ClInclude Include="globalMutexes.h" />
+    <ClInclude Include="HUDMenu.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelMaker.h" />
     <ClInclude Include="Logger.h" />
@@ -91,6 +93,7 @@
     <Image Include="player_back_right_idle.png" />
     <Image Include="player_front_left_idle.png" />
     <Image Include="player_front_right_idle.png" />
+    <Image Include="Psi_Ability-Pyrokinesis.png" />
     <Image Include="test_map.png" />
     <Image Include="tooltip.png" />
   </ItemGroup>

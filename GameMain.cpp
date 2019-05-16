@@ -15,65 +15,6 @@
 
 
 
-void HUDMenu::createStaticMenuLayout()
-{
-	MenuItem tempMenuItem(sf::Rect<float>(sf::Vector2f(0 * m_window->getSize().x, 1 * m_window->getSize().y), sf::Vector2f(0.2 * m_window->getSize().x, 0.5 * m_window->getSize().y)));
-	m_menuItems.push_back(tempMenuItem);
-
-	sf::Vector2f individualHotbarSize = sf::Vector2f(0.06, 0.06);
-	size_t hotbarSlotsNumber = 10;
-
-	for (size_t i = 0; i < hotbarSlotsNumber; i++)
-	{
-		MenuItem hotbarMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(individualHotbarSize.x*i + (0.5-(individualHotbarSize.x*hotbarSlotsNumber)/2), 0)), getPixelCoordinate(individualHotbarSize)));
-		AnimatorSprite hotbarMenuItemTex;
-		hotbarMenuItemTex.textureID = Animator::getInstance().getTextureID("Inventory-Slot (Empty).png");
-		hotbarMenuItem.setTexture(hotbarMenuItemTex);
-		hotbarMenuItem.setButtonText(std::to_string(i).append("  "), 0.1, sf::Color::Red, 0);
-		m_menuItems.push_back(hotbarMenuItem);
-	}
-	//m_availablePotions.setTexture();
-	m_updatePotions(0);
-}
-
-void HUDMenu::m_updatePotions(unsigned int availablePotions){
-    sf::Text tempText;
-    std::stringstream ss;
-    m_availablePotions.clearText();
-    ss << "available potions: " << availablePotions << std::endl;
-    tempText.setString(ss.str());
-    tempText.setPosition(sf::Vector2f(100,100));
-    tempText.setScale(sf::Vector2f(1,1));
-    tempText.setFillColor(sf::Color(0,0,0,255));
-    m_availablePotions.addText(tempText);
-}
-
-void HUDMenu::onDraw(bool beforeDraw, sf::Vector2f viewDisplacement){
-	if (beforeDraw) {
-        sf::Vector2f initialPosition = m_availablePotions.getPosition();
-        m_availablePotions.setPosition(initialPosition + viewDisplacement);
-        m_availablePotions.draw(*m_window);
-        m_availablePotions.setPosition(initialPosition);
-	}
-}
-
-void HUDMenu::update(updateEvent uEvent)
-{
-	switch (uEvent.updateEventType)
-	{
-	case lostLife:
-		m_menuItems[0].reestablishInitialPostion();
-		//std::cout << "currentLife: " << uEvent.currentLife << ", maxLife: " << uEvent.maxLife << ", percentage: " << (uEvent.currentLife / uEvent.maxLife) << std::endl;
-		m_menuItems[0].move(sf::Vector2f(0 ,-m_menuItems[0].getDimension().y * (uEvent.currentLife / uEvent.maxLife)));
-		//m_menuItems[0].move(sf::Vector2f(0, (m_menuItems[0].getDimension().y/1) * (uEvent.currentLife/uEvent.maxLife)));
-		break;
-    case lostPotions:
-        m_updatePotions(uEvent.availablePotions);
-        break;
-	default:
-		break;
-	}
-}
 
 void GameMain::m_loadLevelGameMainBits(std::string fileName) {
 
@@ -458,6 +399,9 @@ void GameMain::gameLoop()
 	mapItem.itemToolTip.makeTooltipForGear(mapItem.simpleRep);
 	m_currentLevel->placeItem(mapItem, sf::Vector2f(300,300));
 
+	skillParam *HUDSParam = new skillParam();
+	HUDSParam->skillIcon.textureID = Animator::getInstance().getTextureID("Psi_Ability-Pyrokinesis.png");
+	dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->addSkill(HUDSParam);
 	//m_window = m_inputManager.getWindow();
 
 

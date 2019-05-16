@@ -141,6 +141,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files\main</Filter>
     </ClCompile>
+    <ClCompile Include="HUDMenu.cpp">
+      <Filter>Source Files\UI\subclasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h">
@@ -221,6 +224,9 @@
     <ClInclude Include="InputManager.h">
       <Filter>Source Files\manager/container classes</Filter>
     </ClInclude>
+    <ClInclude Include="HUDMenu.h">
+      <Filter>Source Files\UI\subclasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="bullet.png">
@@ -278,6 +284,9 @@
       <Filter>Resource Files\tex</Filter>
     </Image>
     <Image Include="level1_v2.png">
+      <Filter>Resource Files\tex</Filter>
+    </Image>
+    <Image Include="Psi_Ability-Pyrokinesis.png">
       <Filter>Resource Files\tex</Filter>
     </Image>
   </ItemGroup>

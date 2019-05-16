@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <SFML/Graphics.hpp>
+#include "AnimatorSprite.h"
 #include "unit.h"
 #include "Bullet.h"
 
@@ -16,6 +17,8 @@ enum skillTypes {
 
 struct skillParam {
 	float castDelay = 0;
+	AnimatorSprite skillIcon;
+	AnimatorSprite skillTex;
 	sf::Vector2f dirUnitVec;
 	skillTypes sType;
 	std::vector<sf::Vector2f> skillEffecArea = std::vector<sf::Vector2f>();
