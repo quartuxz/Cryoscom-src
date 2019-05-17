@@ -282,7 +282,6 @@ AnimatorSprite unit::m_getAnimatorSpriteHelper(lookDirection lDir)
 
 void unit::update(float seconds, std::vector<unit*> colliders)
 {
-
 	if (seconds > 1) {
 		velocity += acceleration;
 		acceleration = sf::Vector2f(0,0);

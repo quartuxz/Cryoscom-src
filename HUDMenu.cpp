@@ -29,7 +29,7 @@ void HUDMenu::createStaticMenuLayout()
 	m_usedSkills.resize(m_hotbarSlotsNumber, nullptr);
 	
 
-	MenuItem tempMenuItem(sf::Rect<float>(sf::Vector2f(0 * m_window->getSize().x, 1 * m_window->getSize().y), sf::Vector2f(0.2 * m_window->getSize().x, 0.5 * m_window->getSize().y)));
+	MenuItem tempMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(0, 1)), getPixelCoordinate(sf::Vector2f(0.2, 0.5))));
 	m_menuItems.push_back(tempMenuItem);
 
 	
