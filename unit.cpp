@@ -299,10 +299,9 @@ void unit::update(float seconds, std::vector<unit*> colliders)
 
 	move(velocity * seconds);
 	cModule.processEffects(seconds);
-	cModule.stamina += cModule.staminaRegen * seconds;
-	if (cModule.stamina > 100) {
-		cModule.stamina = 100;
-	}
+	cModule.update(seconds);
+
+
 	if (!cModule.pushes.empty()) {
 		for (size_t i = 0; i < cModule.pushes.size(); i++)
 		{
@@ -315,13 +314,11 @@ void unit::update(float seconds, std::vector<unit*> colliders)
 			
 	}
 
-	cModule.hitpoints -= (cModule.damageTakenPerSecond * seconds);
+
 	if (cModule.hitpoints <= 0 && recentlyDead) {
 		kill();
 	}
-	if (cModule.hitpoints > cModule.hitpointCap) {
-		cModule.hitpoints = cModule.hitpointCap;
-	}
+
 
 	m_collide(colliders);
 

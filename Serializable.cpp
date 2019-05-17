@@ -28,6 +28,14 @@ void decomposedData::m_parseData(std::string passedData){
     data = tempData;
 }
 
+decomposedData* decomposedData::getChildByName(std::string nameRequested){
+	for (size_t i = 0; i < childrenObjects.size(); i++)
+	{
+		if (childrenObjects[i].name == nameRequested) {
+			return &childrenObjects[i];
+		}
+	}
+}
 
 
 decomposedData decomposedData::createFrom(std::string passedData){
@@ -39,6 +47,11 @@ decomposedData decomposedData::createFrom(std::string passedData){
         childrenObjects.back().createFrom(allData[i]);
     }
     return *this;
+}
+
+decomposedData* decomposedData::getChildByName(std::string) const
+{
+	return nullptr;
 }
 
 decomposedData* decomposedData::getChildByName(std::string childName) {

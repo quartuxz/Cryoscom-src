@@ -40,6 +40,7 @@ struct decomposedData{
         std::string getMushedData()const;
 
 		//returns null if not found
+		//searches recusrsively through all the arguments
 		static decomposedData *searchAndGetArg(std::vector<decomposedData> *arg, std::string objName) {
 			for (size_t i = 0; i < arg->size(); i++) {
 				if (arg->operator[](i).name == objName) {
@@ -48,6 +49,8 @@ struct decomposedData{
 			}
 			return nullptr;
 		}
+
+		decomposedData *getChildByName(std::string);
 
 		//returns null if not found
 		decomposedData *getChildByName(std::string);

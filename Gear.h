@@ -46,6 +46,8 @@ struct combatModule : public Serializable {
 	combatModule(bool);
 	combatModule();
 
+	//applies some caps and calculates some other things
+	void update(float);
 	void processEffects(float);
 	std::vector<effect> effects;
 	std::vector<std::pair<sf::Vector2f, float>> pushes;
@@ -57,7 +59,7 @@ struct combatModule : public Serializable {
 	float bulletDuration = 4;
 	float fireRate = 10;
 	float inaccuracy = 10;
-	float magSize = 5;
+	unsigned int magSize = 5;
 	float reloadTime = 2;
 };
 //todo: implement serialization and and proper equip/unequip
