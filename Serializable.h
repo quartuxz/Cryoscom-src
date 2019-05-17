@@ -40,20 +40,12 @@ struct decomposedData{
         std::string getMushedData()const;
 
 		//returns null if not found
-		//searches recusrsively through all the arguments
-		static decomposedData *searchAndGetArg(std::vector<decomposedData> *arg, std::string objName) {
-			for (size_t i = 0; i < arg->size(); i++) {
-				if (arg->operator[](i).name == objName) {
-					return &arg->operator[](i);
-				}
-			}
-			return nullptr;
-		}
-
+		//tries to find the specified name in the childrenObjects, only 1 layer deep.
 		decomposedData *getChildByName(std::string);
 
 		//returns null if not found
-		decomposedData *getChildByName(std::string);
+		//tries to find the specified name in the children tree, recursively, returns the first occurence found if done so.
+		decomposedData *getChildByNameRecursive(std::string);
         //for constructing a decomposedData object inline
         decomposedData &setType(std::string);
         decomposedData &setName(std::string);

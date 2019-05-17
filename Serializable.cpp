@@ -35,6 +35,7 @@ decomposedData* decomposedData::getChildByName(std::string nameRequested){
 			return &childrenObjects[i];
 		}
 	}
+	return nullptr;
 }
 
 
@@ -49,12 +50,7 @@ decomposedData decomposedData::createFrom(std::string passedData){
     return *this;
 }
 
-decomposedData* decomposedData::getChildByName(std::string) const
-{
-	return nullptr;
-}
-
-decomposedData* decomposedData::getChildByName(std::string childName) {
+decomposedData* decomposedData::getChildByNameRecursive(std::string childName) {
 	for (size_t i = 0; i < childrenObjects.size(); i++)
 	{
 		if (childrenObjects[i].name == childName) {
