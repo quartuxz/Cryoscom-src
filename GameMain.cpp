@@ -404,7 +404,7 @@ void GameMain::gameLoop()
 	dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->addSkill(HUDSParam);
 	//m_window = m_inputManager.getWindow();
 
-	m_window->setFramerateLimit(0);
+	m_window->setFramerateLimit(60);
 
 	std::cout << "mainLoop" << std::endl;
 	while (m_window->isOpen())

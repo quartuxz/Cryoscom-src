@@ -13,6 +13,47 @@ enum initType {
 };
 
 
+inline sf::Vector2f reflect(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p)
+{
+	float s = 0;
+	float c = -1;
+
+	sf::Vector2f proj;
+	minimum_distance(v, w, p, &proj);
+
+	// translate point back to origin:
+	p.x -= proj.x;
+	p.y -= proj.y;
+
+	// rotate point
+	float xnew = p.x * c - p.y * s;
+	float ynew = p.x * s + p.y * c;
+
+	// translate point back:
+	p.x = xnew + proj.x;
+	p.y = ynew + proj.y;
+	return p;
+}
+//first param is the origin of rotation and the second param is the point to be rotated
+inline sf::Vector2f rotate90(sf::Vector2f o, sf::Vector2f p)
+{
+	float s = 1;
+	float c = 0;
+
+	// translate point back to origin:
+	p.x -= o.x;
+	p.y -= o.y;
+
+	// rotate point
+	float xnew = p.x * c - p.y * s;
+	float ynew = p.x * s + p.y * c;
+
+	// translate point back:
+	p.x = xnew + o.x;
+	p.y = ynew + o.y;
+	return p;
+}
+
 
 inline sf::Vector2f rotateByAngle(sf::Vector2f o, sf::Vector2f p, float angle)
 {

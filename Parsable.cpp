@@ -41,6 +41,11 @@ void Parsable::createFromFile(std::string fileName) {
 	}
 }
 
+void Parsable::createFromSingleLine(std::vector<std::string> line)
+{
+	pv_parseStep(line);
+}
+
 Parsable::~Parsable()
 {
 }

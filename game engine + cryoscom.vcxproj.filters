@@ -67,6 +67,9 @@
     <Filter Include="Resource Files\DLLs &amp; py libs">
       <UniqueIdentifier>{fa61dea3-2d7a-48ff-947b-c5b3880ac2a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\collision and units\tiles">
+      <UniqueIdentifier>{11daec2e-cccd-4996-b147-35bc45991411}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatorSprite.cpp">
@@ -120,9 +123,6 @@
     <ClCompile Include="GameMain.cpp">
       <Filter>Source Files\manager/container classes</Filter>
     </ClCompile>
-    <ClCompile Include="LevelMaker.cpp">
-      <Filter>Source Files\manager/container classes</Filter>
-    </ClCompile>
     <ClCompile Include="fileLoader.cpp">
       <Filter>Source Files\serialization&amp;file I/O</Filter>
     </ClCompile>
@@ -146,6 +146,21 @@
     </ClCompile>
     <ClCompile Include="HUDMenu.cpp">
       <Filter>Source Files\UI\subclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelMaker.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Source Files\collision and units</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelMaker.h">
-      <Filter>Source Files\manager/container classes</Filter>
     </ClInclude>
     <ClInclude Include="GameMain.h">
       <Filter>Source Files\manager/container classes</Filter>
@@ -229,6 +241,21 @@
     </ClInclude>
     <ClInclude Include="HUDMenu.h">
       <Filter>Source Files\UI\subclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelMaker.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Source Files\manager/container classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

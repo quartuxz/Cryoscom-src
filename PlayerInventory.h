@@ -29,12 +29,6 @@ public:
 	void createFrom(const decomposedData&)override;
 	decomposedData serialize()override;
 
-	void setMaxRows(size_t);
-	size_t getMaxRows(size_t)const;
-
-	void setMaxColumns(size_t);
-	size_t getMaxColumns()const;
-
 
 	inventoryItem removeItem(size_t);
 

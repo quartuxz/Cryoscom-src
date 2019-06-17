@@ -267,5 +267,13 @@ void PlayerInventory::createFrom(const decomposedData&)
 
 decomposedData PlayerInventory::serialize()
 {
-	return decomposedData();
+	decomposedData retDData;
+	retDData.name = "PlayerInventory";
+	retDData.type = "PlayerInventory";
+	for (size_t i = 0; i < m_items.size(); i++)
+	{
+		retDData.addChildrenObject(m_items[i].serialize());
+	}
+
+	return retDData;
 }

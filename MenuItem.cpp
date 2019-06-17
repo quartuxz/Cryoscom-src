@@ -245,3 +245,13 @@ MenuItem::~MenuItem()
 {
 }
 
+void inventoryItem::createFrom(const decomposedData&)
+{
+}
+
+decomposedData inventoryItem::serialize()
+{
+	decomposedData retDData;
+	retDData.type = "inventoryItem";
+	return retDData;
+}

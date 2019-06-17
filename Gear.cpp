@@ -122,16 +122,19 @@ void combatModule::processEffects(float timeDelta) {
 
 }
 
-void GearPiece::createFrom(const decomposedData&)
+void GearPiece::createFrom(const decomposedData& DData)
 {
+	decomposedData tempDData = DData;
+	cModule.createFrom(*tempDData.getChildByName("cModule"));
 }
 
 decomposedData GearPiece::serialize()
 {
 	decomposedData tempDData;
 	tempDData.type = "GearPiece";
-	tempDData.name = name;
 	tempDData.data.push_back(std::to_string(type));
+	tempDData.addChildrenObject(decomposedData().setName("name").addData("name"));
+	tempDData.addChildrenObject(cModule.serialize().setName("cModule"));
 	return tempDData;
 }
 

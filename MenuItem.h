@@ -10,7 +10,10 @@ enum itemTypes {
 	emptySlot, gearPieceType, medkitType, ammoType
 };
 
-struct inventoryItem {
+struct inventoryItem : public Serializable{
+	decomposedData serialize()override;
+	void createFrom(const decomposedData&)override;
+
 	itemTypes itemType = emptySlot;
 	std::string serializedObjectRep;
 	GearPiece simpleRep;
