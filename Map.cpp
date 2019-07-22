@@ -101,21 +101,13 @@ void Map::addWall(sf::Vector2f first, sf::Vector2f second, bool clockWiseFromFir
 {
 	Wall wall;
 	wall.wall = std::pair<sf::Vector2f, sf::Vector2f>(first, second);
-	wall.inside = rotate90(sf::Vector2f((first.x + second.x) / 2, (first.y + second.y) / 2), first);
+	addWall(wall);
+}
 
-	float dist = vectorDistance(wall.inside - (sf::Vector2f((first.x + second.x) / 2, (first.y + second.y) / 2)), sf::Vector2f((first.x + second.x) / 2, (first.y + second.y) / 2));
-	//std::cout << wall.inside.x << ", " << wall.inside.y << std::endl;
-	wall.inside.x -= (first.x + second.x) / 2;
-	wall.inside.y -= (first.y + second.y) / 2;
-	//std::cout << (first.x + second.x) / 2 << std::endl;
-	//std::cout << wall.inside.x << ", " << wall.inside.y << std::endl;
-	wall.inside.x = wall.inside.x / dist;
-	wall.inside.y = wall.inside.y / dist;
-	//std::cout << wall.inside.x << ", " << wall.inside.y << std::endl;
-	wall.inside.x += (first.x + second.x) / 2;
-	wall.inside.y += (first.y + second.y) / 2;
-	//std::cout << wall.inside.x << ", " << wall.inside.y << std::endl;
+void Map::addWall(const Wall &wall)
+{
 	walls.push_back(wall);
+	walls.back().calculateInside();;
 }
 
 void Map::addNamedWall(sf::Vector2f first, sf::Vector2f second, std::string name, bool clockWiseFromFirst) {
@@ -141,28 +133,6 @@ Map::~Map()
 }
 
 
-
-float dot(sf::Vector2f v, sf::Vector2f w)
-{
-	return v.x * w.x + v.y * w.y;
-}
-
-float minimum_distance(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p, sf::Vector2f *proj)
-{
-	// Return minimum distance between line segment vw and point p
-	const float l2 = distanceSquared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
-	if (l2 == 0.0) return vectorDistance(p, v);   // v == w case
-											// Consider the line extending the segment, parameterized as v + t (w - v).
-											// We find projection of point p onto the line. 
-											// It falls where t = [(p-v) . (w-v)] / |w-v|^2
-											// We clamp t from [0,1] to handle points outside the segment vw.
-	const float t = std::max(static_cast<float>(0), std::min(static_cast<float>(1), dot((p - v), (w - v)) / l2));
-	const sf::Vector2f projection = v + t * (w - v);  // Projection falls on the segment
-	if (proj != nullptr) {
-		*proj = projection;
-	}
-	return vectorDistance(p, projection);
-}
 
 
 

@@ -160,7 +160,7 @@
       <Filter>Source Files\collision and units\tiles</Filter>
     </ClCompile>
     <ClCompile Include="Wall.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\collision and units</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,7 +255,7 @@
       <Filter>Source Files\collision and units\tiles</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\collision and units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +400,12 @@
     </Text>
     <Text Include="progression.txt">
       <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="tileMapTest.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="serialization doc.txt">
+      <Filter>docs</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

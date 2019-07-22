@@ -404,7 +404,7 @@ void GameMain::gameLoop()
 	dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->addSkill(HUDSParam);
 	//m_window = m_inputManager.getWindow();
 
-	m_window->setFramerateLimit(60);
+	m_window->setFramerateLimit(160);
 
 	std::cout << "mainLoop" << std::endl;
 	while (m_window->isOpen())
@@ -755,6 +755,7 @@ void GameMain::gameLoop()
 			m_window->draw(capturedBackground);
 			m_window->draw(tempRect);
 		}
+		
 		m_isPaused = runOnce(currentTime.asSeconds(), mousePosition, mouseClick);
 
 
@@ -770,11 +771,11 @@ void GameMain::gameLoop()
 		//Animator::getInstance().addOneFrameSprite(tempSprite);
 
 		//std::cout << currentTime.asSeconds() << std::endl;
+
 		if (!m_isPaused) {
 			Animator::getInstance().update(currentTime.asSeconds());
 			Animator::getInstance().draw();
 		}
-		
 
 
 
@@ -838,7 +839,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, bool mouseCli
         }
     }
 }
-
+//runs one frame of the game, updating timewise game and menus(HUD or whatever other menu is active)
 bool GameMain::runOnce(float timeDelta, sf::Vector2i mousePos, bool mouseClicked)
 {
 	if (m_activeMenu.empty()) {
@@ -857,7 +858,6 @@ bool GameMain::runOnce(float timeDelta, sf::Vector2i mousePos, bool mouseClicked
 			}
 
 		}
-        //TODO: move UI updates into their own function
 		if (m_HUDActive) {
             updateUI("HUD", mousePos, mouseClicked);
 		}

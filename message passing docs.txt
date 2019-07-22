@@ -10,7 +10,7 @@ a decomposedData object is composed of the following(all strings):
 																*this object can be serialized and deserialized fully into a 
 																string and back into its object form, both in python and c++.
 																*there are interfaces that make it possible to make every object you create
-																in c++ serializable and reasily readable from python
+																in c++ serializable and easily readable from python
 																(Serializable.h and decomposedData_python.py) through simple function calls.
 
 first data`s index is index 0 or decomposedData::data[0], its of string type.

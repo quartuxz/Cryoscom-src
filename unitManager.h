@@ -11,6 +11,7 @@
 #include <thread>
 #include "Menu.h"
 #include "ToolTip.h"
+#include "TileMap.h"
 #include "MessageBus.h"
 #include "Parsable.h"
 #include "Gear.h"
@@ -63,6 +64,7 @@ private:
 
 	std::vector<std::pair<GearPiece, unsigned int>> m_lootTable;
 
+	TileMap m_tileMap;
 	std::vector<sf::Sprite> m_worldTextures;
 	
 	std::vector<sf::Texture*> m_toDeleteTextures;
@@ -146,8 +148,7 @@ public:
 	UnitManager(Map*);
 	void setMap(Map*);
 	void setPlayerWeapon(Weapon*);
-	//TODO: create a layer render system, to combine effects over the player/bullet etc, integrate with worldTextures and animation
-	//DONE!^; reffer to the Animator singleton, in Animator.h
+
 	void update(float, sf::RenderWindow&, MessageBus*);
 
 	//TODO: create tooltip system that shows useful information once the player comes close;

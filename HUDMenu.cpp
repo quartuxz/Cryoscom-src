@@ -21,6 +21,7 @@ void HUDMenu::createStaticMenuLayout()
 	{
 		MenuItem hotbarMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(individualHotbarSize.x * i + (0.5 - (individualHotbarSize.x * m_hotbarSlotsNumber) / 2), 0)), getPixelCoordinate(individualHotbarSize)));
 		AnimatorSprite hotbarMenuItemTex;
+		hotbarMenuItemTex.drawLayer = 5;
 		hotbarMenuItemTex.textureID = Animator::getInstance().getTextureID("Inventory-Slot (Empty).png");
 		hotbarMenuItem.setTexture(hotbarMenuItemTex);
 		hotbarMenuItem.setButtonText(std::to_string(i+1).append("  "), 0.1, sf::Color::Red, 0);

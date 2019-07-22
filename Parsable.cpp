@@ -31,6 +31,9 @@ void Parsable::createFromFile(std::string fileName) {
 			else if (tokens[0] == "//") {
 				continue;
 			}
+			else if (tokens[0] == "end") {
+				break;
+			}
 			else{
 				pv_parseStep(tokens);
 			}

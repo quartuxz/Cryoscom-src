@@ -1,7 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Serializable.h"
 
-struct AnimatorSprite {
+struct AnimatorSprite : public Serializable{
 	unsigned int textureID;
 	unsigned drawLayer = 0;
 
@@ -21,6 +22,9 @@ struct AnimatorSprite {
 	sf::Vector2f position = sf::Vector2f(0, 0);
 
 	AnimatorSprite();
+
+	void createFrom(const decomposedData&);
+	decomposedData serialize();
 
 	static AnimatorSprite create(bool);
 

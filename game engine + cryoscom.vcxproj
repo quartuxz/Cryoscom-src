@@ -137,6 +137,8 @@
     <Text Include="message passing docs.txt" />
     <Text Include="oldMap2.txt" />
     <Text Include="progression.txt" />
+    <Text Include="serialization doc.txt" />
+    <Text Include="tileMapTest.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

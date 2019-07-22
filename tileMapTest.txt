@@ -1,0 +1,23 @@
+//;makes a square tile
+tile;square;0;0;
+
+//;adds a texture
+//;reference decomposedData format
+//;{type,name,data[0],data[1],data[...],}
+tileTex;{animatorSprite,tileTex1,{uint,textureID,3,}};
+
+//;makes a square tile
+tile;square;2;2;
+
+//;adds a texture
+//;reference decomposedData format
+//;{type,name,data[0],data[1],data[...],}
+tileTex;{animatorSprite,tileTex1,{uint,textureID,1,}};
+
+//;makes a square tile
+tile;square;1;1;
+
+//;adds a texture
+//;reference decomposedData format
+//;{type,name,data[0],data[1],data[...],}
+tileTex;{animatorSprite,tileTex1,{uint,textureID,1,}};

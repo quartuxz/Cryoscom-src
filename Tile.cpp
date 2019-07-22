@@ -6,9 +6,19 @@ Tile::Tile()
 {
 }
 
-void Tile::addSprite()
+void Tile::addTileSprite(const AnimatorSprite &aSprite)
 {
-	Animator::getInstance().addOneFrameSprite(m_tileSprite);
+	m_hasSprite = true;
+	m_tileSprites.push_back(aSprite);
+}
+
+void Tile::addSprites()
+{
+	for (size_t i = 0; i < m_tileSprites.size(); i++)
+	{
+		Animator::getInstance().addOneFrameSprite(m_tileSprites[i]);
+	}
+	
 }
 
 bool Tile::isEmpty() const
@@ -40,15 +50,33 @@ void Tile::addBound(const Wall&bound)
 	m_bounds.push_back(bound);
 }
 
-AnimatorSprite Tile::getTileSprite() const
+void Tile::moveBounds(sf::Vector2f offset)
 {
-	return m_tileSprite;
+	for (size_t i = 0; i < m_bounds.size(); i++)
+	{
+		m_bounds[i].inside += offset;
+		m_bounds[i].wall.first += offset;
+		m_bounds[i].wall.second += offset;
+	}
 }
 
-void Tile::setTileSprite(AnimatorSprite tileSprite)
+void Tile::moveSprites(sf::Vector2f offset)
+{
+	for (size_t i = 0; i < m_tileSprites.size(); i++)
+	{
+		m_tileSprites[i].position += offset;
+	}	
+}
+
+std::vector<AnimatorSprite> Tile::getTileSprites() const
+{
+	return m_tileSprites;
+}
+
+void Tile::setTileSprites(const std::vector<AnimatorSprite> &tileSprites)
 {
 	m_hasSprite = true;
-	m_tileSprite = tileSprite;
+	m_tileSprites = tileSprites;
 }
 
 

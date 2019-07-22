@@ -62,7 +62,7 @@ struct combatModule : public Serializable {
 	unsigned int magSize = 5;
 	float reloadTime = 2;
 };
-//todo: implement serialization and and proper equip/unequip
+//todo: implement serialization and proper equip/unequip
 struct GearPiece : public Serializable {
 	size_t ID = reinterpret_cast<size_t>(this);
 

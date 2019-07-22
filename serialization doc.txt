@@ -1,0 +1,32 @@
+a decomposedData object is composed of the following(all strings):
+																-a type
+																-a name
+																-data indexes(a vector/array)
+																-childrenObjects indexes(a vector/array) of the decomposedData type(a tree of sorts)
+																*this object can be serialized and deserialized fully into a 
+																string and back into its object form, both in python and c++.
+																*there are interfaces that make it possible to make every object you create
+																in c++ serializable and easily readable from python
+																(Serializable.h and decomposedData_python.py) through simple function calls.
+
+all objects are serialized first into decomposedData objects and then into strings
+with the following format:
+{type,name,data[0],data[1],data[...],{childType,childName,childData[0],childData[1],childData[...],}}
+infinitely nestable with children, grand chidlren, grand grand children...
+
+
+method for decomposedData serialization:
+#####################
+std::string decomposedData::serialize(unsigned int indentation)const{
+    std::stringstream ss;
+    ss << "{" << type << "," << name << ",";
+    for(int i = 0; i < data.size(); i++){
+        ss << data[i] << ",";
+    }
+    for(int i = 0; i < childrenObjects.size(); i++){
+        ss << childrenObjects[i].serialize(++indentation);
+    }
+    ss << "}";
+    return ss.str();
+}
+##################

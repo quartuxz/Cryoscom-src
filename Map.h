@@ -24,6 +24,8 @@ public:
 	void addNamedWall(sf::Vector2f, sf::Vector2f, std::string, bool clockWiseFromFirst = true);
 
 	void addWall(sf::Vector2f, sf::Vector2f, bool clockWiseFromFirst = true);
+	
+	void addWall(const Wall&);
 
 	std::vector<Wall> getWallsConst()const;
 	std::vector<Wall> *getWalls();

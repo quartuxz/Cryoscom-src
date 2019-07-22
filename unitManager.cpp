@@ -3,7 +3,9 @@
 #include <map>
 #include <mutex>
 #include "Animator.h"
+#include "tileMap.h"
 #include "cryoscom_defsAndUtils.h"
+
 
 
 
@@ -286,6 +288,12 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 
 			m_player->setAnimatorSprite(tempASprtie);
 		}
+		//m_player->animatorValues.usingCompositeTextures = false;
+		/*AnimatorSprite tempASprite;
+		tempASprite.textureID = 1;
+		m_player->setAnimatorSprite(tempASprite);
+		mutexLock.unlock();
+		return;*/
 		m_player->animatorValues.back_left_idle.textureID = Animator::getInstance().getTextureID("player_back_left_idle.png");
 		m_player->animatorValues.back_left_idle.drawLayer = 2;
 		m_player->animatorValues.back_right_idle.textureID = Animator::getInstance().getTextureID("player_back_right_idle.png");
@@ -347,6 +355,17 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 	}
 	else if (tokens[0] == "loadLootTable") {
 		//loadLootTable(tokens[1]);
+	}
+	else if (tokens[0] == "tileMap") {
+		m_tileMap.createFromFile(tokens[1]);
+		std::vector<Wall> tempTileWalls = m_tileMap.getWallRep();
+		for (size_t i = 0; i < tempTileWalls.size(); i++)
+		{
+			m_map->addWall(tempTileWalls[i]);
+		}
+
+		
+		
 	}
 	mutexLock.unlock();
 }
@@ -704,6 +723,8 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 			}
 		}
 	}
+
+	m_tileMap.addAllSprites();
 
 	mutexLock.unlock();
 	////map updating

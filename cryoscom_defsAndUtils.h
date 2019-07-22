@@ -1,8 +1,8 @@
 #pragma once
 #define MAKING_LEVELS false
-#define CRYOSCOM_DEBUG false
+#define CRYOSCOM_DEBUG true
 #define ADD_PLAYER_VELOCITY_TO_BULLET false
-#define MULTITHREADED_SCRIPTING_AND_MESSAGING true
+#define MULTITHREADED_SCRIPTING_AND_MESSAGING false
 #include <limits>
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -11,6 +11,54 @@
 enum initType {
 	allValuesToZero
 };
+
+
+inline float vectorDistance(sf::Vector2f v, sf::Vector2f w)
+{
+	return std::sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2));
+}
+
+
+
+inline float lengthSquared(const sf::Vector2f& point) {
+	return (point.x * point.x + point.y * point.y);
+
+}
+
+
+
+inline float distanceSquared(sf::Vector2f v, sf::Vector2f w)
+{
+	return pow(v.x - w.x, 2) + pow(v.y - w.y, 2);
+}
+
+//float dot(sf::Vector2f v, sf::Vector2f w)
+//{
+//	return v.x * w.x + v.y * w.y;
+//}
+
+inline float dotProduct(const sf::Vector2f& first, const sf::Vector2f& second) {
+
+	return first.x * second.x + first.y * second.y;
+}
+
+
+inline float minimum_distance(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p, sf::Vector2f* proj)
+{
+	// Return minimum distance between line segment vw and point p
+	const float l2 = distanceSquared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
+	if (l2 == 0.0) return vectorDistance(p, v);   // v == w case
+											// Consider the line extending the segment, parameterized as v + t (w - v).
+											// We find projection of point p onto the line. 
+											// It falls where t = [(p-v) . (w-v)] / |w-v|^2  
+											// We clamp t from [0,1] to handle points outside the segment vw.
+	const float t = std::max(static_cast<float>(0), std::min(static_cast<float>(1), dotProduct((p - v), (w - v)) / l2));
+	const sf::Vector2f projection = v + t * (w - v);  // Projection falls on the segment
+	if (proj != nullptr) {
+		*proj = projection;
+	}
+	return vectorDistance(p, projection);
+}
 
 
 inline sf::Vector2f reflect(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p)
@@ -88,11 +136,6 @@ inline sf::Vector2f getUnitVec(sf::Vector2f pos1, sf::Vector2f pos2)
 }
 
 
-inline float vectorDistance(sf::Vector2f v, sf::Vector2f w)
-{
-	return std::sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2));
-}
-
 
 inline sf::Vector2f multiplyVectors(sf::Vector2f first, sf::Vector2f second) {
 	return sf::Vector2f(first.x * second.x, first.y * second.y);
@@ -113,20 +156,6 @@ inline bool isZero(float val) {
 	return (abs(val) < std::numeric_limits<float>::epsilon());
 }
 
-inline float lengthSquared(const sf::Vector2f& point) {
-	return (point.x * point.x + point.y * point.y);
-
-}
-
-inline float dotProduct(const sf::Vector2f & first, const sf::Vector2f & second) {
-
-	return first.x* second.x + first.y + second.y;
-}
-
-inline float distanceSquared(sf::Vector2f v, sf::Vector2f w)
-{
-	return pow(v.x - w.x, 2) + pow(v.y - w.y, 2);
-}
 
 inline bool LineSegementsIntersect(sf::Vector2f p, sf::Vector2f p2, sf::Vector2f q, sf::Vector2f q2,
 	sf::Vector2f* intersection, bool considerCollinearOverlapAsIntersect = false)

@@ -6,20 +6,45 @@
 void combatModule::createFrom(const decomposedData& DData)
 {
 	decomposedData tempDData = DData;
-	hitpointCap = ma_deserialize_float(tempDData.getChildByName("hitPointCap")->data[0]);
-	psiPointCap = ma_deserialize_float(tempDData.getChildByName("psiPointCap")->data[0]);
-	staminaCap = ma_deserialize_float(tempDData.getChildByName("staminaCap")->data[0]);
-	staminaRegen = ma_deserialize_float(tempDData.getChildByName("staminaRegen")->data[0]);
-	moveSpeed = ma_deserialize_float(tempDData.getChildByName("moveSpeed")->data[0]);
-	damage = ma_deserialize_float(tempDData.getChildByName("damage")->data[0]);
-	bulletSpeed = ma_deserialize_float(tempDData.getChildByName("bulletSpeed")->data[0]);
-	bulletSize = ma_deserialize_float(tempDData.getChildByName("bulletSize")->data[0]);
-	bulletDuration = ma_deserialize_float(tempDData.getChildByName("bulletDuration")->data[0]);
-	fireRate = ma_deserialize_float(tempDData.getChildByName("fireRate")->data[0]);
-	magSize = ma_deserialize_uint(tempDData.getChildByName("magSize")->data[0]);
-	reloadTime = ma_deserialize_float(tempDData.getChildByName("reloadTime")->data[0]);
-	weight = ma_deserialize_float(tempDData.getChildByName("weight")->data[0]);
-
+	if (tempDData.getChildByName("hitPointCap") != nullptr) {
+		hitpointCap = ma_deserialize_float(tempDData.getChildByName("hitPointCap")->data[0]);
+	}
+	if (tempDData.getChildByName("psiPointCap") != nullptr) {
+		psiPointCap = ma_deserialize_float(tempDData.getChildByName("psiPointCap")->data[0]);
+	}
+	if (tempDData.getChildByName("staminaCap") != nullptr) {
+		staminaCap = ma_deserialize_float(tempDData.getChildByName("staminaCap")->data[0]);
+	}
+	if (tempDData.getChildByName("staminaRegen") != nullptr) {
+		staminaRegen = ma_deserialize_float(tempDData.getChildByName("staminaRegen")->data[0]);
+	}
+	if (tempDData.getChildByName("moveSpeed") != nullptr) {
+		moveSpeed = ma_deserialize_float(tempDData.getChildByName("moveSpeed")->data[0]);
+	}
+	if (tempDData.getChildByName("damage") != nullptr) {
+		damage = ma_deserialize_float(tempDData.getChildByName("damage")->data[0]);
+	}
+	if (tempDData.getChildByName("bulletSpeed") != nullptr) {
+		bulletSpeed = ma_deserialize_float(tempDData.getChildByName("bulletSpeed")->data[0]);
+	}
+	if (tempDData.getChildByName("bulletSize") != nullptr) {
+		bulletSize = ma_deserialize_float(tempDData.getChildByName("bulletSize")->data[0]);
+	}
+	if (tempDData.getChildByName("bulletDuration") != nullptr) {
+		bulletDuration = ma_deserialize_float(tempDData.getChildByName("bulletDuration")->data[0]);
+	}
+	if (tempDData.getChildByName("fireRate") != nullptr) {
+		fireRate = ma_deserialize_float(tempDData.getChildByName("fireRate")->data[0]);
+	}
+	if (tempDData.getChildByName("magSize") != nullptr) {
+		magSize = ma_deserialize_uint(tempDData.getChildByName("magSize")->data[0]);
+	}
+	if (tempDData.getChildByName("reloadTime") != nullptr) {
+		reloadTime = ma_deserialize_float(tempDData.getChildByName("reloadTime")->data[0]);
+	}
+	if (tempDData.getChildByName("weight") != nullptr) {
+		weight = ma_deserialize_float(tempDData.getChildByName("weight")->data[0]);
+	}
 }
 
 decomposedData combatModule::serialize()
