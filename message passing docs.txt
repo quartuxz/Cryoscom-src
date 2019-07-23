@@ -47,7 +47,7 @@ there are a few different messageTypes of core messages in Gold Standard Game En
 	"editGameData": edits the gameData(of decomposedData object type) of the sending(senderID) python script with the first index of the MessageContent`s.
 					this data is resent to the script every time the it is called.
 	"addLevelGameScript": adds a permanent-until-end-of-current-level script that receives and sends messages like any other gameScript.
-							the first data index in the first messageContent`s index is the name of the script, the function must be called gameScript.
+							the first data index in the first messageContent`s index is the name of the script, the python function must be called gameScript.
 
 there are a few messageTypes a script may receive, with information about the state of the game or Input;
 	"onProgramStart": message sent when the program starts.

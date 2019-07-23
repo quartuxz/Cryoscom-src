@@ -35,6 +35,9 @@ void AnimatorSprite::createFrom(const decomposedData &DData)
 	if (tempDData.getChildByName("positionY") != nullptr) {
 		position = sf::Vector2f(position.x, ma_deserialize_float(tempDData.getChildByName("positionY")->data[0]));
 	}
+	if (tempDData.getChildByName("timeDisplayed") != nullptr) {
+		timeDisplayed = ma_deserialize_float(tempDData.getChildByName("timeDisplayed")->data[0]);
+	}
 
 }
 

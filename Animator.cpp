@@ -56,12 +56,11 @@ void Animator::loadTexturesFromFile(std::string fileName) {
 			else if (tokens[0] == "loadAnimation") {
 				std::queue<AnimatorSprite> tempAnimation;
 				float allAnimScale = std::atof(tokens[2].c_str());
-				for (size_t i = 3; i < tokens.size(); i+=2)
+				for (size_t i = 3; i < tokens.size(); i++)
 				{
 					AnimatorSprite tempASprite;
-					tempASprite.scale = allAnimScale;
-					tempASprite.textureID = getTextureID(tokens[i]);
-					tempASprite.timeDisplayed = ma_deserialize_float(tokens[i + 1]);
+					tempASprite.createFrom(decomposedData().createFrom(tokens[i]));
+					tempASprite.scale *= allAnimScale;
 					tempAnimation.push(tempASprite);
 				}
 				addAnimationPreset(tempAnimation, tokens[1]);
