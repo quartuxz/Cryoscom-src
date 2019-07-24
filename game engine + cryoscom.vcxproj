@@ -43,6 +43,7 @@
     <ClCompile Include="serializationUtils.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="tileMapGenerator.cpp" />
     <ClCompile Include="ToolTip.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="unit.cpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="serializationUtils.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="tileMapGenerator.h" />
     <ClInclude Include="ToolTip.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="unit.h" />

@@ -162,6 +162,9 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\collision and units</Filter>
     </ClCompile>
+    <ClCompile Include="tileMapGenerator.cpp">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Source Files\collision and units</Filter>
+    </ClInclude>
+    <ClInclude Include="tileMapGenerator.h">
+      <Filter>Source Files\collision and units\tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -50,6 +50,16 @@ void Tile::addBound(const Wall&bound)
 	m_bounds.push_back(bound);
 }
 
+void Tile::resetBoundsPos()
+{
+	moveBounds(-m_lastMove);
+}
+
+void Tile::resetSpritesPos()
+{
+	moveSprites(-m_lastMove);
+}
+
 void Tile::moveBounds(sf::Vector2f offset)
 {
 	for (size_t i = 0; i < m_bounds.size(); i++)
@@ -58,6 +68,7 @@ void Tile::moveBounds(sf::Vector2f offset)
 		m_bounds[i].wall.first += offset;
 		m_bounds[i].wall.second += offset;
 	}
+	m_lastMove += offset;
 }
 
 void Tile::moveSprites(sf::Vector2f offset)

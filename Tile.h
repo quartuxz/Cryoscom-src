@@ -10,6 +10,9 @@ private:
 	std::vector<Wall> m_bounds;
 	bool m_isEmpty = true;
 	bool m_hasSprite = false;
+
+	sf::Vector2f m_lastMove = sf::Vector2f(0,0);
+
 public:
 	Tile();
 	//adds the tile sprites to the queue for drawing
@@ -22,6 +25,9 @@ public:
 	std::vector<Wall> getBounds()const;
 	void setBounds(const std::vector<Wall>&);
 	void addBound(const Wall&);
+
+	void resetBoundsPos();
+	void resetSpritesPos();
 
 	void moveBounds(sf::Vector2f);
 	void moveSprites(sf::Vector2f);

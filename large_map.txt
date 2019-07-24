@@ -4,7 +4,7 @@ scaleFactor;3;
 player;50;50;24;20;player.png;
 bulletTexture;bullet_1.png;-1;
 
-//;gameScript;test_GS;
+gameScript;test_GS;
 
 
 spawnPoint;5;100;100;enemy_test.txt;enemy_test.txt;

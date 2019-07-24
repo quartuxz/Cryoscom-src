@@ -12,6 +12,7 @@ texture;Inventory-Jumpsuit.png;
 texture;Inventory-Boots.png;
 texture;Psi_Ability-Pyrokinesis.png;
 texture;button.png;
+texture;Darkblue_Tile_1.png;
 
 texture;player_back_left_idle.png;
 texture;player_back_right_idle.png;

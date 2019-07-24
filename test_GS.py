@@ -26,6 +26,8 @@ def gameScript(askingForName, messageType, senderID, intendedReceiverID, paramLi
     tempDData.data.append("starting_door")
     tempDData.data.append("0")
 
+    
+
     tempDData2 = decomposedData_python.decomposedData()
     tempDData2.data.append("perm_playerTex")
     tempDData2.data.append("")

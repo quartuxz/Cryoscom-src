@@ -73,7 +73,7 @@ class MessageBus
 		std::stack<std::thread*> m_threadPool;
 		//capping messaging per second
 		float m_addedTime = 0;
-		float m_updateInterval = 0.5;
+		float m_updateInterval = 0.005;
 
 		//
 
