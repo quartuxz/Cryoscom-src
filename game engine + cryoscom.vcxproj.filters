@@ -413,6 +413,15 @@
     <Text Include="serialization doc.txt">
       <Filter>docs</Filter>
     </Text>
+    <Text Include="testArea.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="testAreaTileMap.txt">
+      <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="TODO.txt">
+      <Filter>docs</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Font Include="good times rg.ttf">

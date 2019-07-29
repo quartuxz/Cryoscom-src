@@ -253,5 +253,9 @@ decomposedData inventoryItem::serialize()
 {
 	decomposedData retDData;
 	retDData.type = "inventoryItem";
+	retDData.addChildrenObject(decomposedData().setType("itemTypes").setName("itemType").addData(std::to_string(itemType)));
+	if (itemType == gearPieceType) {
+		retDData.addChildrenObject(simpleRep.serialize());
+	}
 	return retDData;
 }

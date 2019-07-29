@@ -9,17 +9,17 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 		sf::Vector2i tilePos = sf::Vector2i(ma_deserialize_int(line[2]), ma_deserialize_int(line[3]));
 		if (line[1] == "square") {
 			Wall tempWall;
-			tempWall.wall.first = sf::Vector2f(0, m_tileSize);
+			tempWall.wall.first = sf::Vector2f(0, tileSize);
 			tempWall.wall.second = sf::Vector2f(0, 0);
 			tempTile.addBound(tempWall);
-			tempWall.wall.first = sf::Vector2f(m_tileSize, m_tileSize);
-			tempWall.wall.second = sf::Vector2f(0, m_tileSize) ;
+			tempWall.wall.first = sf::Vector2f(tileSize, tileSize);
+			tempWall.wall.second = sf::Vector2f(0, tileSize) ;
 			tempTile.addBound(tempWall);
-			tempWall.wall.first = sf::Vector2f(m_tileSize, 0);
-			tempWall.wall.second = sf::Vector2f(m_tileSize, m_tileSize);
+			tempWall.wall.first = sf::Vector2f(tileSize, 0);
+			tempWall.wall.second = sf::Vector2f(tileSize, tileSize);
 			tempTile.addBound(tempWall);
 			tempWall.wall.first = sf::Vector2f(0, 0);
-			tempWall.wall.second = sf::Vector2f(m_tileSize, 0);
+			tempWall.wall.second = sf::Vector2f(tileSize, 0);
 			tempTile.addBound(tempWall);
 		}
 		else if (line[1] == "empty") {
@@ -27,13 +27,13 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 		}
 		else if (line[1] == "copy") {
 			tempTile = *m_lastAddedTile;
-			sf::Vector2f offset = -sf::Vector2f(m_lastTileAddedPos.x * m_tileSize, m_lastTileAddedPos.y * m_tileSize);
+			sf::Vector2f offset = -sf::Vector2f(m_lastTileAddedPos.x * tileSize, m_lastTileAddedPos.y * tileSize);
 			tempTile.moveBounds(offset);
 			tempTile.moveSprites(offset);
 		}
 		else if (line[1] == "copyPaint") {
 			tempTile = *m_lastAddedTile;
-			sf::Vector2f offset = -sf::Vector2f(m_lastTileAddedPos.x * m_tileSize, m_lastTileAddedPos.y * m_tileSize);
+			sf::Vector2f offset = -sf::Vector2f(m_lastTileAddedPos.x * tileSize, m_lastTileAddedPos.y * tileSize);
 			tempTile.moveBounds(offset);
 			tempTile.moveSprites(offset);
 			for (size_t i = tilePos.x; i < ma_deserialize_int(line[4]); i++)
@@ -52,8 +52,8 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 			for (size_t i = 2; i < line.size(); i += 4)
 			{
 				Wall tempWall;
-				tempWall.wall.first = sf::Vector2f(ma_deserialize_float(line[i]) * m_tileSize, ma_deserialize_float(line[i + 1])*m_tileSize);
-				tempWall.wall.second = sf::Vector2f(ma_deserialize_float(line[i+ 2])*m_tileSize, ma_deserialize_float(line[i + 3])*m_tileSize);
+				tempWall.wall.first = sf::Vector2f(ma_deserialize_float(line[i]) * tileSize, ma_deserialize_float(line[i + 1])*tileSize);
+				tempWall.wall.second = sf::Vector2f(ma_deserialize_float(line[i+ 2])*tileSize, ma_deserialize_float(line[i + 3])*tileSize);
 				tempTile.addBound(tempWall);
 			}
 			
@@ -64,17 +64,22 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 	else if (line[0] == "tileTex"){
 		AnimatorSprite tempAnimatorSprite;
 		tempAnimatorSprite.createFrom(decomposedData().createFrom(line[4]));
-		tempAnimatorSprite.position += sf::Vector2f(m_lastTileAddedPos.x*m_tileSize, m_lastTileAddedPos.y*m_tileSize);
-		tempAnimatorSprite.position.x += ma_deserialize_float(line[1])*m_tileSize;
-		tempAnimatorSprite.position.y += ma_deserialize_float(line[2]) * m_tileSize;
+		tempAnimatorSprite.position += sf::Vector2f(m_lastTileAddedPos.x*tileSize, m_lastTileAddedPos.y*tileSize);
+		tempAnimatorSprite.position.x += ma_deserialize_float(line[1])*tileSize;
+		tempAnimatorSprite.position.y += ma_deserialize_float(line[2]) * tileSize;
 		if (line[3] == "fitTileX") {
-			tempAnimatorSprite.scale = m_tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x;
+			tempAnimatorSprite.scale = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x;
 		}
 		else if (line[3] == "fitTileY") {
-			tempAnimatorSprite.scale = m_tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y;
+			tempAnimatorSprite.scale = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y;
+		}
+		else if (line[3] == "fitTileMin") {
+			tempAnimatorSprite.scale = std::min(tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x, tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y);
 		}
 		else if (line[3] == "fitTileDistorted") {
-
+			tempAnimatorSprite.usesVectorScale = true;
+			tempAnimatorSprite.vectorScale.x = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x;
+			tempAnimatorSprite.vectorScale.y = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y;
 		}
 		m_lastAddedTile->addTileSprite(tempAnimatorSprite);
 	}
@@ -97,7 +102,7 @@ void TileMap::addTile(const Tile& tile, sf::Vector2i pos)
 
 	m_lastAddedTile = &m_tiles[pos.x][pos.y];
 	m_lastTileAddedPos = pos;
-	sf::Vector2f offset = sf::Vector2f(pos.x * m_tileSize, pos.y * m_tileSize);
+	sf::Vector2f offset = sf::Vector2f(pos.x * tileSize, pos.y * tileSize);
 	m_lastAddedTile->moveBounds(offset);
 	m_lastAddedTile->moveSprites(offset);
 }

@@ -11,10 +11,13 @@ private:
 	Tile* m_lastAddedTile;
 	sf::Vector2i m_lastTileAddedPos;
 
-	static constexpr unsigned int m_tileSize = 64;
+	
 
 	void pv_parseStep(std::vector<std::string>)override;
 public:
+
+	static constexpr unsigned int tileSize = 64;
+
 	TileMap();
 	void addTile(const Tile&, sf::Vector2i);
 	std::vector<Wall> getWallRep();

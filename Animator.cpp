@@ -192,8 +192,9 @@ std::map<std::string, AnimatorSprite>* Animator::getNamedAnimatorSprites()
 
 void Animator::addOneFrameSprite(ToolTip *toolTip)
 {
-
+	m_allLock.lock();
 	m_toolTipsToDraw.push_back(toolTip);
+	m_allLock.unlock();
 }
 
 void Animator::update(float timeDelta)
@@ -290,11 +291,24 @@ unsigned int Animator::addAnimationPreset(std::queue<AnimatorSprite> animationPr
 
 void Animator::draw()
 {
+
+
+
+	for (size_t i = 0; i < m_spritesToDraw.size(); i++)
+	{
+		while (!m_spritesToDraw[i].empty()) {
+			m_window->draw(m_spritesToDraw[i].top());
+			m_spritesToDraw[i].pop();
+		}
+	}
+
 	m_allLock.lock();
 	for (auto const& x : m_namedAnimatorSprites)
 	{
 		addOneFrameSprite(x.second);
 	}
+
+	m_spritesToDraw.clear();
 	std::list<AnimatorSprite>::iterator it;
 	for (it = m_decals.begin(); it != m_decals.end(); ++it)
 	{
@@ -303,14 +317,7 @@ void Animator::draw()
 			m_decals.erase(it);
 		}
 	}
-	for (size_t i = 0; i < m_spritesToDraw.size(); i++)
-	{
-		while (!m_spritesToDraw[i].empty()) {
-			m_window->draw(m_spritesToDraw[i].top());
-			m_spritesToDraw[i].pop();
-		}
-	}
-	m_spritesToDraw.clear();
+
 
 	for (size_t i = 0; i < m_toolTipsToDraw.size(); i++)
 	{

@@ -198,6 +198,12 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 	else if (tokens[0] == "scaleFactor") {
 		m_levelScale = std::atof(tokens[1].c_str());
 	}
+	else if (tokens[0] == "requireTileSizeOrScale") {
+		if (ma_deserialize_uint(tokens[1]) != TileMap::tileSize) {
+			m_levelScale = TileMap::tileSize/ ma_deserialize_uint(tokens[1]);
+
+		}
+	}
 
 	else if (tokens[0] == "wall") {
 		//std::cout << tokens.size() << std::endl;
@@ -352,6 +358,9 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 		tempSprite.setRotation(std::atof(tokens[5].c_str()));
 		tempSprite.scale(std::atof(tokens[6].c_str()) * m_levelScale, std::atof(tokens[6].c_str()) * m_levelScale);
 		m_worldTextures.push_back(tempSprite);
+	}
+	else if (tokens[0] == "") {
+
 	}
 	else if (tokens[0] == "loadLootTable") {
 		//loadLootTable(tokens[1]);

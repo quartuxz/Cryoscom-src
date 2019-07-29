@@ -1,0 +1,3 @@
+implement config on load up for tile size, window size, and other things.
+implement loot tables.
+finish player inventory serialization and load up.

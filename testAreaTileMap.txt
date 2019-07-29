@@ -1,0 +1,32 @@
+//;makes a square tile
+tile;square;0;0;
+
+//;adds a texture
+//;reference decomposedData format
+//;{type,name,data[0],data[1],data[...],}
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex1,{uint,textureName,Grey Wall 5.png,}};
+
+tile;copyPaint;0;0;11;1;
+tile;copyPaint;0;10;11;11;
+
+tile;square;0;1;
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex1,{uint,textureName,Grey Wall 2.png,}};
+tile;copyPaint;0;1;11;10;
+
+
+tile;square;2;2;
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex1,{uint,textureID,1,}};
+
+//;makes a square tile
+tile;square;1;1;
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex2,{std::string,textureName,Darkblue_Tile_1.png,}{float,scale,2,}};
+
+tile;copy;3;2;
+tile;copy;4;2;
+tile;copy;5;2;
+tile;copy;6;2;
+
+tile;empty;1;1;
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex2,{std::string,textureName,Darkblue_Tile_1.png,}{float,scale,2,}};
+
+tile;copyPaint;1;1;10;10;

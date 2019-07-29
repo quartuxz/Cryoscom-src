@@ -1,0 +1,15 @@
+scaleFactor;3;
+
+player;50;50;24;20;player.png;
+bulletTexture;bullet_1.png;-1;
+
+gameScript;test_GS;
+
+spawnPoint;5;100;100;enemy_test.txt;enemy_test.txt;
+
+namedAnimatorSprite;perm_playerTex;player.png;289;540;1;2;
+namedWall;283;556;283;524;starting_door;
+interactable;messageSender;283;540;{,,messages,3,0,{,,editNamedWall,3,0,{,,starting_door,0,}}{,,editNamedAnimatorSprite,3,0,{,,perm_playerTex,,0,,,}}};10000;
+
+
+tileMap;testAreaTileMap.txt;

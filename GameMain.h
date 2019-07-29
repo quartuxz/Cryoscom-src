@@ -26,6 +26,8 @@ private:
 	sf::Clock m_clock;
 	sf::RenderWindow *m_window;
 	std::map<std::string ,Menu*> m_gameMenus;
+
+	HUDMenu *m_HUDMenu;
 	PlayerInventory* m_playerInventory;
 	std::string m_activeMenu = "mainMenu";
 	UnitManager * m_currentLevel = new UnitManager();

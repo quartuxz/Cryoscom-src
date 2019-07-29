@@ -140,7 +140,10 @@
     <Text Include="oldMap2.txt" />
     <Text Include="progression.txt" />
     <Text Include="serialization doc.txt" />
+    <Text Include="testArea.txt" />
+    <Text Include="testAreaTileMap.txt" />
     <Text Include="tileMapTest.txt" />
+    <Text Include="TODO.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

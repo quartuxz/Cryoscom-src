@@ -54,14 +54,18 @@ def gameScript(askingForName, messageType, senderID, intendedReceiverID, paramLi
     retDData = decomposedData_python.decomposedData()
     retDData.type = "AnimatorSprite"
     retDData.name = "displayedSpriteName"
-    retDData.data.append("blood_01.png") #the name of the image
+    
+    #retDData.data.append("blood_01.png") #the name of the image
     tempChildren = decomposedData_python.decomposedData()
-    tempChildren.data.append(str(random.randint(250,500))) #the x and y positions of the image
-    tempChildren.data.append(str(random.randint(250,500)))
+    tempChildren.type = "std::string"
+    tempChildren.name = "textureID"
+    tempChildren.data.append("8")
+    #tempChildren.data.append(str(random.randint(-250,500))) #the x and y positions of the image
+    #tempChildren.data.append(str(random.randint(-250,500)))
     retDData.childrenObjects.append(tempChildren)
-    retDData.data.append("2") #this is the scale of the image
-    retDData.data.append("3") #this is how much time the image is displayed for
-    retDData.data.append(str(random.randint(0,360))) #this is the rotation of the image in degrees
+    #retDData.data.append("2") #this is the scale of the image
+    #retDData.data.append("3") #this is how much time the image is displayed for
+    #retDData.data.append(str(random.randint(0,360))) #this is the rotation of the image in degrees
 
     #shm.close()
 

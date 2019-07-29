@@ -115,7 +115,8 @@ void GameMain::spawnWindow(std::string fontFile)
 	m_playerInventory->addItemToInventory(tempGearPiece);
 	//Animator::getInstance().setWindow(&m_window);
 	//Animator::getInstance().addTexture("player.png");
-	m_gameMenus["HUD"] = new HUDMenu(m_window);
+	m_HUDMenu = new HUDMenu(m_window);
+	m_gameMenus["HUD"] = m_HUDMenu;
 	m_gameMenus["HUD"]->createStaticMenuLayout();
 	Animator::getInstance().setWindow(m_window);
 	ToolTip::init(fontFile);
@@ -246,6 +247,12 @@ void GameMain::onProgramEnd()
 
 	//m_currentLevel->saveGearProgression();
 	Animator::getInstance().draw();
+
+	fstream outFile;
+	outFile.open("progression.txt");
+	outFile << m_playerInventory->serialize().serialize() << std::endl;
+	outFile.close();
+
 	m_window->close();
 }
 
@@ -329,11 +336,7 @@ void GameMain::pv_processMessage(const MessageData & tempMessage, MessageBus * b
 
 	 else if (tempMessage.messageType == "displayDecal") {
 		AnimatorSprite tempASprite;
-		tempASprite.textureID = Animator::getInstance().getTextureID(tempMessage.messageContents[0].data[0]);
-		tempASprite.position = sf::Vector2f(std::atof(tempMessage.messageContents[0].childrenObjects[0].data[0].c_str()), std::atof(tempMessage.messageContents[0].childrenObjects[0].data[1].c_str()));
-		tempASprite.scale = std::atof(tempMessage.messageContents[0].data[1].c_str());
-		tempASprite.timeDisplayed = std::atof(tempMessage.messageContents[0].data[2].c_str());
-		tempASprite.rotation = std::atof(tempMessage.messageContents[0].data[3].c_str());
+		tempASprite.createFrom(tempMessage.messageContents[0]);
 		Animator::getInstance().addDecal(tempASprite);
 	}
 
@@ -401,7 +404,7 @@ void GameMain::gameLoop()
 
 	skillParam *HUDSParam = new skillParam();
 	HUDSParam->skillIcon.textureID = Animator::getInstance().getTextureID("Psi_Ability-Pyrokinesis.png");
-	dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->addSkill(HUDSParam);
+	m_HUDMenu->addSkill(HUDSParam);
 	//m_window = m_inputManager.getWindow();
 
 	m_window->setFramerateLimit(160);
@@ -442,7 +445,7 @@ void GameMain::gameLoop()
 		InputManager::InputEvent inputEvent;
 		while ((inputEvent = m_inputManager.getEvent()).InputEventType != InputManager::noInputEvent) {
 			if (inputEvent.InputEventType <= InputManager::hotbar5 && inputEvent.InputEventType >= InputManager::hotbar1) {
-				skillParam *tempSParam = dynamic_cast<HUDMenu*>(m_gameMenus["HUD"])->getSkill(inputEvent.InputEventType - InputManager::hotbar1);
+				skillParam *tempSParam = m_HUDMenu->getSkill(inputEvent.InputEventType - InputManager::hotbar1);
 				if (tempSParam != nullptr) {
 					skillParam* actualSkillParam = new skillParam(*tempSParam);
 					m_currentLevel->getWeapon()->addSkillToQueue(actualSkillParam);
@@ -756,6 +759,11 @@ void GameMain::gameLoop()
 			m_window->draw(tempRect);
 		}
 		
+		if (!m_isPaused) {
+			Animator::getInstance().update(currentTime.asSeconds());
+			Animator::getInstance().draw();
+		}
+
 		m_isPaused = runOnce(currentTime.asSeconds(), mousePosition, mouseClick);
 
 
@@ -772,10 +780,7 @@ void GameMain::gameLoop()
 
 		//std::cout << currentTime.asSeconds() << std::endl;
 
-		if (!m_isPaused) {
-			Animator::getInstance().update(currentTime.asSeconds());
-			Animator::getInstance().draw();
-		}
+		
 
 
 
