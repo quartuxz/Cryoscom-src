@@ -14,6 +14,7 @@ struct inventoryItem : public Serializable{
 	decomposedData serialize()override;
 	void createFrom(const decomposedData&)override;
 
+	void setTexturesFromGearPiece();
 	itemTypes itemType = emptySlot;
 	std::string serializedObjectRep;
 	GearPiece simpleRep;

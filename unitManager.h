@@ -15,6 +15,7 @@
 #include "MessageBus.h"
 #include "Parsable.h"
 #include "Gear.h"
+#include "lootTable.h"
 
 
 
@@ -62,7 +63,7 @@ private:
 
 	float m_pickUpDistance = 100;
 
-	std::vector<std::pair<GearPiece, unsigned int>> m_lootTable;
+	LootTable m_lootTable;
 
 	TileMap m_tileMap;
 	std::vector<sf::Sprite> m_worldTextures;

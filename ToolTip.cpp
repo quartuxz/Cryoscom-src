@@ -72,6 +72,7 @@ AnimatorSprite ToolTip::getTexture() const
 
 void ToolTip::makeTooltipForGear(const GearPiece& gearPiece)
 {
+	m_backgroundImage = gearPiece.toolTipTexture;
 	m_text.clear();
 	std::stringstream ss;
 	ss << "->" << gearPiece.type << std::endl << "HP: " << gearPiece.cModule.hitpointCap << std::endl << "Move Speed: " << gearPiece.cModule.moveSpeed << std::endl

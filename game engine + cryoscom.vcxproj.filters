@@ -165,6 +165,9 @@
     <ClCompile Include="tileMapGenerator.cpp">
       <Filter>Source Files\collision and units\tiles</Filter>
     </ClCompile>
+    <ClCompile Include="LootTable.cpp">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="tileMapGenerator.h">
       <Filter>Source Files\collision and units\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="LootTable.h">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -363,7 +363,7 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 
 	}
 	else if (tokens[0] == "loadLootTable") {
-		//loadLootTable(tokens[1]);
+		m_lootTable.createFromFile(tokens[1]);
 	}
 	else if (tokens[0] == "tileMap") {
 		m_tileMap.createFromFile(tokens[1]);
@@ -461,6 +461,8 @@ inventoryItem UnitManager::pickUpItem()
 	return inventoryItem();
 }
 
+
+//--eventually will be deprecated as well:
 void UnitManager::setProgressionFile(std::string fileName)
 {
 	mutexLock.lock();
@@ -476,6 +478,7 @@ void UnitManager::saveGearProgression()
 	editFile.close();
 	mutexLock.unlock();
 }
+//--
 
 endLevelTypes UnitManager::hasLevelEnded() const
 {
@@ -491,6 +494,11 @@ void UnitManager::startLevel()
 {
 	mutexLock.lock();
 	//assignPlayerGear();
+	GearPiece tempGearPiece;
+	tempGearPiece.tex.textureID = Animator::getInstance().getTextureID("chestPiece.png");
+	tempGearPiece.tex.textureID = 2;
+	tempGearPiece;
+	m_lootTable.addLootEntry(tempGearPiece);
 	m_needsAnUpdate = true;
 	mutexLock.unlock();
 }
@@ -666,18 +674,14 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
     m_playerWeapon->update(timeDelta, nonPlayerUnits);
 
 
-
-	for (size_t i = 0; i < killedUnits.size(); i++)
-	{
-		while (true) {
-			if (m_lootTable.empty()) {
-				break;
-			}
-			unsigned int lootIndex = (rand() % m_lootTable.size());
-			if (m_lootTable[lootIndex].second > rand()%10000) {
-				placeGearOnMap(killedUnits[i]->lastLastPos, m_lootTable[lootIndex].first);
-				break;
-			}
+	if (!m_lootTable.isEmpty()) {
+		for (size_t i = 0; i < killedUnits.size(); i++)
+		{
+			inventoryItem tempInvItem;
+			tempInvItem.itemType = gearPieceType;
+			tempInvItem.simpleRep = m_lootTable.getRandomGearPiece();
+			tempInvItem.setTexturesFromGearPiece();
+			placeItem(tempInvItem, killedUnits[i]->lastLastPos);
 		}
 	}
 	std::list<Bullet*> playerWeaponBullets = m_playerWeapon->getBullets();
@@ -759,43 +763,44 @@ unit * UnitManager::getPlayer()
 	return m_player;
 }
 
-void UnitManager::placeGearOnMap(sf::Vector2f pos, GearPiece gearPiece)
-{
-	mutexLock.lock();
-	gearPiece.tex.rotation = rand() % 360;
-	m_mapGearPieces.push_back(std::pair<sf::Vector2f, GearPiece>(pos, gearPiece));
-	ToolTip *tempToolTip = new ToolTip();
-	AnimatorSprite tempAnimatorSprite;
-	tempAnimatorSprite.textureID = Animator::getInstance().getTextureID("tooltip.png");
-	tempAnimatorSprite.scale = 5;
-	tempAnimatorSprite.originToCenter = false;
-	tempToolTip->setTexture(tempAnimatorSprite);
-	tempToolTip->makeTooltipForGear(gearPiece);
-	tempToolTip->setPosition(pos);
-	m_itemToolTipID[gearPiece] = addToolTip(tempToolTip);
-	mutexLock.unlock();
-	//m_toolTips.back().first.position.y += 20;
-}
-
-void UnitManager::pickUpGear()
-{
-	mutexLock.lock();
-	if (m_itemPickupClock.getElapsedTime().asSeconds() > m_itemPickupCooldown) {
-		for (size_t i = 0; i < m_mapGearPieces.size(); i++)
-		{
-			//std::cout << "size of gear: " << m_mapGearPieces.size() << std::endl;
-			if (vectorDistance(m_mapGearPieces[i].first, m_player->getBody()[0].first) < m_pickUpDistance) {
-				m_mapGearPieces[i].second.tex.rotation = 0;
-				//addPlayerGear(m_mapGearPieces[i].second);
-				m_toolTips[m_itemToolTipID[m_mapGearPieces[i].second]].second = false;
-				m_mapGearPieces.erase(m_mapGearPieces.begin() + i);
-				break;
-			}
-		}
-		m_itemPickupClock.restart();
-	}
-	mutexLock.unlock();
-}
+//deprecated gear code:
+//void UnitManager::placeGearOnMap(sf::Vector2f pos, GearPiece gearPiece)
+//{
+//	mutexLock.lock();
+//	gearPiece.tex.rotation = rand() % 360;
+//	m_mapGearPieces.push_back(std::pair<sf::Vector2f, GearPiece>(pos, gearPiece));
+//	ToolTip *tempToolTip = new ToolTip();
+//	AnimatorSprite tempAnimatorSprite;
+//	tempAnimatorSprite.textureID = Animator::getInstance().getTextureID("tooltip.png");
+//	tempAnimatorSprite.scale = 5;
+//	tempAnimatorSprite.originToCenter = false;
+//	tempToolTip->setTexture(tempAnimatorSprite);
+//	tempToolTip->makeTooltipForGear(gearPiece);
+//	tempToolTip->setPosition(pos);
+//	m_itemToolTipID[gearPiece] = addToolTip(tempToolTip);
+//	mutexLock.unlock();
+//	//m_toolTips.back().first.position.y += 20;
+//}
+//
+//void UnitManager::pickUpGear()
+//{
+//	mutexLock.lock();
+//	if (m_itemPickupClock.getElapsedTime().asSeconds() > m_itemPickupCooldown) {
+//		for (size_t i = 0; i < m_mapGearPieces.size(); i++)
+//		{
+//			//std::cout << "size of gear: " << m_mapGearPieces.size() << std::endl;
+//			if (vectorDistance(m_mapGearPieces[i].first, m_player->getBody()[0].first) < m_pickUpDistance) {
+//				m_mapGearPieces[i].second.tex.rotation = 0;
+//				//addPlayerGear(m_mapGearPieces[i].second);
+//				m_toolTips[m_itemToolTipID[m_mapGearPieces[i].second]].second = false;
+//				m_mapGearPieces.erase(m_mapGearPieces.begin() + i);
+//				break;
+//			}
+//		}
+//		m_itemPickupClock.restart();
+//	}
+//	mutexLock.unlock();
+//}
 
 void UnitManager::addAI(EnemyAI *newAI)
 {

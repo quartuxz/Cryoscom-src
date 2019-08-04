@@ -249,6 +249,12 @@ void inventoryItem::createFrom(const decomposedData&)
 {
 }
 
+void inventoryItem::setTexturesFromGearPiece()
+{
+	itemASprite = simpleRep.tex;
+	itemToolTip.makeTooltipForGear(simpleRep);
+}
+
 decomposedData inventoryItem::serialize()
 {
 	decomposedData retDData;

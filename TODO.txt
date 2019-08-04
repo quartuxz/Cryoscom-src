@@ -1,3 +1,5 @@
 implement config on load up for tile size, window size, and other things.
-implement loot tables.
+implement loot tables. -working
 finish player inventory serialization and load up.
+implement message bound level switching and menu opening.
+implement on gear skills and a way to load them and create them.
