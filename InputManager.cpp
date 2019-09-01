@@ -9,7 +9,7 @@ void InputManager::m_addEventToQueue(const InputEvent &IE)
 	m_allLock.unlock();
 }
 
-std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()
+std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()const
 {
 	std::vector<InputManager::InputEventTypes> retVal;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
@@ -162,7 +162,7 @@ sf::RenderWindow* InputManager::getWindow()
 	return m_window;
 }
 
-bool InputManager::isInputEventActive(InputEventTypes IE)
+bool InputManager::isInputEventActive(InputEventTypes IE)const
 {
 	std::vector<InputEventTypes> pressedEvents = m_getKeyPressedEvent();
 	for (size_t i = 0; i < pressedEvents.size(); i++)

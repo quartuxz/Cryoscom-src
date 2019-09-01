@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "InputManager.h"
 #include "MenuItem.h"
 
 enum updateType {
@@ -26,9 +27,9 @@ protected:
 	std::vector<MenuItem> m_menuItems;
 	sf::RenderWindow *m_window;
 	std::vector<sf::Texture*> m_toDeleteTextures;
-
-	virtual void pv_onClick(MenuItem*, size_t, bool);
+	virtual void pv_onClick(MenuItem*, size_t, const InputManager&);
 public:
+
 	explicit Menu(sf::RenderWindow*);
 	//adds a menu item x and y screens away from the top left, of size provided by second argument(also measured relatively to the screen)
 	unsigned int addMenuItem(MenuItem);
@@ -36,7 +37,7 @@ public:
 	MenuItem createMenuItem(sf::Vector2f, sf::Vector2f)const;
 
 	void createMenuFromFile(std::string);
-	std::vector<behaviourParameters> onClick(sf::Vector2f, bool);
+	std::vector<behaviourParameters> onClick(sf::Vector2f, const InputManager&);
 	
 	virtual void onDraw(bool, sf::Vector2f);
 

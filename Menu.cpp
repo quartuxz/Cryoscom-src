@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Animator.h"
 
-void Menu::pv_onClick(MenuItem*, size_t, bool)
+void Menu::pv_onClick(MenuItem*, size_t, const InputManager&)
 {
 }
 
@@ -131,14 +131,14 @@ void Menu::createMenuFromFile(std::string fileName)
 }
 
 
-std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, bool clicked)
+std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const InputManager &inputs)
 {
 	std::vector<behaviourParameters> retval;
 	for (size_t i = 0; i < m_menuItems.size(); i++)
 	{
 		if (m_menuItems[i].isClicked(mousePos)) {
-			pv_onClick(&m_menuItems[i], i, clicked);
-			return m_menuItems[i].click(clicked);
+			pv_onClick(&m_menuItems[i], i, inputs);
+			return m_menuItems[i].click(inputs.isInputEventActive(InputManager::shoot));
 		}
 
 	}

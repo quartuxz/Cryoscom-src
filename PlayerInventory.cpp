@@ -167,10 +167,10 @@ void PlayerInventory::update(updateEvent)
 {
 }
 
-void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuItemIndex, bool isClicked)
+void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuItemIndex, const InputManager &inputs)
 {
 
-	if (isClicked) {
+	if (inputs.isInputEventActive(InputManager::shoot)) {
 		//std::cout << clickedMenuItemIndex << ", " << m_maxColumns * m_maxRows << std::endl;
 		m_menuItems[clickedMenuItemIndex].clearBehaviours();
 		if (clickedMenuItemIndex >= m_maxColumns * m_maxRows) {
@@ -268,7 +268,7 @@ void PlayerInventory::createFrom(const decomposedData&)
 decomposedData PlayerInventory::serialize()
 {
 	decomposedData retDData;
-	retDData.name = "PlayerInventory";
+	retDData.name = "lastPlayerInventory";
 	retDData.type = "PlayerInventory";
 	for (size_t i = 0; i < m_items.size(); i++)
 	{

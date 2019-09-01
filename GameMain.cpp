@@ -764,7 +764,7 @@ void GameMain::gameLoop()
 			Animator::getInstance().draw();
 		}
 
-		m_isPaused = runOnce(currentTime.asSeconds(), mousePosition, mouseClick);
+		m_isPaused = runOnce(currentTime.asSeconds(), mousePosition, m_inputManager);
 
 
 
@@ -794,7 +794,7 @@ void GameMain::gameLoop()
 
 }
 
-void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, bool mouseClicked){
+void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputManager& inputs){
     updateEvent tempEvent;
     tempEvent.updateEventType = lostLife;
     tempEvent.currentLife = m_currentLevel->getPlayer()->cModule.hitpoints;
@@ -806,7 +806,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, bool mouseCli
 
     m_gameMenus[UIName]->draw(m_viewDisplacement);
 
-    std::vector<behaviourParameters> tempBehaviourParam = m_gameMenus[UIName]->onClick(sf::Vector2f(mousePos), mouseClicked);
+    std::vector<behaviourParameters> tempBehaviourParam = m_gameMenus[UIName]->onClick(sf::Vector2f(mousePos), inputs);
     for (size_t i = 0; i < tempBehaviourParam.size(); i++)
     {
 		MessageData* tempMessageData;
@@ -825,7 +825,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, bool mouseCli
 			m_gameBus.addMessage(tempMessageData);
 			break;
         case buysItem:
-            if (tempBehaviourParam[i].itemBought == "healthPotion" && mouseClicked) {
+            if (tempBehaviourParam[i].itemBought == "healthPotion" && inputs.isInputEventActive(InputManager::shoot)) {
                 if (m_currentLevel->subtractGold(tempBehaviourParam[i].goldCost)) {
                     m_currentLevel->addHealthPotions(1);
                 }
@@ -845,7 +845,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, bool mouseCli
     }
 }
 //runs one frame of the game, updating timewise game and menus(HUD or whatever other menu is active)
-bool GameMain::runOnce(float timeDelta, sf::Vector2i mousePos, bool mouseClicked)
+bool GameMain::runOnce(float timeDelta, sf::Vector2i mousePos, const InputManager &inputs)
 {
 	if (m_activeMenu.empty()) {
 		m_currentLevel->update(timeDelta, *m_window, &m_gameBus);
@@ -864,14 +864,14 @@ bool GameMain::runOnce(float timeDelta, sf::Vector2i mousePos, bool mouseClicked
 
 		}
 		if (m_HUDActive) {
-            updateUI("HUD", mousePos, mouseClicked);
+            updateUI("HUD", mousePos, inputs);
 		}
 
 		return false;
 	}
 	else {
 
-		updateUI(m_activeMenu, mousePos, mouseClicked);
+		updateUI(m_activeMenu, mousePos, inputs);
 		return true;
 	}
 }

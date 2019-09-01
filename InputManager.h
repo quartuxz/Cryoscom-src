@@ -33,7 +33,7 @@ private:
 	std::atomic<bool> m_isProgramTerminated = false;
 	void m_addEventToQueue(const InputEvent&);
 
-	std::vector<InputEventTypes> m_getKeyPressedEvent();
+	std::vector<InputEventTypes> m_getKeyPressedEvent()const;
 	void m_waitForEvents();
 	std::thread *m_eventThread = nullptr;
 public:
@@ -44,7 +44,7 @@ public:
 
 	sf::RenderWindow* getWindow();
 
-	bool isInputEventActive(InputEventTypes);
+	bool isInputEventActive(InputEventTypes)const;
 
 	void stop();
 	void launchWindowIOThread();

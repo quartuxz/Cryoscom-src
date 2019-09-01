@@ -19,7 +19,7 @@ private:
 
 	size_t m_maxColumns = 10;
 	size_t m_maxRows = 5;
-	void pv_onClick(MenuItem*, size_t, bool)override;
+	void pv_onClick(MenuItem*, size_t, const InputManager&)override;
 	//use only when sure the gear piece in the slot wont be detroyed but insted switched
 	void m_addGearToPlayer(const GearPiece&);
 public:

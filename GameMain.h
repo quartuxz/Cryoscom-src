@@ -73,7 +73,7 @@ public:
 
 	//create HUD, make it non-scriptable but hardcoded instead(HUD is part of essence of the game)
 
-    void updateUI(std::string, sf::Vector2i, bool);
+    void updateUI(std::string, sf::Vector2i, const InputManager&);
 
 	void onProgramEnd();
 
@@ -85,7 +85,7 @@ public:
 
 	void gameLoop();
 	//returns wether the game is paused or not
-	bool runOnce(float, sf::Vector2i, bool mouseClicked = false);
+	bool runOnce(float, sf::Vector2i, const InputManager&);
 	~GameMain();
 };
 
