@@ -3,3 +3,5 @@ implement loot tables. -working
 finish player inventory serialization and load up.
 implement message bound level switching and menu opening.
 implement on gear skills and a way to load them and create them.
+impplement maybe an UI manager class to find a way to open multiple menus at the same time and inter menu communication.
+implememnt stash menu and a way to link with inentry menu.
