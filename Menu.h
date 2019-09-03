@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "MessageBus.h"
 #include "InputManager.h"
 #include "MenuItem.h"
 
@@ -37,7 +38,8 @@ public:
 	MenuItem createMenuItem(sf::Vector2f, sf::Vector2f)const;
 
 	void createMenuFromFile(std::string);
-	std::vector<behaviourParameters> onClick(sf::Vector2f, const InputManager&);
+	std::vector<behaviourParameters> onClick(sf::Vector2f, const InputManager&, GameBus*);
+	std::vector<behaviourParameters> onInput(sf::Vector2f, const InputManager&);
 	
 	virtual void onDraw(bool, sf::Vector2f);
 

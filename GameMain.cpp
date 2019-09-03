@@ -811,7 +811,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputMa
 
     m_gameMenus[UIName]->draw(m_viewDisplacement);
 
-    std::vector<behaviourParameters> tempBehaviourParam = m_gameMenus[UIName]->onClick(sf::Vector2f(mousePos), inputs);
+    std::vector<behaviourParameters> tempBehaviourParam = m_gameMenus[UIName]->onClick(sf::Vector2f(mousePos), inputs, &m_gameBus);
     for (size_t i = 0; i < tempBehaviourParam.size(); i++)
     {
 		MessageData* tempMessageData;

@@ -131,7 +131,7 @@ void Menu::createMenuFromFile(std::string fileName)
 }
 
 
-std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const InputManager &inputs)
+std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const InputManager &inputs, Game)
 {
 	std::vector<behaviourParameters> retval;
 	for (size_t i = 0; i < m_menuItems.size(); i++)
@@ -140,6 +140,18 @@ std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const Inpu
 			pv_onClick(&m_menuItems[i], i, inputs);
 			return m_menuItems[i].click(inputs.isInputEventActive(InputManager::shoot));
 		}
+
+	}
+	return std::vector<behaviourParameters>();
+}
+
+std::vector<behaviourParameters> Menu::onInput(sf::Vector2f, const InputManager&inputs)
+{
+	std::vector<behaviourParameters> retval;
+	for (size_t i = 0; i < m_menuItems.size(); i++)
+	{
+		pv_onClick(&m_menuItems[i], i, inputs);
+		return m_menuItems[i].click(inputs.isInputEventActive(InputManager::shoot));
 
 	}
 	return std::vector<behaviourParameters>();

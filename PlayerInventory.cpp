@@ -194,7 +194,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				m_playerGear.erase(gearTypes(clickedMenuItemIndex - (m_maxColumns * m_maxRows)));
 			}
 
-			//return;
+			return;
 		}
 		if (m_items[clickedMenuItemIndex].itemType == gearPieceType) {
 			
@@ -241,7 +241,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 	}
 	if (inputs.isInputEventActive(InputManager::dropItem)) {
 		
-		
+
 		if (m_items[clickedMenuItemIndex].itemType == gearPieceType) {
 
 			//spawn the item first
