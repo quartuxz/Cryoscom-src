@@ -169,10 +169,11 @@ void PlayerInventory::update(updateEvent)
 
 void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuItemIndex, const InputManager &inputs)
 {
-
+	
 	if (inputs.isInputEventActive(InputManager::shoot)) {
 		//std::cout << clickedMenuItemIndex << ", " << m_maxColumns * m_maxRows << std::endl;
 		m_menuItems[clickedMenuItemIndex].clearBehaviours();
+	
 		if (clickedMenuItemIndex >= m_maxColumns * m_maxRows) {
 			if (m_playerGear.find(gearTypes(clickedMenuItemIndex - (m_maxColumns * m_maxRows))) != m_playerGear.end()) {
 				//send behviour indicating the clicked gear piece must be unequipped
@@ -234,6 +235,13 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 			}
 		
 		}
+	}
+	else if (inputs.isInputEventActive(InputManager::dropItem)) {
+		m_menuItems[clickedMenuItemIndex].clearBehaviours();
+		behaviourParameters tempBParam;
+		tempBParam.behaviourName = dropsItemOnPlayer;
+		tempBParam.itemDropped = m_items[clickedMenuItemIndex];
+		m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);
 	}
 	else {
 		if (clickedMenuItemIndex < (m_maxColumns * m_maxRows)) {

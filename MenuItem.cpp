@@ -37,7 +37,7 @@ behaviourNames stringToBehaviourName(std::string name)
 	else if (name == "resumesGame") {
 		return resumesGame;
 	}
-	else if (name == "runsMessage") {
+	else if (name == "sendsMessage") {
 		return sendsMessage;
 	}
 	return resumesGame;
@@ -132,7 +132,7 @@ void MenuItem::addbehaviourFromString(std::vector<std::string> behaviours)
 	case resumesGame:
 		break;
 	case sendsMessage:
-		tempBehaviourParam.messageData.createFrom(behaviours[1]);
+		//tempBehaviourParam.messageData.createFrom(behaviours[1]);
 		break;
 	default:
 		break;

@@ -333,6 +333,11 @@ void GameMain::pv_processMessage(const MessageData & tempMessage, MessageBus * b
 			m_gameMenus[m_activeMenu] = tempMenu;
 		}
 	}
+	else if (tempMessage.messageType == "spawnItemOnPlayer") {
+		inventoryItem tempInvItem;
+		tempInvItem.createFrom(tempMessage.messageContents[0]);
+		m_currentLevel->placeItem(tempInvItem, m_currentLevel->getPlayer()->getBody()[0].first);
+	}
 
 	 else if (tempMessage.messageType == "displayDecal") {
 		AnimatorSprite tempASprite;
@@ -810,6 +815,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputMa
     for (size_t i = 0; i < tempBehaviourParam.size(); i++)
     {
 		MessageData* tempMessageData;
+		inventoryItem tempInvItem;
         switch (tempBehaviourParam[i].behaviourName)
         {
         case opensMenu:
@@ -821,7 +827,7 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputMa
             break;
 		case sendsMessage:
 			tempMessageData = new MessageData();
-			tempMessageData->createFrom(tempBehaviourParam[i].messageData);
+			*tempMessageData = tempBehaviourParam[i].messageData;
 			m_gameBus.addMessage(tempMessageData);
 			break;
         case buysItem:
@@ -838,6 +844,9 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputMa
 		case equipsGearPiece:
 			tempBehaviourParam[i].gearPiece.equipGearPiece(&m_currentLevel->getPlayer()->cModule);
 			std::cout << "equips:" << tempBehaviourParam[i].gearPiece.cModule.moveSpeed << std::endl;
+			break;
+		case dropsItemOnPlayer:
+			m_currentLevel->placeItem(tempBehaviourParam[i].itemDropped, m_currentLevel->getPlayer()->getBody()[0].first);
 			break;
         default:
             break;

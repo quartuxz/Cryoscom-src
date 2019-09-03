@@ -38,8 +38,11 @@ std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()c
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
 		retVal.push_back(interactKeyPressed);
-
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+		retVal.push_back(dropItem);
+	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)) {
 		retVal.push_back(showToolTipsKeyPressed);
 	}if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {

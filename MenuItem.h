@@ -5,6 +5,7 @@
 #include "Gear.h"
 #include "AnimatorSprite.h"
 #include "ToolTip.h"
+#include "MessagingComponent.h"
 
 enum itemTypes {
 	emptySlot, gearPieceType, medkitType, ammoType
@@ -24,7 +25,7 @@ struct inventoryItem : public Serializable{
 };
 
 enum behaviourNames {
-	opensMenu, resumesGame, removesGearPiece, buysItem, sendsMessage, equipsGearPiece
+	opensMenu, resumesGame, removesGearPiece, buysItem, sendsMessage, equipsGearPiece, dropsItemOnPlayer
 };
 
 std::string behaviourNameToString(behaviourNames);
@@ -38,10 +39,11 @@ struct behaviourParameters {
 
 	unsigned int goldCost;
 
+	inventoryItem itemDropped;
 	inventoryItem* grabbedItem;
 	GearPiece gearPiece;
 
-	decomposedData messageData;
+	MessageData messageData;
 
 	std::string itemBought;
 	std::string gearPieceRemoved;
