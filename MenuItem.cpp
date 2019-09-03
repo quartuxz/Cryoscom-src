@@ -245,8 +245,12 @@ MenuItem::~MenuItem()
 {
 }
 
-void inventoryItem::createFrom(const decomposedData&)
+void inventoryItem::createFrom(const decomposedData& DData)
 {
+	decomposedData tempDData = DData;
+	if (tempDData.getChildByName("gear") != nullptr) {
+		simpleRep.createFrom(*tempDData.getChildByName("gear"));
+	}
 }
 
 void inventoryItem::setTexturesFromGearPiece()
@@ -262,6 +266,7 @@ decomposedData inventoryItem::serialize()
 	retDData.addChildrenObject(decomposedData().setType("itemTypes").setName("itemType").addData(std::to_string(itemType)));
 	if (itemType == gearPieceType) {
 		retDData.addChildrenObject(simpleRep.serialize());
+		retDData.childrenObjects.back().name = "gear";
 	}
 	return retDData;
 }
