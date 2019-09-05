@@ -7,3 +7,4 @@ impplement maybe an UI manager class to find a way to open multiple menus at the
 improve amount of data given to enemy AI(ie distance to closest enemy ai etc).
 add a way to drop items from inventory to ground.-currently can remove item but not mkae it drop.
 implememnt stash menu and a way to link with inventory menu.
+serialize and deserialize gear textures and more.(reason form bugs when trying to implement dropped items).

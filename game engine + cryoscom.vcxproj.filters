@@ -428,6 +428,9 @@
     <Text Include="TODO.txt">
       <Filter>docs</Filter>
     </Text>
+    <Text Include="bugfixes_improvements.txt">
+      <Filter>docs</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Font Include="good times rg.ttf">

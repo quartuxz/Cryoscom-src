@@ -498,7 +498,7 @@ void UnitManager::startLevel()
 	tempGearPiece.tex.textureID = Animator::getInstance().getTextureID("chestPiece.png");
 	tempGearPiece.tex.textureID = 2;
 	tempGearPiece;
-	m_lootTable.addLootEntry(tempGearPiece);
+	//m_lootTable.addLootEntry(tempGearPiece);
 	m_needsAnUpdate = true;
 	mutexLock.unlock();
 }

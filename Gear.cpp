@@ -151,14 +151,16 @@ void GearPiece::createFrom(const decomposedData& DData)
 {
 	decomposedData tempDData = DData;
 	cModule.createFrom(*tempDData.getChildByName("cModule"));
+	if (tempDData.getChildByName("gearType") != nullptr) {
+		type = gearTypes(ma_deserialize_uint(tempDData.getChildByName("gearType")->data[0]));
+	}
 }
 
 decomposedData GearPiece::serialize()
 {
 	decomposedData tempDData;
-	tempDData.type = "GearPiece";
-	tempDData.data.push_back(std::to_string(type));
-	tempDData.addChildrenObject(decomposedData().setName("name").addData("name"));
+	tempDData.type = "gearPiece";
+	tempDData.addChildrenObject(decomposedData().setName("gearType").addData(std::to_string(type)));
 	tempDData.addChildrenObject(cModule.serialize().setName("cModule"));
 	return tempDData;
 }
