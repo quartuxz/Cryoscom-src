@@ -2,7 +2,7 @@
 
 void LootTable::pv_parseStep(std::vector<std::string> tokens)
 {
-	if (tokens[0] == "GearPiece") {
+	if (tokens[0] == "gearPiece") {
 		GearPiece tempGearPiece;
 		tempGearPiece.createFrom(decomposedData().createFrom(tokens[1]));
 		addLootEntry(tempGearPiece, ma_deserialize_uint(tokens[2]));

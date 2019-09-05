@@ -17,10 +17,12 @@ struct inventoryItem : public Serializable{
 
 	void setTexturesFromGearPiece();
 	itemTypes itemType = emptySlot;
-	std::string serializedObjectRep;
+
 	GearPiece simpleRep;
+
 	ToolTip itemToolTip;
 	AnimatorSprite itemASprite;
+
 	size_t amount = 1;
 };
 

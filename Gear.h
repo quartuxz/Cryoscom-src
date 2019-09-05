@@ -76,7 +76,6 @@ struct GearPiece : public Serializable {
 	combatModule cModule;
 	AnimatorSprite tex;
 	AnimatorSprite toolTipTexture;
-	std::string toolTipBackGroundTex;
 	bool healsOnPickup = false;
 
 	//adds the stats to a combatModule

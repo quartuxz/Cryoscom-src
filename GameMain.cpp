@@ -111,7 +111,7 @@ void GameMain::spawnWindow(std::string fontFile)
 	m_playerInventory->addAmmo(100);
 	gearASprite.textureID = Animator::getInstance().getTextureID("player.png");
 	tempGearPiece.tex = gearASprite;
-	tempGearPiece.cModule.moveSpeed = -100;
+	tempGearPiece.cModule.moveSpeed = 999999999999;
 	m_playerInventory->addItemToInventory(tempGearPiece);
 	//Animator::getInstance().setWindow(&m_window);
 	//Animator::getInstance().addTexture("player.png");
@@ -336,6 +336,7 @@ void GameMain::pv_processMessage(const MessageData & tempMessage, MessageBus * b
 	else if (tempMessage.messageType == "spawnItemOnPlayer") {
 		inventoryItem tempInvItem;
 		tempInvItem.createFrom(tempMessage.messageContents[0]);
+		tempInvItem.itemType = gearPieceType;
 		m_currentLevel->placeItem(tempInvItem, m_currentLevel->getPlayer()->getBody()[0].first);
 	}
 

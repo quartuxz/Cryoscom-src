@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Animator.h"
 
-void Menu::pv_onClick(MenuItem*, size_t, const InputManager&)
+void Menu::pv_onClick(MenuItem*, size_t, const InputManager&, MessageBus*)
 {
 }
 
@@ -131,27 +131,15 @@ void Menu::createMenuFromFile(std::string fileName)
 }
 
 
-std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const InputManager &inputs, Game)
+std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const InputManager &inputs, MessageBus *gameBus)
 {
 	std::vector<behaviourParameters> retval;
 	for (size_t i = 0; i < m_menuItems.size(); i++)
 	{
 		if (m_menuItems[i].isClicked(mousePos)) {
-			pv_onClick(&m_menuItems[i], i, inputs);
+			pv_onClick(&m_menuItems[i], i, inputs, gameBus);
 			return m_menuItems[i].click(inputs.isInputEventActive(InputManager::shoot));
 		}
-
-	}
-	return std::vector<behaviourParameters>();
-}
-
-std::vector<behaviourParameters> Menu::onInput(sf::Vector2f, const InputManager&inputs)
-{
-	std::vector<behaviourParameters> retval;
-	for (size_t i = 0; i < m_menuItems.size(); i++)
-	{
-		pv_onClick(&m_menuItems[i], i, inputs);
-		return m_menuItems[i].click(inputs.isInputEventActive(InputManager::shoot));
 
 	}
 	return std::vector<behaviourParameters>();

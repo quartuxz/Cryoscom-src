@@ -159,11 +159,8 @@ public:
 	//void loadLootTable(std::string);
 
 	Weapon *getWeapon();
-
 	unit* getPlayer();
 
-	void placeGearOnMap(sf::Vector2f, GearPiece);
-	void pickUpGear();
 	//add a gearPiece to the player arsenal, if the gearPiece added has the same name as preexisting one, it is overwritten by the new one(i.e cant have two chestpieces equipped at once)
 	//void addPlayerGear(GearPiece);
 	//sets all of the player stats to the current gear, overwritting damage and other conditional ailments

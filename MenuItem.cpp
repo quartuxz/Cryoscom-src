@@ -225,12 +225,9 @@ void MenuItem::drawText(sf::RenderWindow *window, sf::Vector2f viewDisplacement)
 
 bool MenuItem::isClicked(sf::Vector2f mousePos)
 {
-	bool retVal = false;
 	m_item.left += moveTransform.x;
 	m_item.top += moveTransform.y;
-	if (m_item.contains(mousePos)) {
-        retVal = true;
-	}
+    bool retVal = m_item.contains(mousePos);
 	m_item.left -= moveTransform.x;
 	m_item.top -= moveTransform.y;
 	return retVal;
@@ -248,8 +245,20 @@ MenuItem::~MenuItem()
 void inventoryItem::createFrom(const decomposedData& DData)
 {
 	decomposedData tempDData = DData;
+	if (tempDData.getChildByName("itemType") != nullptr) {
+		itemType = itemTypes(ma_deserialize_uint(tempDData.getChildByName("itemType")->data[0]));
+	}
 	if (tempDData.getChildByName("gear") != nullptr) {
 		simpleRep.createFrom(*tempDData.getChildByName("gear"));
+	}
+	setTexturesFromGearPiece();
+	if (tempDData.getChildByName("itemASprite") != nullptr) {
+		itemASprite.createFrom(*tempDData.getChildByName("itemASprite"));
+	}
+	if (tempDData.getChildByName("itemToolTipTex") != nullptr) {
+		AnimatorSprite tempASprite;
+		tempASprite.createFrom(*tempDData.getChildByName("itemToolTipTex"));
+		itemToolTip.setTexture(tempASprite);
 	}
 }
 
@@ -263,10 +272,9 @@ decomposedData inventoryItem::serialize()
 {
 	decomposedData retDData;
 	retDData.type = "inventoryItem";
-	retDData.addChildrenObject(decomposedData().setType("itemTypes").setName("itemType").addData(std::to_string(itemType)));
-	if (itemType == gearPieceType) {
-		retDData.addChildrenObject(simpleRep.serialize());
-		retDData.childrenObjects.back().name = "gear";
-	}
+	retDData.addChildrenObject(decomposedData().setName("itemType").addData(std::to_string(itemType)));
+	retDData.addChildrenObject(simpleRep.serialize().setName("gear"));
+	retDData.addChildrenObject(itemASprite.serialize().setName("itemASprite"));
+	retDData.addChildrenObject(itemToolTip.getTexture().serialize().setName("itemToolTipTex"));
 	return retDData;
 }

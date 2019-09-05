@@ -1,3 +1,1 @@
-gearPiece;0;0;chestPiece;1000;200;100;10;3;10;3;10;0.05;10;1;3;1;0;0;0;uniques;chestpiece.png;0.5;10000;
-attackCard;0;10;0;0;1;0;0;0;
-defenceCard;0;0;1;0;1;0;0;0;0;0;0;0;
+gearPiece;{gearPiece,,{,cModule,{,hitPointCap,100,}}};4;

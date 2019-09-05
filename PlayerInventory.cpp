@@ -167,7 +167,7 @@ void PlayerInventory::update(updateEvent)
 {
 }
 
-void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuItemIndex, const InputManager &inputs)
+void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuItemIndex, const InputManager &inputs, MessageBus *gameBus)
 {
 
 	if (inputs.isInputEventActive(InputManager::shoot)) {
@@ -239,31 +239,6 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 		
 		}
 	}
-	if (inputs.isInputEventActive(InputManager::dropItem)) {
-		
-
-		if (m_items[clickedMenuItemIndex].itemType == gearPieceType) {
-
-			//spawn the item first
-			behaviourParameters tempDropParam;
-			tempDropParam.behaviourName = dropsItemOnPlayer;
-			tempDropParam.itemDropped = m_items[clickedMenuItemIndex];
-			m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempDropParam);
-			//then remove from inventory
-			m_items[clickedMenuItemIndex].itemType = emptySlot;
-
-
-		}
-
-
-		//message bound item dropping test
-		/*behaviourParameters tempBParam;
-		tempBParam.behaviourName = sendsMessage;
-		tempBParam.messageData.messageType = "spawnItemOnPlayer";
-		tempBParam.messageData.messageContents.push_back(m_items[clickedMenuItemIndex].serialize());
-		m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);*/
-
-	}
 	else {
 		if (clickedMenuItemIndex < (m_maxColumns * m_maxRows)) {
 			if (m_items[clickedMenuItemIndex].itemType == gearPieceType) {
@@ -277,9 +252,40 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				m_toDrawToolTip = &m_items[clickedMenuItemIndex].itemToolTip;
 			}
 		}
-		
-		
+
+
 	}
+	if (inputs.isInputEventActive(InputManager::dropItem)) {
+		
+
+		if (m_items[clickedMenuItemIndex].itemType == gearPieceType) {
+
+			//spawn the item first
+			/*behaviourParameters tempDropParam;
+			tempDropParam.behaviourName = dropsItemOnPlayer;
+			tempDropParam.itemDropped = m_items[clickedMenuItemIndex];
+			m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempDropParam);*/
+			//then remove from inventory
+			m_items[clickedMenuItemIndex].itemType = emptySlot;
+
+
+			//eventually will make it so the item drops instead of disappearing
+			/*MessageData *tempMessageData = new MessageData();
+			tempMessageData->messageType = "spawnItemOnPlayer";
+			tempMessageData->messageContents.push_back(m_items[clickedMenuItemIndex].serialize());
+			gameBus->addMessage(tempMessageData);*/
+		}
+
+
+		//message bound item dropping test
+		/*behaviourParameters tempBParam;
+		tempBParam.behaviourName = sendsMessage;
+		tempBParam.messageData.messageType = "spawnItemOnPlayer";
+		tempBParam.messageData.messageContents.push_back(m_items[clickedMenuItemIndex].serialize());
+		m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);*/
+
+	}
+	
 }
 
 void PlayerInventory::m_addGearToPlayer(const GearPiece& gearPiece)
