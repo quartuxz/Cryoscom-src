@@ -333,10 +333,12 @@ void GameMain::pv_processMessage(const MessageData & tempMessage, MessageBus * b
 			m_gameMenus[m_activeMenu] = tempMenu;
 		}
 	}
+	//does nothing for now!
 	else if (tempMessage.messageType == "spawnItemOnPlayer") {
 		inventoryItem tempInvItem;
 		tempInvItem.createFrom(tempMessage.messageContents[0]);
-		tempInvItem.itemType = gearPieceType;
+		//tempInvItem.itemASprite.textureID = 5;
+		//tempInvItem.itemType = gearPieceType;
 		m_currentLevel->placeItem(tempInvItem, m_currentLevel->getPlayer()->getBody()[0].first);
 	}
 

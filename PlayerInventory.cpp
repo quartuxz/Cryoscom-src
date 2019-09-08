@@ -270,10 +270,10 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 
 
 			//eventually will make it so the item drops instead of disappearing
-			/*MessageData *tempMessageData = new MessageData();
+			MessageData *tempMessageData = new MessageData();
 			tempMessageData->messageType = "spawnItemOnPlayer";
 			tempMessageData->messageContents.push_back(m_items[clickedMenuItemIndex].serialize());
-			gameBus->addMessage(tempMessageData);*/
+			gameBus->addMessage(tempMessageData);
 		}
 
 

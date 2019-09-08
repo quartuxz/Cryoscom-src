@@ -150,9 +150,17 @@ void combatModule::processEffects(float timeDelta) {
 void GearPiece::createFrom(const decomposedData& DData)
 {
 	decomposedData tempDData = DData;
-	cModule.createFrom(*tempDData.getChildByName("cModule"));
+	if (tempDData.getChildByName("cModule") != nullptr) {
+		cModule.createFrom(*tempDData.getChildByName("cModule"));
+	}
 	if (tempDData.getChildByName("gearType") != nullptr) {
 		type = gearTypes(ma_deserialize_uint(tempDData.getChildByName("gearType")->data[0]));
+	}
+	if (tempDData.getChildByName("tex") != nullptr) {
+		tex.createFrom(*tempDData.getChildByName("tex"));
+	}
+	if (tempDData.getChildByName("toolTipTexture") != nullptr) {
+		toolTipTexture.createFrom(*tempDData.getChildByName("toolTipTexture"));
 	}
 }
 
@@ -162,6 +170,9 @@ decomposedData GearPiece::serialize()
 	tempDData.type = "gearPiece";
 	tempDData.addChildrenObject(decomposedData().setName("gearType").addData(std::to_string(type)));
 	tempDData.addChildrenObject(cModule.serialize().setName("cModule"));
+	tempDData.addChildrenObject(tex.serialize().setName("tex"));
+	tempDData.addChildrenObject(toolTipTexture.serialize().setName("toolTipTexture"));
+	
 	return tempDData;
 }
 

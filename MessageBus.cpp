@@ -155,6 +155,31 @@ void MessageBus::startFrame(float delta) {
 	
 
 }
+
+
+void MessageBus::endFrame() {
+
+	//m_allMutex.lock();
+
+	if (canMessage()) {
+		m_addedTime = 0;
+	}
+
+#if  MULTITHREADED_SCRIPTING_AND_MESSAGING
+	m_joinThreads();
+
+#else
+	notify();
+#endif
+
+	while (!m_endOfFrameGarbageCollectionQueue.empty()) {
+		delete m_endOfFrameGarbageCollectionQueue.front();
+		m_endOfFrameGarbageCollectionQueue.pop();
+	}
+
+	//m_allMutex.unlock();
+}
+
 bool MessageBus::canMessage() {
 	if (m_addedTime >= m_updateInterval) {
 		return true;
@@ -179,28 +204,7 @@ void MessageBus::m_joinThreads(){
 	}
 	
 }
-void MessageBus::endFrame() {
 
-	//m_allMutex.lock();
-
-	if (canMessage()) {
-		m_addedTime = 0;
-	}
-
-#if  MULTITHREADED_SCRIPTING_AND_MESSAGING
-	m_joinThreads();
-
-#else
-	notify();
-#endif
-
-	while (!m_endOfFrameGarbageCollectionQueue.empty()) {
-		delete m_endOfFrameGarbageCollectionQueue.front();
-		m_endOfFrameGarbageCollectionQueue.pop();
-	}
-
-	//m_allMutex.unlock();
-}
 
 void MessageBus::addMessage(MessageData *message){
 	m_allMutex.lock();
