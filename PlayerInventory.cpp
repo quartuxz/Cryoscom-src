@@ -266,14 +266,17 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 			tempDropParam.itemDropped = m_items[clickedMenuItemIndex];
 			m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempDropParam);*/
 			//then remove from inventory
-			m_items[clickedMenuItemIndex].itemType = emptySlot;
 
 
-			//eventually will make it so the item drops instead of disappearing
+
+			//eventually will make it so the item drops instead of disappearing--done
 			MessageData *tempMessageData = new MessageData();
 			tempMessageData->messageType = "spawnItemOnPlayer";
 			tempMessageData->messageContents.push_back(m_items[clickedMenuItemIndex].serialize());
 			gameBus->addMessage(tempMessageData);
+
+			m_items[clickedMenuItemIndex].itemType = emptySlot;
+
 		}
 
 

@@ -1,10 +1,11 @@
 implement config on load up for tile size, window size, and other things.
 implement loot tables. -working
-finish player inventory serialization and load up.
+finish player inventory serialization and load up. -up next
 implement message bound level switching and menu opening.
 implement on gear skills and a way to load them and create them.
 impplement maybe an UI manager class to find a way to open multiple menus at the same time and inter menu communication.
 improve amount of data given to enemy AI(ie distance to closest enemy ai etc).
-add a way to drop items from inventory to ground.-currently can remove item but not mkae it drop.
+add a way to drop items from inventory to ground.-partially done
 implememnt stash menu and a way to link with inventory menu.
 serialize and deserialize gear textures and more.(reason form bugs when trying to implement dropped items).
+implement radius and box detection for player bounds and activation of message upon reaching such.

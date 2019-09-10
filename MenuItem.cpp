@@ -247,18 +247,19 @@ void inventoryItem::createFrom(const decomposedData& DData)
 	decomposedData tempDData = DData;
 	if (tempDData.getChildByName("itemType") != nullptr) {
 		itemType = itemTypes(ma_deserialize_uint(tempDData.getChildByName("itemType")->data[0]));
-		itemType = gearPieceType;
 	}
 	if (tempDData.getChildByName("gear") != nullptr) {
 		simpleRep.createFrom(*tempDData.getChildByName("gear"));
 	}
-	setTexturesFromGearPiece();
-	/*if (tempDData.getChildByName("itemASprite") != nullptr) {
+	if (tempDData.getChildByName("itemASprite") != nullptr) {
 		itemASprite.createFrom(*tempDData.getChildByName("itemASprite"));
 	}
 	if (tempDData.getChildByName("itemToolTipTex") != nullptr) {
 		itemToolTip.makeTooltipForGear(simpleRep);
-	}*/
+		AnimatorSprite tempASprite;
+		tempASprite.createFrom(*tempDData.getChildByName("itemToolTipTex"));
+		itemToolTip.setTexture(tempASprite);
+	}
 }
 
 void inventoryItem::setTexturesFromGearPiece()

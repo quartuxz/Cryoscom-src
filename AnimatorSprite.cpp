@@ -43,7 +43,16 @@ void AnimatorSprite::createFrom(const decomposedData &DData)
 
 decomposedData AnimatorSprite::serialize()
 {
-	return decomposedData();
+	decomposedData retDData;
+	retDData.addChildrenObject(decomposedData().setName("textureID").addData(std::to_string(textureID)));
+	retDData.addChildrenObject(decomposedData().setName("drawLayer").addData(std::to_string(drawLayer)));
+	retDData.addChildrenObject(decomposedData().setName("originToCenter").addData(std::to_string(originToCenter)));
+	retDData.addChildrenObject(decomposedData().setName("rotation").addData(std::to_string(rotation)));
+	retDData.addChildrenObject(decomposedData().setName("scale").addData(std::to_string(scale)));
+	retDData.addChildrenObject(decomposedData().setName("positionX").addData(std::to_string(position.x)));
+	retDData.addChildrenObject(decomposedData().setName("positionY").addData(std::to_string(position.y)));
+	retDData.addChildrenObject(decomposedData().setName("timeDisplayed").addData(std::to_string(timeDisplayed)));
+	return retDData;
 }
 
 AnimatorSprite AnimatorSprite::create(bool p_offsets)
