@@ -128,6 +128,7 @@
     <Font Include="good times rg.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="advanceLevel.txt" />
     <Text Include="bugfixes_improvements.txt" />
     <Text Include="enemy_test.txt" />
     <Text Include="initial_progression.txt" />

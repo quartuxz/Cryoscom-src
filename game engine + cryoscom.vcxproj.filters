@@ -70,6 +70,18 @@
     <Filter Include="Source Files\collision and units\tiles">
       <UniqueIdentifier>{11daec2e-cccd-4996-b147-35bc45991411}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\txt\maps">
+      <UniqueIdentifier>{121ebdf9-779b-415a-906f-56884db0623a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\txt\UI">
+      <UniqueIdentifier>{fd6c1903-d029-49de-860a-0a550b6c2308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\txt\misc">
+      <UniqueIdentifier>{092acdbb-be5c-4589-b6b1-0e767dbcf449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\txt\maps\tileMaps">
+      <UniqueIdentifier>{f47996aa-2b86-4e7d-9cf7-496418dde9ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatorSprite.cpp">
@@ -377,59 +389,62 @@
     <Text Include="message passing docs.txt">
       <Filter>docs</Filter>
     </Text>
-    <Text Include="enemy_test.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="initial_progression.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="large_map.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="loaded_textures.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="lootTable1.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="mainMenu.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="mainUI.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="map1.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="map2.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="master.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="oldMap2.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="progression.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="tileMapTest.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
     <Text Include="serialization doc.txt">
       <Filter>docs</Filter>
-    </Text>
-    <Text Include="testArea.txt">
-      <Filter>Resource Files\txt</Filter>
-    </Text>
-    <Text Include="testAreaTileMap.txt">
-      <Filter>Resource Files\txt</Filter>
     </Text>
     <Text Include="TODO.txt">
       <Filter>docs</Filter>
     </Text>
     <Text Include="bugfixes_improvements.txt">
       <Filter>docs</Filter>
+    </Text>
+    <Text Include="map2.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="map1.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="large_map.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="testArea.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="master.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="mainMenu.txt">
+      <Filter>Resource Files\txt\UI</Filter>
+    </Text>
+    <Text Include="mainUI.txt">
+      <Filter>Resource Files\txt\UI</Filter>
+    </Text>
+    <Text Include="oldMap2.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="lootTable1.txt">
+      <Filter>Resource Files\txt\misc</Filter>
+    </Text>
+    <Text Include="enemy_test.txt">
+      <Filter>Resource Files\txt\misc</Filter>
+    </Text>
+    <Text Include="initial_progression.txt">
+      <Filter>Resource Files\txt\misc</Filter>
+    </Text>
+    <Text Include="loaded_textures.txt">
+      <Filter>Resource Files\txt\misc</Filter>
+    </Text>
+    <Text Include="progression.txt">
+      <Filter>Resource Files\txt\misc</Filter>
+    </Text>
+    <Text Include="advanceLevel.txt">
+      <Filter>Resource Files\txt\UI</Filter>
+    </Text>
+    <Text Include="testAreaTileMap.txt">
+      <Filter>Resource Files\txt\maps\tileMaps</Filter>
+    </Text>
+    <Text Include="tileMapTest.txt">
+      <Filter>Resource Files\txt\maps\tileMaps</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

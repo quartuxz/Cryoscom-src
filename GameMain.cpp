@@ -65,9 +65,12 @@ void GameMain::m_loadLevelGameMainBits(std::string fileName) {
 
 void GameMain::m_setActiveLevel()
 {
-	m_gameBus = MessageBus();
-	m_gameBus.addMessagingComponent(this);
-	m_gameBus.addMessagingComponent(&m_gameLogger);
+
+	
+
+	//m_gameBus = MessageBus();
+	//m_gameBus.addMessagingComponent(this);
+	//m_gameBus.addMessagingComponent(&m_gameLogger);
 
 	m_currentLevel->endLevel();
 	delete m_currentLevel;

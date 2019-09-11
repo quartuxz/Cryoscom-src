@@ -148,6 +148,7 @@ void MessageBus::startFrame(float delta) {
 			++i;
 		}
 	}
+	notify();
 #if MULTITHREADED_SCRIPTING_AND_MESSAGING
 	notify();
 #endif
@@ -169,7 +170,7 @@ void MessageBus::endFrame() {
 	m_joinThreads();
 
 #else
-	notify();
+	
 #endif
 
 	while (!m_endOfFrameGarbageCollectionQueue.empty()) {
@@ -255,6 +256,8 @@ void MessageBus::notify(){
         MessageData *currentMessage = m_messageQueue.front();
 		m_endOfFrameGarbageCollectionQueue.push(currentMessage);
         m_messageQueue.pop();
+		//std::map<size_t, MessagingComponent*>::iterator it;
+		//for (it = m_messagingComponents.begin(); it != m_messagingComponents.end(); it++)
         for (auto const& x : m_messagingComponents)
         {
 #if  MULTITHREADED_SCRIPTING_AND_MESSAGING

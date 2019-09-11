@@ -1,2 +1,3 @@
 find out reason for delayed item dropping.
 revamp   messaging and perhaps remove/modify python.
+messaging python currently broken.

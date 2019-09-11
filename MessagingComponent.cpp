@@ -94,9 +94,12 @@ void MessagingComponent::init(std::size_t ID){
 }
 
 void MessagingComponent::processMessage(const MessageData *tempMessage, MessageBus *bus){
-    if(tempMessage->messageType != "NULL"){
-        pv_processMessage(*tempMessage, bus);
-    }
+	if (tempMessage != nullptr) {
+		if (tempMessage->messageType != "NULL") {
+			pv_processMessage(*tempMessage, bus);
+		}
+	}
+    
 
 }
 
