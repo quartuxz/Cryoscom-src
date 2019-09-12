@@ -175,9 +175,9 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 
 		for (size_t i = 0; i < enemies; i++)
 		{
-			size_t lastEnemyUnits = m_AIs.size();
+			size_t lastEnemyUnitID = m_AIs.size();
 			createFromFile(enemyFileName[rand() % enemyFileName.size()]);
-			for (size_t o = lastEnemyUnits; o < m_AIs.size(); o++)
+			for (size_t o = lastEnemyUnitID; o < m_AIs.size(); o++)
 			{
 				//((rand() % (displacementScale * 10)) / displacementScale) * ((rand() % 2) ? -1 : 1)
 				const float microDisplacementX = (rand() % enemies);
@@ -278,6 +278,7 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 		tempTooltipText.setScale(sf::Vector2f(0.1, 0.1));
 		tempTooltipText.setFillColor(sf::Color::Green);
 		toolTip->addText(tempTooltipText);
+		toolTip->readDistance = ma_deserialize_uint(tokens[6])*m_levelScale;
 		addToolTip(toolTip);
 
 	}
@@ -731,8 +732,8 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 	if (m_showToolTips) {
 		for (size_t i = 0; i < m_toolTips.size(); i++)
 		{
-			if (m_toolTips[i].second && (vectorDistance(m_toolTips[i].first->getPosition(), m_player->getBody()[0].first) < m_toolTipReadDistance)) {
-				Animator::getInstance().addOneFrameSprite(m_toolTips[i].first);
+			if (m_toolTips[i].second && (vectorDistance(m_toolTips[i].first->getPosition(), m_player->getBody()[0].first) < m_toolTips[i].first->readDistance)) {
+				Animator::getInstance().addOneFrameSprite(*m_toolTips[i].first);
 			}
 		}
 	}

@@ -83,7 +83,7 @@ private:
 	endLevelTypes m_levelHasEnded = levelActive;
 	std::string m_progressionFileName;
 
-	const float m_toolTipReadDistance = 100;
+	const float m_toolTipReadDistance = 250;
 	bool m_showToolTips = true;
 	std::vector<std::pair<ToolTip*, bool>> m_toolTips;
 

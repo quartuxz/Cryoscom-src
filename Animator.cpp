@@ -190,7 +190,7 @@ std::map<std::string, AnimatorSprite>* Animator::getNamedAnimatorSprites()
 	return &m_namedAnimatorSprites;
 }
 
-void Animator::addOneFrameSprite(ToolTip *toolTip)
+void Animator::addOneFrameSprite(const ToolTip &toolTip)
 {
 	m_allLock.lock();
 	m_toolTipsToDraw.push_back(toolTip);
@@ -321,7 +321,7 @@ void Animator::draw()
 
 	for (size_t i = 0; i < m_toolTipsToDraw.size(); i++)
 	{
-		m_toolTipsToDraw[i]->draw(*m_window);
+		m_toolTipsToDraw[i].draw(*m_window);
 	}
 	m_toolTipsToDraw.clear();
 	m_allLock.unlock();

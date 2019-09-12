@@ -30,7 +30,7 @@ private:
 	std::map<std::string, AnimatorSprite> m_namedAnimatorSprites;
 
 	std::vector<std::stack<sf::Sprite>> m_spritesToDraw;
-	std::vector<ToolTip*> m_toolTipsToDraw;
+	std::vector<ToolTip> m_toolTipsToDraw;
 
 	unsigned int m_animationPresetIDCounter = 0;
 
@@ -95,7 +95,7 @@ public:
 	// named sprites for runtime editing
 	std::map<std::string, AnimatorSprite> *getNamedAnimatorSprites();
 
-	void addOneFrameSprite(ToolTip*);
+	void addOneFrameSprite(const ToolTip&);
 
 	//takes float(time) as an argument, updates the animation state
 	void update(float);

@@ -82,6 +82,12 @@
     <Filter Include="Resource Files\txt\maps\tileMaps">
       <UniqueIdentifier>{f47996aa-2b86-4e7d-9cf7-496418dde9ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\txt\maps\map files">
+      <UniqueIdentifier>{f08b2061-296a-4da7-837b-9ad36f71b871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\txt\maps\map files\old">
+      <UniqueIdentifier>{33420bd9-0675-46ab-955d-3a01e60840f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatorSprite.cpp">
@@ -398,29 +404,11 @@
     <Text Include="bugfixes_improvements.txt">
       <Filter>docs</Filter>
     </Text>
-    <Text Include="map2.txt">
-      <Filter>Resource Files\txt\maps</Filter>
-    </Text>
-    <Text Include="map1.txt">
-      <Filter>Resource Files\txt\maps</Filter>
-    </Text>
-    <Text Include="large_map.txt">
-      <Filter>Resource Files\txt\maps</Filter>
-    </Text>
-    <Text Include="testArea.txt">
-      <Filter>Resource Files\txt\maps</Filter>
-    </Text>
-    <Text Include="master.txt">
-      <Filter>Resource Files\txt\maps</Filter>
-    </Text>
     <Text Include="mainMenu.txt">
       <Filter>Resource Files\txt\UI</Filter>
     </Text>
     <Text Include="mainUI.txt">
       <Filter>Resource Files\txt\UI</Filter>
-    </Text>
-    <Text Include="oldMap2.txt">
-      <Filter>Resource Files\txt\maps</Filter>
     </Text>
     <Text Include="lootTable1.txt">
       <Filter>Resource Files\txt\misc</Filter>
@@ -437,14 +425,32 @@
     <Text Include="progression.txt">
       <Filter>Resource Files\txt\misc</Filter>
     </Text>
-    <Text Include="advanceLevel.txt">
-      <Filter>Resource Files\txt\UI</Filter>
-    </Text>
     <Text Include="testAreaTileMap.txt">
       <Filter>Resource Files\txt\maps\tileMaps</Filter>
     </Text>
     <Text Include="tileMapTest.txt">
       <Filter>Resource Files\txt\maps\tileMaps</Filter>
+    </Text>
+    <Text Include="advanceLevel_Menu.txt">
+      <Filter>Resource Files\txt\UI</Filter>
+    </Text>
+    <Text Include="large_map.txt">
+      <Filter>Resource Files\txt\maps\map files</Filter>
+    </Text>
+    <Text Include="testArea.txt">
+      <Filter>Resource Files\txt\maps\map files</Filter>
+    </Text>
+    <Text Include="map1.txt">
+      <Filter>Resource Files\txt\maps\map files\old</Filter>
+    </Text>
+    <Text Include="map2.txt">
+      <Filter>Resource Files\txt\maps\map files\old</Filter>
+    </Text>
+    <Text Include="master.txt">
+      <Filter>Resource Files\txt\maps</Filter>
+    </Text>
+    <Text Include="oldMap2.txt">
+      <Filter>Resource Files\txt\maps\map files\old</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

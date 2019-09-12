@@ -1,11 +1,13 @@
 scaleFactor;3;
 
-player;.-50;-50;24;20;player.png;
+player;50;50;24;20;player.png;
 bulletTexture;bullet_1.png;-1;
 
 loadLootTable;lootTable1.txt;
 
 //;gameScript;test_GS;
+
+tooltip;;0;0;5;press [f] to go to the next level;100;
 
 spawnPoint;5;100;100;enemy_test.txt;enemy_test.txt;
 

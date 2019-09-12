@@ -32,6 +32,8 @@ public:
 
 	void setTexture(const AnimatorSprite&);
 
+	float readDistance = 100;
+
 	float getScale()const;
 	sf::Vector2f getPosition()const;
 

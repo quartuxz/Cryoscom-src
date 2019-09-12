@@ -1,4 +1,3 @@
 testArea.txt
 large_map.txt
-map2.txt
 
