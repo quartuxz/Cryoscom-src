@@ -26,6 +26,11 @@ m_wieldingUnit(wieldingUnit)
 {
 }
 
+void Weapon::setWieldingUnit(unit *wieldingUnit)
+{
+	m_wieldingUnit = wieldingUnit;
+}
+
 void Weapon::m_useSkill(skillParam* sParam, std::vector<unit*> units) {
 	AnimatorSprite tempASprite;
 	switch (sParam->sType)

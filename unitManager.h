@@ -18,6 +18,8 @@
 #include "lootTable.h"
 
 
+//creates a dynamically allocated player unit
+unit *makePlayer(sf::Vector2f, float, float);
 
 enum endLevelTypes {
 	levelActive, playerDied, goalReached
@@ -158,16 +160,25 @@ public:
 
 	//void loadLootTable(std::string);
 
-	Weapon *getWeapon();
-	unit* getPlayer();
+	Weapon *getWeapon()const;
+	void setWeapon(Weapon*);
+
+	unit* getPlayer()const;
+	void setPlayer(unit*);
 
 	//add a gearPiece to the player arsenal, if the gearPiece added has the same name as preexisting one, it is overwritten by the new one(i.e cant have two chestpieces equipped at once)
 	//void addPlayerGear(GearPiece);
 	//sets all of the player stats to the current gear, overwritting damage and other conditional ailments
 	//void assignPlayerGear(bool heal = true);
 
+	TileMap getTileMap()const;
+	void setTileMap(const TileMap&);
+
 	void addAI(EnemyAI*);
-	void setPlayer(unit*);
+
+
+	void spawnPoint(int, sf::Vector2f, std::vector<std::string>);
+
 
 	float getLevelScale() const;
 

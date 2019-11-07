@@ -2,3 +2,4 @@ find out reason for delayed item dropping.-partially done /potentially fixed?
 revamp messaging and perhaps remove/modify python.
 messaging python currently broken.
 make it so you can define a units combat attributes when making levels on texts.
+fix issue were fewer than expected enemy units spawn at spawnPoint.

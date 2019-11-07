@@ -26,7 +26,7 @@ void Menu::addBehaviour(behaviourParameters Bparam, unsigned int menuItemID)
 
 MenuItem Menu::createMenuItem(sf::Vector2f pos, sf::Vector2f size) const
 {
-	return MenuItem(sf::FloatRect(getPixelCoordinate(pos),getPixelCoordinate(size)));
+	return MenuItem(sf::FloatRect(getPixelCoordinate(pos,true),getPixelCoordinate(size)));
 }
 
 void Menu::createMenuFromFile(std::string fileName)
@@ -78,7 +78,7 @@ void Menu::createMenuFromFile(std::string fileName)
 				}
 				//m_onOpenParams = tempMenuItem.getBehaviour();
 			}
-			sf::Rect<float> menuItemDim(sf::Vector2f(std::atof(tokens[0].c_str()) * m_window->getSize().x, std::atof(tokens[1].c_str()) * m_window->getSize().y),
+			sf::Rect<float> menuItemDim(getPixelCoordinate(sf::Vector2f(std::atof(tokens[0].c_str()), std::atof(tokens[1].c_str())),true),
 				sf::Vector2f(0, 0));
 
 			if (tokens[2] == "=") {
@@ -90,8 +90,11 @@ void Menu::createMenuFromFile(std::string fileName)
 				menuItemDim.height = menuItemDim.width;
 			}
 			else {
-				menuItemDim.width = std::atof(tokens[2].c_str()) * m_window->getSize().x;
-				menuItemDim.height = std::atof(tokens[3].c_str()) * m_window->getSize().y;
+				sf::Vector2f tempDim = getPixelCoordinate(sf::Vector2f(std::atof(tokens[2].c_str()), std::atof(tokens[3].c_str())));
+				menuItemDim.width = tempDim.x;
+				menuItemDim.height = tempDim.y;
+				//menuItemDim.width = std::atof(tokens[2].c_str()) * m_window->getSize().x;
+				//menuItemDim.height = std::atof(tokens[3].c_str()) * m_window->getSize().y;
 			}
 
 			m_menuItems.push_back(MenuItem(menuItemDim));
@@ -155,9 +158,21 @@ sf::Vector2f Menu::getScaleFactor(sf::Vector2f currentScale, sf::Vector2f desire
 	return sf::Vector2f(desiredInPixels.x / currentScale.x, desiredInPixels.y / currentScale.y);
 }
 
-sf::Vector2f Menu::getPixelCoordinate(sf::Vector2f pos)const
+sf::Vector2f Menu::getPixelCoordinate(sf::Vector2f pos, bool isPos)const
 {
-	return sf::Vector2f(pos.x*m_window->getSize().x, pos.y*m_window->getSize().y);
+	float windowMinSize = std::min(m_window->getSize().x, m_window->getSize().y);
+	if (isPos) {
+		if (m_window->getSize().x >= m_window->getSize().y) {
+			return sf::Vector2f(pos.x * windowMinSize+((m_window->getSize().x-windowMinSize)/2), pos.y * windowMinSize);
+		}
+		else {
+			return sf::Vector2f(pos.x * windowMinSize, pos.y * windowMinSize+((m_window->getSize().y - windowMinSize) / 2));
+		}
+	}
+	else {
+		return sf::Vector2f(pos.x * windowMinSize, pos.y * windowMinSize);
+	}
+	
 }
 
 void Menu::update(updateEvent uEvent)

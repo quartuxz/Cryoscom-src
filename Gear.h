@@ -6,6 +6,24 @@
 #include "Serializable.h"
 #include "cryoscom_defsAndUtils.h"
 
+struct combarModule;
+
+
+enum bodyPartTypes {
+	head,neck,chest,belly,arms,legs,feet
+};
+
+struct bodyPartOrMove {
+private:
+	static size_t m_uniqueIDCounter;
+public:
+	float armourThickness;
+	float dodgeChance;
+	bodyPartTypes bodyPartType;    
+	std::string name;
+	friend struct combatModule;
+};
+
 enum effectTypes {
 	staminaRegenEffect, damageOverTimeEffect, rootEffect
 };
@@ -23,7 +41,14 @@ enum gearTypes {
 };
 
 //todo: implement serialization
+
+struct GearPiece;
+
 struct combatModule : public Serializable {
+private:
+	std::vector<std::pair<size_t, bodyPartOrMove>> m_bodyPartsOrMoves;
+public:
+
 	float hitpoints = 100;
 	float hitpointCap = 100;
 	float hitpointRegen = 0;
@@ -46,6 +71,10 @@ struct combatModule : public Serializable {
 	combatModule(bool);
 	combatModule();
 
+	size_t addBodyPartOrMove(const bodyPartOrMove&);
+	void removeBodyPartOrMove(size_t);
+	std::vector<std::pair<size_t, bodyPartOrMove>> getBodyPartsOrMoves()const;
+
 	//applies some caps and calculates some other things
 	void update(float);
 	void processEffects(float);
@@ -61,6 +90,9 @@ struct combatModule : public Serializable {
 	float inaccuracy = 10;
 	unsigned int magSize = 5;
 	float reloadTime = 2;
+
+
+	friend struct GearPiece;
 };
 //todo: implement serialization and proper equip/unequip
 struct GearPiece : public Serializable {

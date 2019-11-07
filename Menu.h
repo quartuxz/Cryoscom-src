@@ -40,12 +40,16 @@ public:
 	void createMenuFromFile(std::string);
 	std::vector<behaviourParameters> onClick(sf::Vector2f, const InputManager&, MessageBus*);
 	
+	//the bool indicates wether its the beforeDraw or afterDraw, meaning that the first time this
+	//function is called with a false value(menuItems not yet drawn)
+	//then with a true value(menuItems drawn)
 	virtual void onDraw(bool, sf::Vector2f);
 
 	//first argument is current size in pixels, second argument is desired size in window coverage%.
 	sf::Vector2f getScaleFactor(sf::Vector2f, sf::Vector2f)const;
-	//returns the actual pixel coordinate of a window%
-	sf::Vector2f getPixelCoordinate(sf::Vector2f)const;
+	//returns the actual pixel coordinate of a window%(minimum of 2 dimensions for square)
+	//second argument determines wether the first argument is a global position or a dimension
+	sf::Vector2f getPixelCoordinate(sf::Vector2f, bool isPos = false)const;
 
 	virtual void update(updateEvent);
 	virtual void createStaticMenuLayout();

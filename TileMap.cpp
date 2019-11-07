@@ -8,19 +8,9 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 		Tile tempTile;
 		sf::Vector2i tilePos = sf::Vector2i(ma_deserialize_int(line[2]), ma_deserialize_int(line[3]));
 		if (line[1] == "square") {
-			Wall tempWall;
-			tempWall.wall.first = sf::Vector2f(0, tileSize);
-			tempWall.wall.second = sf::Vector2f(0, 0);
-			tempTile.addBound(tempWall);
-			tempWall.wall.first = sf::Vector2f(tileSize, tileSize);
-			tempWall.wall.second = sf::Vector2f(0, tileSize) ;
-			tempTile.addBound(tempWall);
-			tempWall.wall.first = sf::Vector2f(tileSize, 0);
-			tempWall.wall.second = sf::Vector2f(tileSize, tileSize);
-			tempTile.addBound(tempWall);
-			tempWall.wall.first = sf::Vector2f(0, 0);
-			tempWall.wall.second = sf::Vector2f(tileSize, 0);
-			tempTile.addBound(tempWall);
+
+			tempTile = makeSquareTile();
+
 		}
 		else if (line[1] == "empty") {
 
@@ -68,21 +58,20 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 		tempAnimatorSprite.position.x += ma_deserialize_float(line[1])*tileSize;
 		tempAnimatorSprite.position.y += ma_deserialize_float(line[2]) * tileSize;
 		if (line[3] == "fitTileX") {
-			tempAnimatorSprite.scale = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x;
+			tempAnimatorSprite.scaleToMatch(fitX, tileSize);
 		}
 		else if (line[3] == "fitTileY") {
-			tempAnimatorSprite.scale = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y;
+			tempAnimatorSprite.scaleToMatch(fitY, tileSize);
 		}
 		else if (line[3] == "fitTileMin") {
-			tempAnimatorSprite.scale = std::min(tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x, tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y);
+			tempAnimatorSprite.scaleToMatch(fitMin, tileSize);
 		}
 		else if (line[3] == "fitTileDistorted") {
-			tempAnimatorSprite.usesVectorScale = true;
-			tempAnimatorSprite.vectorScale.x = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().x;
-			tempAnimatorSprite.vectorScale.y = tileSize / Animator::getInstance().getTexture(tempAnimatorSprite.textureID)->getSize().y;
+			tempAnimatorSprite.scaleToMatch(fitDistorted, tileSize);
 		}
 		m_lastAddedTile->addTileSprite(tempAnimatorSprite);
 	}
+
 }
 
 TileMap::TileMap()

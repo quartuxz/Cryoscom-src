@@ -11,6 +11,26 @@ void ToolTip::init(std::string fileName)
 	}
 }
 
+void ToolTip::setViewDisplacement(const sf::Vector2f &viewDisplacement)
+{
+	m_viewDisplacement = viewDisplacement;
+}
+
+sf::Vector2f ToolTip::getViewDisplacement() const
+{
+	return m_viewDisplacement;
+}
+
+void ToolTip::setIsUIElement(bool UIElement)
+{
+	m_isUIElement = UIElement;
+}
+
+bool ToolTip::isUIElement() const
+{
+	return m_isUIElement;
+}
+
 ToolTip::ToolTip()
 {
 }
@@ -100,21 +120,35 @@ void ToolTip::makeTooltipForGear(const GearPiece& gearPiece)
 void ToolTip::draw(sf::RenderWindow &window)
 {
 	if (m_backgroundImage.isActive) {
-		float initialScale = m_backgroundImage.scale;
-		sf::Vector2f initialPosition = m_backgroundImage.position;
-		m_backgroundImage.scale *= m_scale;
-		m_backgroundImage.position += m_position;
-		Animator::getInstance().instantDraw(m_backgroundImage);
-		m_backgroundImage.position = initialPosition;
-		m_backgroundImage.scale = initialScale;
+		AnimatorSprite tempBackgroundImage = m_backgroundImage;
+		tempBackgroundImage.scale *= m_scale;
+		tempBackgroundImage.position += m_position;
+		if (m_isUIElement) {
+			tempBackgroundImage.isUI = true;
+			tempBackgroundImage.UIDisplacement = m_viewDisplacement;
+			Animator::getInstance().instantDraw(tempBackgroundImage);
+		}
+		else {
+			Animator::getInstance().instantDraw(tempBackgroundImage);
+		}
+		
+		
+
 	}
 	for (size_t i = 0; i < m_text.size(); i++)
 	{
-		m_text[i].scale(sf::Vector2f(m_scale, m_scale));
-		m_text[i].move(m_position);
-		window.draw(m_text[i]);
-		m_text[i].move(-m_position);
-		m_text[i].scale(sf::Vector2f(1/m_scale, 1/m_scale));
+		sf::Text tempText = m_text[i];
+		tempText.scale(sf::Vector2f(m_scale, m_scale));
+		tempText.move(m_position);
+		if (m_isUIElement) {
+			window.draw(zoomText(tempText, &window, m_viewDisplacement));
+		}
+		else {
+			window.draw(tempText);
+		}
+		
+		//m_text[i].move(-m_position);
+		//m_text[i].scale(sf::Vector2f(1/(m_scale*AnimatorSprite::zoom), (1/m_scale*AnimatorSprite::zoom)));
 	}
 }
 

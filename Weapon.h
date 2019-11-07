@@ -64,6 +64,7 @@ public:
 	sf::Vector2f getUnitVecTo(sf::Vector2f);
 
 	Weapon(unit*);
+	void setWieldingUnit(unit*);
 
 	bool fire(sf::Vector2f);
 

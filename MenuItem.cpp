@@ -3,6 +3,7 @@
 #include "ToolTip.h"
 #include "Animator.h"
 
+
 std::string ReplaceString(std::string subject, const std::string& search,
 	const std::string& replace) {
 	size_t pos = 0;
@@ -185,6 +186,7 @@ void MenuItem::reestablishInitialPostion()
 void MenuItem::setTexture(const AnimatorSprite& aSprite)
 {
 	m_ASprite = aSprite;
+	m_ASprite.isUI = true;
 	m_ASprite.originToCenter = false;
 	m_ASprite.usesVectorScale = true;
 	m_ASprite.position = sf::Vector2f(m_item.left, m_item.top);
@@ -207,9 +209,10 @@ void MenuItem::draw(sf::RenderWindow* window, sf::Vector2f viewDisplacement)
 		window->draw(tempRectS);
 	}
 	else{
-		m_ASprite.position += viewDisplacement + moveTransform;
+		//m_ASprite.position += viewDisplacement + moveTransform;
+		m_ASprite.UIDisplacement = viewDisplacement +moveTransform;
 		Animator::getInstance().instantDraw(m_ASprite);
-		m_ASprite.position -= viewDisplacement + moveTransform;
+		//m_ASprite.position -= viewDisplacement + moveTransform;
 	}
 
 }
@@ -217,9 +220,15 @@ void MenuItem::draw(sf::RenderWindow* window, sf::Vector2f viewDisplacement)
 void MenuItem::drawText(sf::RenderWindow *window, sf::Vector2f viewDisplacement)
 {
 	if (m_isButtonTextSet) {
-		m_buttonText.move(viewDisplacement + moveTransform);
+
+		
+		window->draw(zoomText(m_buttonText, window, viewDisplacement));
+
+		/*m_buttonText.move(viewDisplacement + moveTransform);
+		m_buttonText.scale(sf::Vector2f(AnimatorSprite::zoom, AnimatorSprite::zoom));
 		window->draw(m_buttonText);
-		m_buttonText.move(-(viewDisplacement + moveTransform));
+		m_buttonText.scale(sf::Vector2f(1/AnimatorSprite::zoom, 1/AnimatorSprite::zoom));
+		m_buttonText.move(-(viewDisplacement + moveTransform));*/
 	}
 }
 

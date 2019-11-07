@@ -94,22 +94,36 @@ std::queue<AnimatorSprite> Animator::m_updateAnimRecursive(std::queue<AnimatorSp
 	return animation;
 }
 
-sf::Sprite Animator::m_getSprite(AnimatorSprite aSprite)
+sf::Sprite Animator::m_getSprite(const AnimatorSprite &aSprite)
 {
 	sf::Sprite tempSprite;
 	tempSprite.setTexture(*m_textures[aSprite.textureID]);
 	if (aSprite.originToCenter) {
 		tempSprite.setOrigin(sf::Vector2f(tempSprite.getLocalBounds().width / 2, tempSprite.getLocalBounds().height / 2));
 	}
+	
 	tempSprite.setPosition(aSprite.position);
+	tempSprite.setRotation(aSprite.rotation);
+	
+
 	if (aSprite.usesVectorScale) {
 		tempSprite.setScale(aSprite.vectorScale);
 	}
 	else {
 		tempSprite.setScale(sf::Vector2f(aSprite.scale, aSprite.scale));
 	}
+	if (aSprite.isUI){
+		sf::Vector2f tempOrigin = tempSprite.getOrigin();
+		                                    
+		sf::Vector2f newWindowZeroPoint = -((sf::Vector2f(m_window->getSize()) * AnimatorSprite::zoom) - sf::Vector2f(m_window->getSize())) / 2.f;
+		tempSprite.setPosition((tempSprite.getPosition()) * AnimatorSprite::zoom + aSprite.UIDisplacement);
+		tempSprite.setOrigin(newWindowZeroPoint);
+		tempSprite.move(newWindowZeroPoint);
+		tempSprite.scale(sf::Vector2f(AnimatorSprite::zoom, AnimatorSprite::zoom));
+		
+		tempSprite.setOrigin(tempOrigin);
+	}
 	
-	tempSprite.setRotation(aSprite.rotation);
 
 	return tempSprite;
 }
@@ -173,6 +187,7 @@ void Animator::addOneFrameSprite(const AnimatorSprite &aSprite)
 		m_spritesToDraw.resize(aSprite.drawLayer + 1);
 	}
 	if (aSprite.isActive) {
+
 		m_spritesToDraw[aSprite.drawLayer].push(m_getSprite(aSprite));
 	}
 	m_allLock.unlock();
@@ -327,7 +342,7 @@ void Animator::draw()
 	m_allLock.unlock();
 }
 
-void Animator::instantDraw(AnimatorSprite aSprite)
+void Animator::instantDraw(const AnimatorSprite &aSprite)
 {
 	m_window->draw(m_getSprite(aSprite));
 }

@@ -77,6 +77,7 @@ private:
 public:
 	MenuItem(sf::Rect<float>);
 
+
 	void clearBehaviours();
 
 	void setHasClickTimer(bool);

@@ -1,7 +1,10 @@
 #include "Gear.h"
 #include <fstream>
+#include <random>
 #include "Animator.h"
+#include "InGameMessages.h"
 
+size_t bodyPartOrMove::m_uniqueIDCounter = 0;
 
 void combatModule::createFrom(const decomposedData& DData)
 {
@@ -69,9 +72,21 @@ decomposedData combatModule::serialize()
 	return tempDData;
 }
 
+//
+//
+//
+//
+//TODO, make combat more indepth
 void combatModule::attack(combatModule *cModule)
 {
+	static size_t timesFunctionCalled = 1;
+
+	lineMessage inGameMessage;
+	inGameMessage.message = to_string(timesFunctionCalled);
+	inGameMessage.messageColor = sf::Color(255%timesFunctionCalled,0,0,255);
+	InGameMessages::getInstance().addLine(inGameMessage);
 	cModule->hitpoints -= damage;
+	timesFunctionCalled += 10;
 }
 
 combatModule::combatModule(bool initToZero): Serializable()
@@ -97,6 +112,27 @@ combatModule::combatModule(bool initToZero): Serializable()
 
 combatModule::combatModule(): Serializable()
 {
+}
+
+size_t combatModule::addBodyPartOrMove(const bodyPartOrMove &BPOM)
+{
+	m_bodyPartsOrMoves.push_back(std::pair<size_t, bodyPartOrMove>(bodyPartOrMove::m_uniqueIDCounter, BPOM));
+	return bodyPartOrMove::m_uniqueIDCounter++;
+}
+
+void combatModule::removeBodyPartOrMove(size_t ID)
+{
+	for (size_t i = 0; i < m_bodyPartsOrMoves.size(); i++)
+	{
+		if (m_bodyPartsOrMoves[i].first == ID) {
+			m_bodyPartsOrMoves.erase(m_bodyPartsOrMoves.begin()+i);
+		}
+	}
+}
+
+std::vector<std::pair<size_t, bodyPartOrMove>> combatModule::getBodyPartsOrMoves() const
+{
+	return m_bodyPartsOrMoves;
 }
 
 void combatModule::update(float timeDelta)
@@ -197,6 +233,9 @@ void GearPiece::equipGearPiece(combatModule *target) const
 	target->inaccuracy += cModule.inaccuracy;
 	target->magSize += cModule.magSize;
 	target->reloadTime += cModule.reloadTime;
+
+	
+	target->m_bodyPartsOrMoves.insert(target->m_bodyPartsOrMoves.begin(),cModule.m_bodyPartsOrMoves.begin(), cModule.m_bodyPartsOrMoves.end());
 }
 
 void GearPiece::unequipGearPiece(combatModule *target) const
@@ -220,8 +259,19 @@ void GearPiece::unequipGearPiece(combatModule *target) const
 	target->inaccuracy -= cModule.inaccuracy;
 	target->magSize -= cModule.magSize;
 	target->reloadTime -= cModule.reloadTime;
-}
 
+	for (size_t i = 0; i < target->m_bodyPartsOrMoves.size(); i++)
+	{
+		for (size_t o = 0; o < cModule.m_bodyPartsOrMoves.size(); o++)
+		{
+			if (target->m_bodyPartsOrMoves[i].first == cModule.m_bodyPartsOrMoves[o].first) {
+				target->m_bodyPartsOrMoves.erase(target->m_bodyPartsOrMoves.begin()+i);
+			}
+		}
+	}
+}
+  
 GearPiece::~GearPiece()
 {
 }
+

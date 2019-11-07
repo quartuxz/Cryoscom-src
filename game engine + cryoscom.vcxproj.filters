@@ -168,9 +168,6 @@
     <ClCompile Include="LevelMaker.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>Source Files\manager/container classes</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\collision and units\tiles</Filter>
     </ClCompile>
@@ -180,11 +177,14 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\collision and units</Filter>
     </ClCompile>
-    <ClCompile Include="tileMapGenerator.cpp">
-      <Filter>Source Files\collision and units\tiles</Filter>
-    </ClCompile>
     <ClCompile Include="LootTable.cpp">
       <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelGenerator.cpp">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameMessages.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +269,6 @@
     <ClInclude Include="LevelMaker.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>Source Files\manager/container classes</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Source Files\collision and units\tiles</Filter>
     </ClInclude>
@@ -281,11 +278,14 @@
     <ClInclude Include="Wall.h">
       <Filter>Source Files\collision and units</Filter>
     </ClInclude>
-    <ClInclude Include="tileMapGenerator.h">
-      <Filter>Source Files\collision and units\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="LootTable.h">
       <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelGenerator.h">
+      <Filter>Source Files\collision and units\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameMessages.h">
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -446,11 +446,14 @@
     <Text Include="map2.txt">
       <Filter>Resource Files\txt\maps\map files\old</Filter>
     </Text>
-    <Text Include="master.txt">
-      <Filter>Resource Files\txt\maps</Filter>
-    </Text>
     <Text Include="oldMap2.txt">
       <Filter>Resource Files\txt\maps\map files\old</Filter>
+    </Text>
+    <Text Include="inventorySave.txt">
+      <Filter>Resource Files\txt\misc</Filter>
+    </Text>
+    <Text Include="master.txt">
+      <Filter>Resource Files\txt</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

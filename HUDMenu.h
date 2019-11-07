@@ -11,6 +11,7 @@ private:
 
 	std::vector<skillParam*> m_usedSkills;
 	size_t m_hotbarSlotsNumber = 10;
+	float m_inGameTextCharSize = 0.02;
 public:
 	using Menu::Menu;
 

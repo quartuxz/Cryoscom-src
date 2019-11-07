@@ -58,7 +58,7 @@ size_t PlayerInventory::addItemToInventory(inventoryItem& item)
 	for (size_t i = 0; i < m_items.size(); i++)
 	{
 		if (m_items[i].itemType == emptySlot) {
-
+			item.itemASprite.isUI = true;
 			m_menuItems[i].fitASpriteToItem(&item.itemASprite);
 			//item.itemASprite.position = m_menuItems[i].getPosition();
 			
@@ -85,19 +85,22 @@ void PlayerInventory::onDraw(bool beforeDraw, sf::Vector2f displacement)
 		for (size_t i = 0; i < m_items.size(); i++)
 		{
 			if (m_items[i].itemType != emptySlot) {
-				m_items[i].itemASprite.position += displacement;
+				//m_items[i].itemASprite.position += displacement;
+				m_items[i].itemASprite.UIDisplacement = displacement;
 				Animator::getInstance().instantDraw(m_items[i].itemASprite);
-				m_items[i].itemASprite.position -= displacement;
+				//m_items[i].itemASprite.position -= displacement;
 			}
 		}
 		for (auto &x : m_playerGear)
 		{
-			x.second.tex.position += displacement;
+			//x.second.tex.position += displacement;
+			x.second.tex.UIDisplacement = displacement;
 			Animator::getInstance().instantDraw(x.second.tex);
-			x.second.tex.position -= displacement;
+			//x.second.tex.position -= displacement;
 		}
 		if (m_toDrawToolTip != nullptr) {
-			m_toDrawToolTip->setPosition(m_toDrawToolTip->getPosition() + displacement);
+			m_toDrawToolTip->setPosition(m_toDrawToolTip->getPosition());
+			m_toDrawToolTip->setViewDisplacement(displacement);
 			m_toDrawToolTip->draw(*m_window);
 			m_toDrawToolTip = nullptr;
 		}
@@ -120,7 +123,7 @@ void PlayerInventory::createStaticMenuLayout()
 			inventoryItem tempInventoryItem;
 			tempInventoryItem.itemType = emptySlot;
 			m_items.push_back(tempInventoryItem);
-			MenuItem tempMenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(float(i)*menuItemSize.x + invStart.x,float(o)*menuItemSize.y + invStart.y)), getPixelCoordinate(menuItemSize)));
+			MenuItem tempMenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(float(i)*menuItemSize.x + invStart.x,float(o)*menuItemSize.y + invStart.y),true), getPixelCoordinate(menuItemSize)));
 			AnimatorSprite tempASprite;
 			tempASprite.textureID = Animator::getInstance().getTextureID("Inventory-Slot (Empty).png");
 			tempMenuItem.setTexture(tempASprite);
@@ -129,35 +132,35 @@ void PlayerInventory::createStaticMenuLayout()
 		}
 	}
 	//helmet m_maxColumns*m_maxRows + 1
-	MenuItem helmetSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x-menuItemSize.x, invStart.y)), getPixelCoordinate(menuItemSize)));
+	MenuItem helmetSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x-menuItemSize.x, invStart.y),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite helmetSlotASprite;
 	helmetSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Helmet.png");
 	helmetSlot.setTexture(helmetSlotASprite);
 	m_menuItems.push_back(helmetSlot);
 
 	//chestPiece
-	MenuItem chestpieceSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y)), getPixelCoordinate(menuItemSize)));
+	MenuItem chestpieceSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite chestPieceSlotASprite;
 	chestPieceSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Chest Armor.png");
 	chestpieceSlot.setTexture(chestPieceSlotASprite);
 	m_menuItems.push_back(chestpieceSlot);
 
 
-	MenuItem jumpSuitSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*2)), getPixelCoordinate(menuItemSize)));
+	MenuItem jumpSuitSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*2),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite jumpSuitSlotASprite;
 	jumpSuitSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Jumpsuit.png");
 	jumpSuitSlot.setTexture(jumpSuitSlotASprite);
 	m_menuItems.push_back(jumpSuitSlot);
 
 
-	MenuItem bootsSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*3)), getPixelCoordinate(menuItemSize)));
+	MenuItem bootsSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*3),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite bootsSlotASprite;
 	bootsSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Boots.png");
 	bootsSlot.setTexture(bootsSlotASprite);
 	m_menuItems.push_back(bootsSlot);
 
 	//weapon
-	MenuItem weaponSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(0.05, 0.55)), getPixelCoordinate(menuItemSize)));
+	MenuItem weaponSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(0.05, 0.55),true), getPixelCoordinate(menuItemSize)));
 
 	m_menuItems.push_back(weaponSlot);
 
@@ -250,6 +253,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				m_items[clickedMenuItemIndex].itemToolTip.setTexture(tempASprite);
 				m_items[clickedMenuItemIndex].itemToolTip.setPosition(m_menuItems[clickedMenuItemIndex].getPosition() + m_menuItems[clickedMenuItemIndex].getDimension());
 				m_toDrawToolTip = &m_items[clickedMenuItemIndex].itemToolTip;
+				m_toDrawToolTip->setIsUIElement(true);
 			}
 		}
 
@@ -295,12 +299,26 @@ void PlayerInventory::m_addGearToPlayer(const GearPiece& gearPiece)
 {
 	size_t tempMenuID = m_maxColumns * m_maxRows + gearPiece.type;
 	m_playerGear[gearPiece.type] = gearPiece;
+	m_playerGear[gearPiece.type].tex.isUI = true;
 	m_menuItems[tempMenuID].fitASpriteToItem(&m_playerGear[gearPiece.type].tex);
 	
 }
 
-void PlayerInventory::createFrom(const decomposedData&)
+void PlayerInventory::createFrom(const decomposedData& dData)
 {
+	decomposedData tempDData = dData;
+	for (size_t i = 0; i < tempDData.childrenObjects.size(); i++)
+	{
+		if (tempDData.childrenObjects[i].type == "inventoryItem") {
+			inventoryItem tempInventoryItem;
+			tempInventoryItem.createFrom(tempDData.childrenObjects[i]);
+			if (tempInventoryItem.itemType != emptySlot) {
+				addItemToInventory(tempInventoryItem);
+			}
+			
+			
+		}
+	}
 }
 
 decomposedData PlayerInventory::serialize()

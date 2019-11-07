@@ -164,34 +164,13 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 {
 	mutexLock.lock();
 	if (tokens[0] == "spawnPoint") {
-		constexpr unsigned int displacementScale = 1;
-
-		unsigned int enemies = std::atoi(tokens[1].c_str());
 		std::vector<std::string> enemyFileName;
 		for (size_t i = 4; i < tokens.size(); i++)
 		{
 			enemyFileName.push_back(tokens[i]);
 		}
 
-		for (size_t i = 0; i < enemies; i++)
-		{
-			size_t lastEnemyUnitID = m_AIs.size();
-			createFromFile(enemyFileName[rand() % enemyFileName.size()]);
-			for (size_t o = lastEnemyUnitID; o < m_AIs.size(); o++)
-			{
-				//((rand() % (displacementScale * 10)) / displacementScale) * ((rand() % 2) ? -1 : 1)
-				const float microDisplacementX = (rand() % enemies);
-				const float microDisplacementY = (rand() % enemies);
-				m_AIs[o]->getUnit()->move(sf::Vector2f((std::atof(tokens[2].c_str()) * m_levelScale) + microDisplacementX, (std::atof(tokens[3].c_str()) * m_levelScale) + microDisplacementY));
-				for (size_t p = 0; p < m_AIs.size(); p++) {
-					m_AIs[o]->getUnit()->collideOne(m_AIs[p]->getUnit());
-				}
-
-			}
-		}
-		while (false) {
-			//std::cout << m_AIs.size() << std::endl;
-		}
+		spawnPoint(ma_deserialize_int(tokens[1]), sf::Vector2f(ma_deserialize_float(tokens[2]), ma_deserialize_float(tokens[3])), enemyFileName);
 
 	}
 
@@ -284,61 +263,33 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 	}
 	else
 	if (tokens[0] == "player") {
-		std::vector<std::pair<sf::Vector2f, float>> unitBody;
-		unitBody.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(std::atof(tokens[1].c_str()) * m_levelScale, std::atof(tokens[2].c_str()) * m_levelScale), std::atof(tokens[3].c_str())));
-		m_player = new unit(unitBody);
-		m_player->typeOfUnit = playerType;
-		m_player->setWeight(std::atof(tokens[4].c_str()));
-		if (tokens.size() > 5) {
-			AnimatorSprite tempASprtie;
-			tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[5]);
 
-			m_player->setAnimatorSprite(tempASprtie);
+		m_player = makePlayer(sf::Vector2f(ma_deserialize_float(tokens[1]), ma_deserialize_float(tokens[2])), ma_deserialize_float(tokens[3]), ma_deserialize_float(tokens[4]));
+
+		
+
+	}
+	else
+	if (tokens[0] == "bulletTexture") {
+		AnimatorSprite tempASprtie;
+		tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[1]);
+
+		if (m_playerWeapon == nullptr) {
+			m_playerWeapon = new Weapon(m_player);
 		}
-		//m_player->animatorValues.usingCompositeTextures = false;
-		/*AnimatorSprite tempASprite;
-		tempASprite.textureID = 1;
-		m_player->setAnimatorSprite(tempASprite);
-		mutexLock.unlock();
-		return;*/
-		m_player->animatorValues.back_left_idle.textureID = Animator::getInstance().getTextureID("player_back_left_idle.png");
-		m_player->animatorValues.back_left_idle.drawLayer = 2;
-		m_player->animatorValues.back_right_idle.textureID = Animator::getInstance().getTextureID("player_back_right_idle.png");
-		m_player->animatorValues.back_right_idle.drawLayer = 2;
-		m_player->animatorValues.front_left_idle.textureID = Animator::getInstance().getTextureID("player_front_left_idle.png");
-		m_player->animatorValues.front_left_idle.drawLayer = 2;
-		m_player->animatorValues.front_right_idle.textureID = Animator::getInstance().getTextureID("player_front_right_idle.png");
-		m_player->animatorValues.front_right_idle.drawLayer = 2;
-		m_player->animatorValues.front_right_walking = Animator::getInstance().getAnimationPresetID("player_front_right_walk");
-		m_player->animatorValues.front_left_walking = Animator::getInstance().getAnimationPresetID("player_front_left_walk");
-		m_player->animatorValues.back_right_walking = Animator::getInstance().getAnimationPresetID("player_back_right_walk");
-		m_player->animatorValues.back_left_walking = Animator::getInstance().getAnimationPresetID("player_back_left_walk");
-		m_player->animatorValues.usingCompositeTextures = true;
-		m_player->animatorValues.hasWalking = true;
-		m_player->animatorValues.hasRunning = false;
 
+		for (size_t i = 2; i < tokens.size(); i++)
+		{
+			if (std::atoi(tokens[i].c_str()) == -1) {
+				m_playerWeapon->setbulletAnimatorTex(tempASprtie);
+			}
+			else {
+				if (m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->getWeapon() == nullptr) {
+					m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->setWeapon(new Weapon(m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->getUnit()));
+				}
+				m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->getWeapon()->setbulletAnimatorTex(tempASprtie);
+			}
 		}
-		else
-		if (tokens[0] == "bulletTexture") {
-			AnimatorSprite tempASprtie;
-			tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[1]);
-
-			if (m_playerWeapon == nullptr) {
-				m_playerWeapon = new Weapon(m_player);
-			}
-
-			for (size_t i = 2; i < tokens.size(); i++)
-			{
-				if (std::atoi(tokens[i].c_str()) == -1) {
-					m_playerWeapon->setbulletAnimatorTex(tempASprtie);
-				}
-				else {
-					if (m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->getWeapon() == nullptr) {
-						m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->setWeapon(new Weapon(m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->getUnit()));
-					}
-					m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[i].c_str())]->getWeapon()->setbulletAnimatorTex(tempASprtie);
-				}
-			}
 
 
 	}else
@@ -367,13 +318,9 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 		m_lootTable.createFromFile(tokens[1]);
 	}
 	else if (tokens[0] == "tileMap") {
+		
 		m_tileMap.createFromFile(tokens[1]);
-		std::vector<Wall> tempTileWalls = m_tileMap.getWallRep();
-		for (size_t i = 0; i < tempTileWalls.size(); i++)
-		{
-			m_map->addWall(tempTileWalls[i]);
-		}
-
+		setTileMap(m_tileMap);
 		
 		
 	}
@@ -754,12 +701,18 @@ unsigned int UnitManager::addToolTip(ToolTip *toolTip)
 	return retVal;
 }
 
-Weapon * UnitManager::getWeapon()
+Weapon * UnitManager::getWeapon()const
 {
 	return m_playerWeapon;
 }
 
-unit * UnitManager::getPlayer()
+void UnitManager::setWeapon(Weapon *weapon)
+{
+	m_playerWeapon = weapon;
+	m_playerWeapon->setWieldingUnit(m_player);
+}
+
+unit * UnitManager::getPlayer()const
 {
 	return m_player;
 }
@@ -803,11 +756,49 @@ unit * UnitManager::getPlayer()
 //	mutexLock.unlock();
 //}
 
+TileMap UnitManager::getTileMap() const
+{
+	return m_tileMap;
+}
+
+void UnitManager::setTileMap(const TileMap &tileMap)
+{
+	m_tileMap = tileMap;
+	std::vector<Wall> tempTileWalls = m_tileMap.getWallRep();
+	for (size_t i = 0; i < tempTileWalls.size(); i++)
+	{
+		m_map->addWall(tempTileWalls[i]);
+	}
+}
+
 void UnitManager::addAI(EnemyAI *newAI)
 {
 	mutexLock.lock();
 	m_AIs.push_back(newAI);
 	mutexLock.unlock();
+}
+
+void UnitManager::spawnPoint(int enemies, sf::Vector2f pos, std::vector<std::string> enemyFileName)
+{
+	constexpr unsigned int displacementScale = 1;
+
+
+	for (size_t i = 0; i < enemies; i++)
+	{
+		size_t lastEnemyUnitID = m_AIs.size();
+		createFromFile(enemyFileName[rand() % enemyFileName.size()]);
+		for (size_t o = lastEnemyUnitID; o < m_AIs.size(); o++)
+		{
+			//((rand() % (displacementScale * 10)) / displacementScale) * ((rand() % 2) ? -1 : 1)
+			const float microDisplacementX = (rand() % enemies);
+			const float microDisplacementY = (rand() % enemies);
+			m_AIs[o]->getUnit()->move(sf::Vector2f(pos.x + microDisplacementX, pos.y + microDisplacementY));
+			for (size_t p = 0; p < m_AIs.size(); p++) {
+				m_AIs[o]->getUnit()->collideOne(m_AIs[p]->getUnit());
+			}
+
+		}
+	}
 }
 
 void UnitManager::setPlayer(unit *playerUnit)
@@ -851,4 +842,41 @@ UnitManager::~UnitManager()
 		delete m_toolTips[i].first;
 	}
 	mutexLock.unlock();
+}
+
+unit *makePlayer(sf::Vector2f pos, float radius, float weight)
+{
+	std::vector<std::pair<sf::Vector2f, float>> unitBody;
+	unitBody.push_back(std::pair<sf::Vector2f, float>(pos, radius));
+	unit *retVal = new unit(unitBody);
+	retVal->typeOfUnit = playerType;
+	retVal->setWeight(weight);
+	/*if (tokens.size() > 5) {
+		AnimatorSprite tempASprtie;
+		tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[5]);
+
+		retVal->setAnimatorSprite(tempASprtie);
+	}*/
+	//m_player->animatorValues.usingCompositeTextures = false;
+	/*AnimatorSprite tempASprite;
+	tempASprite.textureID = 1;
+	m_player->setAnimatorSprite(tempASprite);
+	mutexLock.unlock();
+	return;*/
+	retVal->animatorValues.back_left_idle.textureID = Animator::getInstance().getTextureID("player_back_left_idle.png");
+	retVal->animatorValues.back_left_idle.drawLayer = 2;
+	retVal->animatorValues.back_right_idle.textureID = Animator::getInstance().getTextureID("player_back_right_idle.png");
+	retVal->animatorValues.back_right_idle.drawLayer = 2;
+	retVal->animatorValues.front_left_idle.textureID = Animator::getInstance().getTextureID("player_front_left_idle.png");
+	retVal->animatorValues.front_left_idle.drawLayer = 2;
+	retVal->animatorValues.front_right_idle.textureID = Animator::getInstance().getTextureID("player_front_right_idle.png");
+	retVal->animatorValues.front_right_idle.drawLayer = 2;
+	retVal->animatorValues.front_right_walking = Animator::getInstance().getAnimationPresetID("player_front_right_walk");
+	retVal->animatorValues.front_left_walking = Animator::getInstance().getAnimationPresetID("player_front_left_walk");
+	retVal->animatorValues.back_right_walking = Animator::getInstance().getAnimationPresetID("player_back_right_walk");
+	retVal->animatorValues.back_left_walking = Animator::getInstance().getAnimationPresetID("player_back_left_walk");
+	retVal->animatorValues.usingCompositeTextures = true;
+	retVal->animatorValues.hasWalking = true;
+	retVal->animatorValues.hasRunning = false;
+	return retVal;
 }

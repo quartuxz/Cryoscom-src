@@ -28,6 +28,7 @@
     <ClCompile Include="Gear.cpp" />
     <ClCompile Include="globalMutexes.cpp" />
     <ClCompile Include="HUDMenu.cpp" />
+    <ClCompile Include="InGameMessages.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelMaker.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -44,9 +45,8 @@
     <ClCompile Include="serializationUtils.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
-    <ClCompile Include="tileMapGenerator.cpp" />
+    <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="ToolTip.cpp" />
-    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="unitManager.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -63,6 +63,7 @@
     <ClInclude Include="Gear.h" />
     <ClInclude Include="globalMutexes.h" />
     <ClInclude Include="HUDMenu.h" />
+    <ClInclude Include="InGameMessages.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelMaker.h" />
     <ClInclude Include="Logger.h" />
@@ -79,9 +80,8 @@
     <ClInclude Include="serializationUtils.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMap.h" />
-    <ClInclude Include="tileMapGenerator.h" />
+    <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="ToolTip.h" />
-    <ClInclude Include="UIManager.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="unitManager.h" />
     <ClInclude Include="Wall.h" />
@@ -132,6 +132,7 @@
     <Text Include="bugfixes_improvements.txt" />
     <Text Include="enemy_test.txt" />
     <Text Include="initial_progression.txt" />
+    <Text Include="inventorySave.txt" />
     <Text Include="large_map.txt" />
     <Text Include="loaded_textures.txt" />
     <Text Include="lootTable1.txt" />

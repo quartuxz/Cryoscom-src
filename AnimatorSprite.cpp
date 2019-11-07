@@ -1,11 +1,44 @@
 #include "AnimatorSprite.h"
 #include "Animator.h"
 
-
+float AnimatorSprite::zoom = 1;
 
 AnimatorSprite::AnimatorSprite() :
 	textureID(0)
 {
+}
+
+void AnimatorSprite::scaleToMatch(rescaleTypes rescaleType, float size)
+{
+	switch (rescaleType)
+	{
+	case fitX:
+		usesVectorScale = false;
+		scale = size / Animator::getInstance().getTexture(textureID)->getSize().x;
+		break;
+	case fitY:
+		usesVectorScale = false;
+		scale = size / Animator::getInstance().getTexture(textureID)->getSize().y;
+		break;
+	case fitMin:
+		usesVectorScale = false;
+		scale = std::min(size / Animator::getInstance().getTexture(textureID)->getSize().x, size / Animator::getInstance().getTexture(textureID)->getSize().y);
+		break;
+	case fitDistorted:
+		usesVectorScale = true;
+		vectorScale.x = size / Animator::getInstance().getTexture(textureID)->getSize().x;
+		vectorScale.y = size / Animator::getInstance().getTexture(textureID)->getSize().y;
+		break;
+	default:
+		break;
+	}
+}
+
+void AnimatorSprite::scaleToMatch(sf::Vector2f size)
+{
+	usesVectorScale = true;
+	vectorScale.x = size.x / Animator::getInstance().getTexture(textureID)->getSize().x;
+	vectorScale.y = size.y / Animator::getInstance().getTexture(textureID)->getSize().y;
 }
 
 void AnimatorSprite::createFrom(const decomposedData &DData)

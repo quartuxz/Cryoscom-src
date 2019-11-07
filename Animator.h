@@ -12,6 +12,19 @@
 #include "ToolTip.h"
 
 
+inline sf::Text zoomText(const sf::Text &text, sf::RenderWindow *window, sf::Vector2f viewDisplacement) {
+	sf::Text  tempText = text;
+	sf::Vector2f lastPos = tempText.getPosition();
+	sf::Vector2f lastOrigin = tempText.getOrigin();
+
+	sf::Vector2f newWindowZeroPoint = -((sf::Vector2f(window->getSize()) * AnimatorSprite::zoom) - sf::Vector2f(window->getSize())) / 2.f;
+	tempText.setPosition((lastPos)* AnimatorSprite::zoom + viewDisplacement);
+	tempText.setOrigin(newWindowZeroPoint);
+	tempText.move(newWindowZeroPoint);
+	tempText.scale(sf::Vector2f(AnimatorSprite::zoom, AnimatorSprite::zoom));
+	tempText.setOrigin(lastOrigin);
+	return tempText;
+}
 
 class Animator
 {
@@ -24,6 +37,8 @@ public:
 	}
 private:
 	Animator() {}                    // Constructor? (the {} brackets) are needed here.
+
+	float nonUIScale = 2;
 
 	sf::RenderWindow *m_window;
 
@@ -62,7 +77,7 @@ private:
 
 	unsigned int m_TextureIDCounter = 0;
 
-	sf::Sprite m_getSprite(AnimatorSprite);
+	sf::Sprite m_getSprite(const AnimatorSprite&);
 
 	std::map<std::string, unsigned int> m_namedAnimations;
 
@@ -127,7 +142,7 @@ public:
 	//draws all curent sprites, with render layer consideration 
 	void draw();
 
-	void instantDraw(AnimatorSprite);
+	void instantDraw(const AnimatorSprite&);
 
 	~Animator();
 };

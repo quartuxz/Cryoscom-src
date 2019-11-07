@@ -103,7 +103,22 @@ void GameMain::spawnWindow(std::string fontFile)
 	m_playerInventory = new PlayerInventory(m_window);
 	m_gameMenus["inventory"] = m_playerInventory;
 	m_gameMenus["inventory"]->createStaticMenuLayout();
-	GearPiece tempGearPiece;
+
+
+	ifstream inFile;
+	inFile.open("inventorySave.txt", std::ifstream::app);
+	std::string line;
+	getline(inFile, line);
+	if (line != "") {
+		decomposedData tempInvDData;
+		tempInvDData.createFrom(line);
+		m_playerInventory->createFrom(tempInvDData);
+	}
+	
+	inFile.close();
+
+	//inventory test bed
+	/*GearPiece tempGearPiece;
 	tempGearPiece.cModule = combatModule(true);
 	tempGearPiece.cModule.moveSpeed = 500;
 	AnimatorSprite gearASprite;
@@ -115,7 +130,10 @@ void GameMain::spawnWindow(std::string fontFile)
 	gearASprite.textureID = Animator::getInstance().getTextureID("player.png");
 	tempGearPiece.tex = gearASprite;
 	tempGearPiece.cModule.moveSpeed = 999999999999;
-	m_playerInventory->addItemToInventory(tempGearPiece);
+	m_playerInventory->addItemToInventory(tempGearPiece);*/
+	//
+
+
 	//Animator::getInstance().setWindow(&m_window);
 	//Animator::getInstance().addTexture("player.png");
 	m_HUDMenu = new HUDMenu(m_window);
@@ -251,8 +269,8 @@ void GameMain::onProgramEnd()
 	//m_currentLevel->saveGearProgression();
 	Animator::getInstance().draw();
 
-	fstream outFile;
-	outFile.open("progression.txt");
+	ofstream outFile;
+	outFile.open("inventorySave.txt", std::ofstream::trunc);
 	outFile << m_playerInventory->serialize().serialize() << std::endl;
 	outFile.close();
 
@@ -388,12 +406,16 @@ void GameMain::gameLoop()
 
 	sf::Vector2f lastPlayerPos = m_currentLevel->getPlayer()->getPosition();
 	sf::View view;
+	
 
 	view.setSize(sf::Vector2f(m_window->getSize()));
 	view.setCenter(sf::Vector2f(m_window->getSize().x / 2, m_window->getSize().y / 2));
 
 	view.move(-sf::Vector2f(m_window->getSize().x / 2, m_window->getSize().y / 2));
 	view.move(m_currentLevel->getPlayer()->getBody()[0].first);
+
+	view.zoom(1);
+	AnimatorSprite::zoom = 1;
 
 	m_viewDisplacement += -sf::Vector2f(m_window->getSize().x / 2, m_window->getSize().y / 2);
 	m_viewDisplacement += m_currentLevel->getPlayer()->getBody()[0].first;
@@ -756,19 +778,35 @@ void GameMain::gameLoop()
 
 		if (m_isPaused) {
 
+			sf::Vector2f newWindowZeroPoint = -((sf::Vector2f(m_window->getSize()) * AnimatorSprite::zoom) - sf::Vector2f(m_window->getSize())) / 2.f;
+
 			sf::Sprite capturedBackground;
-			capturedBackground.move(m_viewDisplacement);
+			sf::Vector2f lastOrigin = capturedBackground.getOrigin();
+			//capturedBackground.move(m_viewDisplacement);
 			capturedBackground.setTexture(screenShot);
-			sf::Texture tempTexture;
-			tempTexture.loadFromImage(lastWindowState);
-			sf::Sprite tempSprite;
-			tempSprite.move(m_viewDisplacement);
-			tempSprite.setTexture(tempTexture);
+
+
+			capturedBackground.setPosition(capturedBackground.getPosition()*AnimatorSprite::zoom+m_viewDisplacement);
+			capturedBackground.setOrigin(newWindowZeroPoint);
+			capturedBackground.move(newWindowZeroPoint);
+			capturedBackground.scale(sf::Vector2f(1, 1)* AnimatorSprite::zoom);
+			capturedBackground.setOrigin(lastOrigin);
+
+
+
 			sf::RectangleShape tempRect;
+			lastOrigin = tempRect.getOrigin();
+			//tempRect.move(m_viewDisplacement);
 			tempRect.setFillColor(sf::Color(100,100,100, 100));
 			tempRect.setSize(sf::Vector2f(m_window->getSize()));
-			tempRect.move(m_viewDisplacement);
-			m_window->draw(tempSprite);
+
+
+			tempRect.setPosition(tempRect.getPosition()*AnimatorSprite::zoom+m_viewDisplacement);
+			tempRect.setOrigin(newWindowZeroPoint);
+			tempRect.move(newWindowZeroPoint);
+			tempRect.scale(sf::Vector2f(1,1)*AnimatorSprite::zoom);
+			tempRect.setOrigin(lastOrigin);
+			
 			m_window->draw(capturedBackground);
 			m_window->draw(tempRect);
 		}
@@ -784,6 +822,7 @@ void GameMain::gameLoop()
 
 		view.move(m_currentLevel->getPlayer()->getPosition() - lastPlayerPos);
 		m_viewDisplacement += (m_currentLevel->getPlayer()->getPosition() - lastPlayerPos);
+		
 		m_window->setView(view);
 
 		//AnimatorSprite tempSprite = AnimatorSprite::AnimatorSprite(0);
