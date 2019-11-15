@@ -7,6 +7,7 @@
 struct lineMessage {
 	std::string message;
 	sf::Color messageColor;
+	bool isImportantMessage = false;
 };
 
 class InGameMessages
@@ -18,12 +19,18 @@ public:
 	}
 private:
 	InGameMessages(){}
-	std::queue<lineMessage> m_lines;
-	size_t m_currentLines = 0;
+	std::queue<lineMessage> m_allLines;
+	std::queue<lineMessage> m_importantLines;
+	size_t m_currentAllLines = 0;
+	size_t m_currentImportantLines;
+	bool m_showOnlyImportantLines = false;
 	size_t m_lineCap = 15;
 public:
 	InGameMessages(InGameMessages const&) = delete;
 	void operator=(InGameMessages const&) = delete;
+
+	void setShowOnlyImportantLines(bool);
+	bool getShowOnlyImportantLines()const;
 
 	void addLine(lineMessage);
 	void setLineCap(size_t);

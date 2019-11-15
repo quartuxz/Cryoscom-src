@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-void InputManager::m_addEventToQueue(const InputEvent &IE)
+void InputManager::addEventToQueue(const InputEvent &IE)
 {
 	m_allLock.lock();
 	m_IOEvents.push(IE);
@@ -12,6 +12,9 @@ void InputManager::m_addEventToQueue(const InputEvent &IE)
 std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()const
 {
 	std::vector<InputManager::InputEventTypes> retVal;
+	if (m_isWindowOutOfFocus) {
+		return retVal;
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
 		retVal.push_back(shiftKeyPressed);
 	}
@@ -64,6 +67,9 @@ std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()c
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
 		retVal.push_back(hotbar5);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+		retVal.push_back(showImportantLinesKeyPressed);
+	}
 
 
 	//from down here until the end, only mouse events
@@ -86,18 +92,36 @@ void InputManager::m_waitForEvents()
 	//m_window->setFramerateLimit(60);
 	m_window->setActive(false);
 	m_isWindowCreated = true;
+
+	
+
 	std::cout << "wait loop started"<< std::endl;
 
 	while (m_window->waitEvent(event)) {
 		if (m_isProgramTerminated) {
 			return;
 		}
-		std::cout << m_isProgramTerminated << " ,not ending" << std::endl;
+
+
+		if (event.type == sf::Event::LostFocus) {
+			addEventToQueue(windowOutOfFocus);
+			m_isWindowOutOfFocus = true;
+		}
+		if (event.type == sf::Event::GainedFocus) {
+			m_isWindowOutOfFocus = false;
+		}
 
 		if (event.type == sf::Event::Closed) {
 			//m_window->close();
-			m_addEventToQueue(windowClosed);
+			addEventToQueue(windowClosed);
 		}
+
+		if (m_isWindowOutOfFocus) {
+			continue;
+		}
+
+		
+		
 
 		if (event.type == sf::Event::KeyPressed) {
 			std::vector<InputEventTypes> pressedEvents = m_getKeyPressedEvent();
@@ -112,29 +136,29 @@ void InputManager::m_waitForEvents()
 				}
 				if (shiftPressed) {
 					if (pressedEvents[i] == moveForward) {
-						m_addEventToQueue(dashForward);
+						addEventToQueue(dashForward);
 					}else if (pressedEvents[i] == moveBackward) {
-						m_addEventToQueue(dashBackward);
+						addEventToQueue(dashBackward);
 					}else if (pressedEvents[i] == moveLeft) {
-						m_addEventToQueue(dashLeft);
+						addEventToQueue(dashLeft);
 					}else if (pressedEvents[i] == moveRight) {
-						m_addEventToQueue(dashRight);
+						addEventToQueue(dashRight);
 					}
 				}
 				
-				m_addEventToQueue(pressedEvents[i]);
+				addEventToQueue(pressedEvents[i]);
 			}
 		}
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-				m_addEventToQueue(useItem);
+				addEventToQueue(useItem);
 			}
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				m_addEventToQueue(shoot);
+				addEventToQueue(shoot);
 			}
 		}
 		if (event.type == sf::Event::KeyReleased) {
-			m_addEventToQueue(generalKeyReleased);
+			addEventToQueue(generalKeyReleased);
 		}
 	}
 	

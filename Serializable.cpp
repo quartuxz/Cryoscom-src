@@ -159,8 +159,13 @@ std::string ma_serialize<float>(float val){
 }
 
 
+template<>
+float ma_deserialize(std::string data) {
+	return std::atof(data.c_str());
+}
+
 float ma_deserialize_float(std::string data){
-    return std::atof(data.c_str());
+    return ma_deserialize<float>(data);
 }
 
 
@@ -170,8 +175,13 @@ std::string ma_serialize<int>(int val){
 }
 
 
+template<>
+int ma_deserialize(std::string data) {
+	return std::atoi(data.c_str());
+}
+
 int ma_deserialize_int(std::string data){
-    return std::atoi(data.c_str());
+    return ma_deserialize<int>(data);
 }
 
 template<>
@@ -180,8 +190,13 @@ std::string ma_serialize(unsigned int val)
 	return std::to_string(val);
 }
 
-unsigned int ma_deserialize_uint(std::string data) {
+template<>
+unsigned int ma_deserialize(std::string data) {
 	return std::atoi(data.c_str());
+}
+
+unsigned int ma_deserialize_uint(std::string data) {
+	return ma_deserialize<unsigned int>(data);
 }
 
 Serializable::~Serializable()

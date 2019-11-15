@@ -5,8 +5,6 @@
 #include "Wall.h"
 #include "unit.h"
 
-float minimum_distance(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p, sf::Vector2f *proj);
-
 
 
 class Map
@@ -14,6 +12,7 @@ class Map
 private:
 	std::vector<Wall> walls;
 	std::map<std::string, size_t> m_wallNames;
+	bool m_isInRangeOfWall(const Wall&, const unit&)const;
 public:
 	Map();
 	void update(std::vector<unit*>);

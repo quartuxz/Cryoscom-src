@@ -82,15 +82,24 @@ T ma_deserialize(std::string);
 template<>
 std::string ma_serialize<float>(float);
 
+template<>
+float ma_deserialize(std::string);
+
 float ma_deserialize_float(std::string);
 
 template<>
 std::string ma_serialize<int>(int);
 
+template<>
+int ma_deserialize(std::string);
+
 int ma_deserialize_int(std::string);
 
 template<>
 std::string ma_serialize<unsigned int>(unsigned int);
+
+template<>
+unsigned int ma_deserialize(std::string);
 
 unsigned int ma_deserialize_uint(std::string);
 

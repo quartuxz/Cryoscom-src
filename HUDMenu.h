@@ -6,8 +6,8 @@
 
 class HUDMenu : public Menu {
 private:
-	ToolTip m_availablePotions;
-	void m_updatePotions(unsigned int);
+
+	MenuItem* m_healthIndicator;
 
 	std::vector<skillParam*> m_usedSkills;
 	size_t m_hotbarSlotsNumber = 10;

@@ -18,25 +18,9 @@
 #include "lootTable.h"
 
 
-//creates a dynamically allocated player unit
-unit *makePlayer(sf::Vector2f, float, float);
 
 enum endLevelTypes {
 	levelActive, playerDied, goalReached
-};
-
-class MarketMenu : public Menu {
-private:
-	std::vector<ToolTip> m_playerGear;
-	std::map<std::string, unsigned int> m_playerGearCost;
-public:
-	using Menu::Menu;
-	void createStaticMenuLayout()override;
-
-	void onDraw(bool, sf::Vector2f)override;
-
-
-	void update(updateEvent)override;
 };
 
 struct interactable {
@@ -74,7 +58,7 @@ private:
 
 	sf::RectangleShape m_levelEnd;
 	bool m_needsAnUpdate = true;
-	const float renderDistance = 1000;
+	const float renderDistance = 10000;
 
 	const float m_interactDistance = 50;
 	std::vector<interactable> m_interactables;
@@ -176,7 +160,7 @@ public:
 
 	void addAI(EnemyAI*);
 
-
+	//first argument is position second is the names of the player files
 	void spawnPoint(int, sf::Vector2f, std::vector<std::string>);
 
 

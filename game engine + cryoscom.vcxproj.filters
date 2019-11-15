@@ -144,9 +144,6 @@
     <ClCompile Include="fileLoader.cpp">
       <Filter>Source Files\serialization&amp;file I/O</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files\collision and units</Filter>
-    </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\messaging\subclasses</Filter>
     </ClCompile>
@@ -185,6 +182,12 @@
     </ClCompile>
     <ClCompile Include="InGameMessages.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionCircle.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,14 +251,8 @@
     <ClInclude Include="fileLoader.h">
       <Filter>Source Files\serialization&amp;file I/O</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Source Files\collision and units</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Source Files\messaging\subclasses</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerInventory.h">
-      <Filter>Source Files\UI\subclasses</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAI.h">
       <Filter>Source Files\collision and units\AI</Filter>
@@ -286,6 +283,15 @@
     </ClInclude>
     <ClInclude Include="InGameMessages.h">
       <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInventory.h">
+      <Filter>Source Files\UI\subclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Source Files\combat&amp;mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionCircle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -454,6 +460,9 @@
     </Text>
     <Text Include="master.txt">
       <Filter>Resource Files\txt</Filter>
+    </Text>
+    <Text Include="generator_test.txt">
+      <Filter>Resource Files\txt\maps\map files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

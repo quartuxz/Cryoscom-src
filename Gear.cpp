@@ -80,13 +80,21 @@ decomposedData combatModule::serialize()
 void combatModule::attack(combatModule *cModule)
 {
 	static size_t timesFunctionCalled = 1;
-
+	
 	lineMessage inGameMessage;
 	inGameMessage.message = to_string(timesFunctionCalled);
 	inGameMessage.messageColor = sf::Color(255%timesFunctionCalled,0,0,255);
 	InGameMessages::getInstance().addLine(inGameMessage);
+
+	if ((timesFunctionCalled % 10) == 0) {
+		inGameMessage.message = "important message";
+		inGameMessage.messageColor=sf::Color::Red;
+		inGameMessage.isImportantMessage = true;
+		InGameMessages::getInstance().addLine(inGameMessage);
+	}
+
 	cModule->hitpoints -= damage;
-	timesFunctionCalled += 10;
+	timesFunctionCalled++;
 }
 
 combatModule::combatModule(bool initToZero): Serializable()

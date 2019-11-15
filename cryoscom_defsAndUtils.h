@@ -1,19 +1,32 @@
 #pragma once
 #define MAKING_LEVELS false
-#define CRYOSCOM_DEBUG true
+#define CRYOSCOM_DEBUG false
 #define ADD_PLAYER_VELOCITY_TO_BULLET false
 #define MULTITHREADED_SCRIPTING_AND_MESSAGING false
 #include <limits>
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <math.h>
+#include <random>
 
 enum initType {
 	allValuesToZero
 };
 
+inline int generateRandomNumber(int rangeStart, int rangeEnd) {
+	static bool firstTime = true;
+	static std::default_random_engine randEngine;
+	if (firstTime) {
+		randEngine.seed(time(NULL));
+		firstTime = false;
+	}
+	std::uniform_int_distribution<int> randDist(rangeStart, rangeEnd);
+	
 
-inline float vectorDistance(sf::Vector2f v, sf::Vector2f w)
+	return randDist(randEngine);
+}
+
+inline float vectorDistance(const sf::Vector2f &v, const sf::Vector2f &w)
 {
 	return std::sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2));
 }
@@ -27,7 +40,7 @@ inline float lengthSquared(const sf::Vector2f& point) {
 
 
 
-inline float distanceSquared(sf::Vector2f v, sf::Vector2f w)
+inline float distanceSquared(const sf::Vector2f &v, const sf::Vector2f &w)
 {
 	return pow(v.x - w.x, 2) + pow(v.y - w.y, 2);
 }
@@ -43,7 +56,7 @@ inline float dotProduct(const sf::Vector2f& first, const sf::Vector2f& second) {
 }
 
 
-inline float minimum_distance(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p, sf::Vector2f* proj)
+inline float minimum_distance(const sf::Vector2f& v, const sf::Vector2f& w, const sf::Vector2f& p, sf::Vector2f* proj)
 {
 	// Return minimum distance between line segment vw and point p
 	const float l2 = distanceSquared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
@@ -122,7 +135,7 @@ inline sf::Vector2f rotateByAngle(sf::Vector2f o, sf::Vector2f p, float angle)
 	return p;
 }
 
-inline float getAngleInDegrees(sf::Vector2f unitVec)
+inline float getAngleInDegrees(const sf::Vector2f &unitVec)
 {
 	return std::atan2(unitVec.x, -unitVec.y) * 180 / M_PI;
 }
@@ -131,17 +144,17 @@ inline sf::Vector2f getUnitVec(sf::Vector2f pos1, sf::Vector2f pos2)
 {
 	sf::Vector2f dist = sf::Vector2f(pos2 - pos1);
 	float mag = sqrt(pow(dist.x, 2) + pow(dist.y, 2));
-	//std::cout << newUnit.getBody()[0].first.x << ", " << newUnit.getBody()[0].first.y << std::endl;
+	//std::cout << newUnit.getBody()->first.x << ", " << newUnit.getBody()->first.y << std::endl;
 	return sf::Vector2f(sf::Vector2f(dist.x / mag, dist.y / mag));
 }
 
 
 
-inline sf::Vector2f multiplyVectors(sf::Vector2f first, sf::Vector2f second) {
+inline sf::Vector2f multiplyVectors(const sf::Vector2f &first, const sf::Vector2f &second) {
 	return sf::Vector2f(first.x * second.x, first.y * second.y);
 }
 
-inline float crossMultiply(sf::Vector2f first, sf::Vector2f second) {
+inline float crossMultiply(const sf::Vector2f &first, const sf::Vector2f &second) {
 	return first.x * second.y - first.y * second.x;
 }
 
@@ -157,7 +170,7 @@ inline bool isZero(float val) {
 }
 
 
-inline bool LineSegementsIntersect(sf::Vector2f p, sf::Vector2f p2, sf::Vector2f q, sf::Vector2f q2,
+inline bool LineSegementsIntersect(const sf::Vector2f &p, const sf::Vector2f &p2, const sf::Vector2f &q, const sf::Vector2f &q2,
 	sf::Vector2f* intersection, bool considerCollinearOverlapAsIntersect = false)
 {
 
@@ -210,7 +223,7 @@ inline bool LineSegementsIntersect(sf::Vector2f p, sf::Vector2f p2, sf::Vector2f
 }
 
 
-inline bool isCircleInPolygon(std::vector<sf::Vector2f> points, sf::Vector2f circlePosition, float circleRadius)
+inline bool isCircleInPolygon(const std::vector<sf::Vector2f> &points, const sf::Vector2f &circlePosition, float circleRadius)
 {
 	float radiusSquared = circleRadius * circleRadius;
 

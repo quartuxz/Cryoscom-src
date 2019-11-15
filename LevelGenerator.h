@@ -4,29 +4,53 @@
 #include "unitManager.h"
 
 enum tileTypes {
-	floorTile, wallTile
+	floorTile, horizontalWallTile, verticalWallTile
 };
 
-struct LevelGeneratorParams {
-	sf::Vector2i minRoomSize;
-	sf::Vector2i maxRoomSize;
+tileTypes stringToTileTypes(std::string);
 
-	sf::Vector2i minRoomSeparation;
-	sf::Vector2i maxRoomSeparation;
+struct levelGeneratorParams {
+	sf::Vector2u minRoomSize = sf::Vector2u(3,3);
+	sf::Vector2u maxRoomSize = sf::Vector2u(15,15);
 
-	int minRooms;
-	int maxRooms;
+	sf::Vector2i minRoomSeparation = sf::Vector2i(-7,-7);
+	sf::Vector2i maxRoomSeparation= sf::Vector2i(-3,-3);
+
+	unsigned int minRooms = 9;
+	unsigned int maxRooms = 10;
 };
 
-class LevelGenerator
+struct enemySpawnParams : public Serializable {
+	unsigned int spawnChancePerTile;
+	unsigned int maxSpawnChancePerTile;
+	std::vector<std::string> enemyFileNames;
+	unsigned int enemies;
+	void createFrom(const decomposedData&)override;
+	decomposedData serialize()override;
+};
+
+struct levelRoom {
+	sf::Vector2i roomStart;
+	sf::Vector2i roomEnd;
+};
+
+class LevelGenerator : public Parsable
 {
 private:
 	std::map<tileTypes, std::vector<Tile> > m_tilePool;
-	LevelGeneratorParams m_params;
+	levelGeneratorParams m_params;
+	std::vector<enemySpawnParams> m_enemySpawnData;
+	void pv_parseStep(std::vector<std::string>)override;
+	std::vector<levelRoom> m_rooms;
+	std::vector<sf::Vector2i> m_floorTiles;
+	void m_addRoom(const levelRoom&);
 public:
-	void addTileEntry(Tile, tileTypes);
-	void setParams(const LevelGeneratorParams&);
-	LevelGeneratorParams getParams()const;
-	UnitManager generateTileMap();
+	void addEnemySpawnParam(const enemySpawnParams&);
+	std::vector<enemySpawnParams> getEnemySpawnParams()const;
+	void addTileEntry(const Tile&, tileTypes);      
+	void setParams(const levelGeneratorParams&);
+	levelGeneratorParams getParams()const;
+	//creates a dynamically allocated level
+	UnitManager *generateLevel();
 };
 

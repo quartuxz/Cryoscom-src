@@ -11,8 +11,8 @@ std::map<int, Bullet*> Bullet::getAllBullets()
 
 void Bullet::create(sf::Vector2f startPos, sf::Vector2f moveDir)
 {
-	std::vector<std::pair<sf::Vector2f, float>> body;
-	body.push_back(std::pair<sf::Vector2f, float>(startPos, cModule->bulletSize));
+	std::pair<sf::Vector2f, float> body;
+	body = std::pair<sf::Vector2f, float>(startPos, cModule->bulletSize);
 	bulletBody = new unit(body);
 	bulletBody->applyInstantVelocity(sf::Vector2f(moveDir.x, moveDir.y), cModule->bulletSpeed);
 }
@@ -40,10 +40,6 @@ int Bullet::hits(std::vector<unit*> units)
 				retVal = i;
 			}
 			bulletBody->kill();
-
-			//if (onHit(units[i])) {
-				//return true;
-			//}
 			return retVal;
 		}
 	}
@@ -52,11 +48,6 @@ int Bullet::hits(std::vector<unit*> units)
 
 bool Bullet::onHit(unit *hitUnit)
 {
-	hitUnit->hitPoints -= minDamage + (rand() % (maxDamage-minDamage));
-	if (hitUnit->hitPoints <= 0) {
-		hitUnit->kill();
-	}
-	bulletBody->kill();
 	return true;
 }
 

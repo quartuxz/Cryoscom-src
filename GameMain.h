@@ -34,12 +34,13 @@ private:
 
 	InputManager m_inputManager;
 
-	std::recursive_mutex m_dataLock;
+	std::recursive_mutex m_dataLock; 
 	//MockMutex m_dataLock;
 
 	Logger m_gameLogger;
 	MessageBus m_gameBus;
 	void pv_processMessage(const MessageData&, MessageBus*)override;
+	void m_setViewAndViewDisplacement();
 
 	std::stack<updateEvent> m_updateEvents;
 
@@ -59,6 +60,11 @@ private:
 	void m_loadLevelGameMainBits(std::string);
 
 	bool m_HUDActive = true;
+
+	
+
+	sf::View view;
+	float m_zoom = 1;
 
 public:
 	GameMain(std::vector <std::string>);

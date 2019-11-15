@@ -13,7 +13,7 @@ Menu::Menu(sf::RenderWindow *window):
 {
 }
 
-unsigned int Menu::addMenuItem(MenuItem menuItem)
+unsigned int Menu::addMenuItem(MenuItem *menuItem)
 {
 	m_menuItems.push_back(menuItem);
 	return m_menuItems.size() - 1;
@@ -21,7 +21,7 @@ unsigned int Menu::addMenuItem(MenuItem menuItem)
 
 void Menu::addBehaviour(behaviourParameters Bparam, unsigned int menuItemID)
 {
-	m_menuItems[menuItemID].addBehviourParameters(Bparam);
+	m_menuItems[menuItemID]->addBehviourParameters(Bparam);
 }
 
 MenuItem Menu::createMenuItem(sf::Vector2f pos, sf::Vector2f size) const
@@ -97,12 +97,12 @@ void Menu::createMenuFromFile(std::string fileName)
 				//menuItemDim.height = std::atof(tokens[3].c_str()) * m_window->getSize().y;
 			}
 
-			m_menuItems.push_back(MenuItem(menuItemDim));
+			m_menuItems.push_back(new MenuItem(menuItemDim));
 			sf::Sprite tempSprite;
 			if (tokens[4] != "" && tokens[4] != "-") {
 				AnimatorSprite tempASprite;
 				tempASprite.textureID = Animator::getInstance().getTextureID(tokens[4]);
-				m_menuItems.back().setTexture(tempASprite);
+				m_menuItems.back()->setTexture(tempASprite);
 			}
 			//todo: make transparency work here
 			else if (tokens[4] == "transparent") {
@@ -111,7 +111,7 @@ void Menu::createMenuFromFile(std::string fileName)
 			}
 
 
-			m_menuItems.back().setButtonText(tokens[5], std::atof(tokens[6].c_str()), sf::Color(std::atoi(tokens[7].c_str()), std::atoi(tokens[8].c_str()), std::atoi(tokens[9].c_str()), std::atoi(tokens[10].c_str())), std::atoi(tokens[11].c_str()));
+			m_menuItems.back()->setButtonText(tokens[5], std::atof(tokens[6].c_str()), sf::Color(std::atoi(tokens[7].c_str()), std::atoi(tokens[8].c_str()), std::atoi(tokens[9].c_str()), std::atoi(tokens[10].c_str())), std::atoi(tokens[11].c_str()));
 			for (size_t i = 12; i < tokens.size(); i++)
 			{
 				std::vector<std::string> behaviour;
@@ -125,7 +125,7 @@ void Menu::createMenuFromFile(std::string fileName)
 					tokens[i].erase(0, pos + delimiter.length());
 					pos = tokens[i].find(delimiter);
 				}
-				m_menuItems.back().addbehaviourFromString(behaviour);
+				m_menuItems.back()->addbehaviourFromString(behaviour);
 			}
 
 		}
@@ -139,9 +139,9 @@ std::vector<behaviourParameters> Menu::onClick(sf::Vector2f mousePos, const Inpu
 	std::vector<behaviourParameters> retval;
 	for (size_t i = 0; i < m_menuItems.size(); i++)
 	{
-		if (m_menuItems[i].isClicked(mousePos)) {
-			pv_onClick(&m_menuItems[i], i, inputs, gameBus);
-			return m_menuItems[i].click(inputs.isInputEventActive(InputManager::shoot));
+		if (m_menuItems[i]->isClicked(mousePos)) {
+			pv_onClick(m_menuItems[i], i, inputs, gameBus);
+			return m_menuItems[i]->click(inputs.isInputEventActive(InputManager::shoot));
 		}
 
 	}
@@ -198,12 +198,12 @@ void Menu::draw(sf::Vector2f viewDisplacement)
 	onDraw(true, viewDisplacement);
 	for (size_t i = 0; i < m_menuItems.size(); i++)
 	{
-		m_menuItems[i].draw(m_window, viewDisplacement);
+		m_menuItems[i]->draw(m_window, viewDisplacement);
 	}
 	onDraw(false, viewDisplacement);
 	for (size_t i = 0; i < m_menuItems.size(); i++)
 	{
-		m_menuItems[i].drawText(m_window, viewDisplacement);
+		m_menuItems[i]->drawText(m_window, viewDisplacement);
 	}
 }
 
@@ -212,6 +212,10 @@ Menu::~Menu()
 	for (size_t i = 0; i < m_toDeleteTextures.size(); i++)
 	{
 		delete m_toDeleteTextures[i];
+	}
+	for (size_t i = 0; i < m_menuItems.size(); i++)
+	{
+		delete m_menuItems[i];
 	}
 }
 

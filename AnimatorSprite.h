@@ -20,6 +20,8 @@ struct AnimatorSprite : public Serializable{
 	bool isUI = false;
 	sf::Vector2f UIDisplacement = sf::Vector2f(0,0);
 
+	bool isInvisible = false;
+
 	bool originToCenter = true;
 	bool offsets = false;
 	bool isActive = true;

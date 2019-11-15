@@ -22,6 +22,7 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AnimatorSprite.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CollisionCircle.cpp" />
     <ClCompile Include="EnemyAI.cpp" />
     <ClCompile Include="fileLoader.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AnimatorSprite.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CollisionCircle.h" />
     <ClInclude Include="cryoscom_defsAndUtils.h" />
     <ClInclude Include="EnemyAI.h" />
     <ClInclude Include="fileLoader.h" />
@@ -131,6 +133,7 @@
     <Text Include="advanceLevel_Menu.txt" />
     <Text Include="bugfixes_improvements.txt" />
     <Text Include="enemy_test.txt" />
+    <Text Include="generator_test.txt" />
     <Text Include="initial_progression.txt" />
     <Text Include="inventorySave.txt" />
     <Text Include="large_map.txt" />

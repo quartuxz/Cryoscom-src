@@ -6,7 +6,7 @@ implement on gear skills and a way to load them and create them.-urge!
 improve amount of data given to enemy AI(ie distance to closest enemy ai etc).
 add a way to drop items from inventory to ground.-partially done
 implememnt stash menu and a way to link with inventory menu.
-serialize and deserialize gear textures and more.(reason form bugs when trying to implement dropped items).
+serialize and deserialize gear textures and more.(reason for bugs when trying to implement dropped items).
 implement radius and box detection for player bounds and activation of message upon reaching such.
 make a relatively large test level to play around in.- up next
 implement animation and idle texture loading for units.
@@ -17,5 +17,28 @@ implement animation and idle texture loading for units.
 
 NEW TODO:
 revamp unit manager`s way of loading things(and the rest of parsing for that matter)
-implement an in game text printer that displays info about current objectives 
-and most importantly also displays combat status.
+implement an in game text printer that displays info about current objectives(next line)
+and most importantly also displays combat status.-partially done
+make hud indicators for health, stamina and psychpoints-health done
+fix collitions/slow down possible exceeding speeds(dash im looking at you)-done
+add a way to activate/deactivate tooltips on map-done
+add a way to show only importan messages on HUD chat log-done
+make melee combat better, add melee attack animation/pose
+add weapon walking animation
+add level backgrounds and menu backgrounds
+figure out skills
+generate random levels
+add a stringify function for the gear pieces that displays all gear piece info
+add message(of messagingComponent type) trigger for making and sending inGameMessages(of the text log type)
+move most level bound file loading to the levelGenerator class
+add the ability to serialize tiles and walls
+improve the level generator input parser and add more params and features
+add more tile types and add corresponding support for them for wall corners, improve tile placement algorithm to place correct tile/tile connector
+pass some permanent through-call data to python AI function to allow it to store game state of its own
+INTENDED LOADABLE DYNAIMCS:
+-menus
+-enemy stats and AI
+-gear
+-tile definitions(texture, type and colision perimeter)
+-level generator settings
+(only these should be loadable after done with all procedaully generated stuff[from these the generator will be fed])

@@ -201,6 +201,14 @@ int main()
 	
 	//memory test
 
+	//template test
+
+	//std::cout << ma_deserialize<float>("27.03") << std::endl;
+	//return 0;
+
+
+	//template test
+
 
 #if MAKING_LEVELS
     LevelMaker levelMaker;

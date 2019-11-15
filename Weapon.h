@@ -33,7 +33,6 @@ struct skillParam {
 class Weapon
 {
 private:
-	sf::Sprite m_bulletTex;
 
 	AnimatorSprite m_bulletATex;
 
@@ -53,8 +52,6 @@ private:
 
 	float m_accumulatedFireTime = 0;
 public:
-
-	void setBulletTex(sf::Sprite&);
 	void setbulletAnimatorTex(AnimatorSprite);
 
     void reload();

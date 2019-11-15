@@ -1,11 +1,28 @@
 #include "InGameMessages.h"
 
+void InGameMessages::setShowOnlyImportantLines(bool showOnlyImportantLines)
+{
+	m_showOnlyImportantLines = showOnlyImportantLines;
+}
+
+bool InGameMessages::getShowOnlyImportantLines() const
+{
+	return m_showOnlyImportantLines;
+}
+
 void InGameMessages::addLine(lineMessage line)
 {
-	m_currentLines++;
-	m_lines.push(line);
-	if (m_currentLines > m_lineCap) {
-		m_lines.pop();
+	m_currentAllLines++;
+	m_allLines.push(line);
+	if (m_currentAllLines > m_lineCap) {
+		m_allLines.pop();
+	}
+	if (line.isImportantMessage) {
+		m_currentImportantLines++;
+		m_importantLines.push(line);
+		if (m_currentImportantLines>m_lineCap) {
+			m_importantLines.pop();
+		}
 	}
 }
 
@@ -21,5 +38,13 @@ size_t InGameMessages::getLineCap() const
 
 std::queue<lineMessage> InGameMessages::getLines() const
 {
-	return m_lines;
+	if (m_showOnlyImportantLines) {
+		return m_importantLines;
+	}
+	else {
+		return m_allLines;
+	}
+	
 }
+
+

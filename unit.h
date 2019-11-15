@@ -55,8 +55,7 @@ private:
 
 	//std::mutex m_allMutex;
 
-	std::vector<std::pair<sf::Vector2f, float>> body;
-	sf::Sprite texture;
+	std::pair<sf::Vector2f, float> body;
 	float actualWeight = 100;
 
 
@@ -80,6 +79,7 @@ private:
 
 	lookDirection lastLookDir;
 
+	float m_bodyRadiusRaisedBy2;
 
 
 	void m_resetAnimationController();
@@ -123,15 +123,16 @@ public:
 	sf::Vector2f predictNextPos();
 
 	int ownedByID;
-	float hitPoints = 100;
 	bool isDead = false;
 	bool recentlyDead = true;
 	unitType typeOfUnit = defaultType;
 
 	void move(sf::Vector2f);
-	unit(std::vector<std::pair<sf::Vector2f, float>>);
+	unit(std::pair<sf::Vector2f, float>);
 
-	std::vector<std::pair<sf::Vector2f, float>> getBody()const;
+	float getBodyRadiusRaisedBy2()const;
+
+	const std::pair<sf::Vector2f, float> *getBody()const;
 
 	void stopMovement();
 
@@ -156,8 +157,6 @@ public:
 
 	//updates the position in accordance to the surroundings
 	void update(float, std::vector<unit*> colliders = std::vector<unit*>());
-	sf::Sprite getTexture()const;
-	void setTexture(sf::Sprite&, bool scaleToMatch = false);
 
 	float getWeight()const;
 	void setWeight(float);
@@ -170,3 +169,7 @@ public:
 	~unit();
 };
 
+
+//creates a dynamically allocated player unit
+//(first argument is the position second is the size third is the physics weight)
+unit* makePlayer(sf::Vector2f, float, float);

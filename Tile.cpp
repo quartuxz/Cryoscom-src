@@ -2,6 +2,72 @@
 #include "Animator.h"
 
 
+void Tile::createFrom(const decomposedData& DData)
+{
+	decomposedData tempDData = DData;
+	for (size_t i = 0; i < tempDData.childrenObjects.size(); i++)
+	{
+		if (tempDData.childrenObjects[i].type == "AnimatorSprite") {
+			
+			AnimatorSprite tempAnimatorSprite;
+			tempAnimatorSprite.createFrom(tempDData.childrenObjects[i]);
+			decomposedData *fitTileTypeDData = tempDData.childrenObjects[i].getChildByName("fitTileType");
+			if(fitTileTypeDData != nullptr){
+				if (fitTileTypeDData->data[0] == "fitTileX") {
+					tempAnimatorSprite.scaleToMatch(fitX, Tile::tileSize);
+				}
+				else if (fitTileTypeDData->data[0] == "fitTileY") {
+					tempAnimatorSprite.scaleToMatch(fitY, Tile::tileSize);
+				}
+				else if (fitTileTypeDData->data[0] == "fitTileMin") {
+					tempAnimatorSprite.scaleToMatch(fitMin, Tile::tileSize);
+				}
+				else if (fitTileTypeDData->data[0] == "fitTileDistorted") {
+					tempAnimatorSprite.scaleToMatch(fitDistorted, Tile::tileSize);
+				}
+
+			}
+			decomposedData* relativePositionToTileX = tempDData.childrenObjects[i].getChildByName("relativePositionToTileX");
+			if (relativePositionToTileX != nullptr) {
+				tempAnimatorSprite.position.x += ma_deserialize<float>(relativePositionToTileX->data[0])*Tile::tileSize;
+
+			}
+			decomposedData* relativePositionToTileY = tempDData.childrenObjects[i].getChildByName("relativePositionToTileY");
+			if (relativePositionToTileY != nullptr) {
+				tempAnimatorSprite.position.y += ma_deserialize<float>(relativePositionToTileY->data[0]) * Tile::tileSize;
+			}
+
+			addTileSprite(tempAnimatorSprite);
+				
+		}
+		else if (tempDData.childrenObjects[i].type == "Wall") {
+			Wall tempWall;
+			tempWall.createFrom(tempDData.childrenObjects[i]);
+			addBound(tempWall);
+		}
+		else if (tempDData.childrenObjects[i].name == "WallConfig") {
+			if (tempDData.childrenObjects[i].data[0] == "square") {
+				Tile tempTile;
+				tempTile = makeSquareTile();
+				std::vector<Wall> tempBounds = tempTile.getBounds();
+				for (size_t o = 0; o < tempBounds.size(); o++)
+				{
+					addBound(tempBounds[o]);
+				}
+
+			}
+		}
+			
+	}
+	
+}
+
+//TODO: make tiles serializable for level offloading
+decomposedData Tile::serialize()
+{
+	return decomposedData();
+}
+
 Tile::Tile()
 {
 }

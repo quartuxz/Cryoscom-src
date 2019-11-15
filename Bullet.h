@@ -8,11 +8,6 @@ class Bullet
 {
 private:
 	unit *bulletBody;
-	int minDamage = 25;
-	int maxDamage = 75;
-	float bulletSpeed = 1.4f;
-	float bulletDir;
-	float bulletDuration = 2;
 
 	int ID;
 	static std::map<int ,Bullet*> allBullets;

@@ -25,7 +25,7 @@ struct updateEvent {
 class Menu
 {
 protected:
-	std::vector<MenuItem> m_menuItems;
+	std::vector<MenuItem*> m_menuItems;
 	sf::RenderWindow *m_window;
 	std::vector<sf::Texture*> m_toDeleteTextures;
 	virtual void pv_onClick(MenuItem*, size_t, const InputManager&, MessageBus*);
@@ -33,7 +33,7 @@ public:
 
 	explicit Menu(sf::RenderWindow*);
 	//adds a menu item x and y screens away from the top left, of size provided by second argument(also measured relatively to the screen)
-	unsigned int addMenuItem(MenuItem);
+	unsigned int addMenuItem(MenuItem*);
 	void addBehaviour(behaviourParameters, unsigned int);
 	MenuItem createMenuItem(sf::Vector2f, sf::Vector2f)const;
 

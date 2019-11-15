@@ -6,10 +6,6 @@
 
 
 
-void Weapon::setBulletTex(sf::Sprite &circleTex)
-{
-	m_bulletTex = circleTex;
-}
 
 void Weapon::setbulletAnimatorTex(AnimatorSprite aSprite)
 {
@@ -33,13 +29,15 @@ void Weapon::setWieldingUnit(unit *wieldingUnit)
 
 void Weapon::m_useSkill(skillParam* sParam, std::vector<unit*> units) {
 	AnimatorSprite tempASprite;
+	float dashMultiplier;
 	switch (sParam->sType)
 	{
 	case dash:
 
 			m_wieldingUnit->cModule.stamina -= sParam->staminaCost;
 			m_wieldingUnit->cModule.pushes.push_back(std::pair<sf::Vector2f, float>());
-			m_wieldingUnit->cModule.pushes.back().first = sf::Vector2f(sParam->dirUnitVec.x * m_wieldingUnit->cModule.moveSpeed * (100 / (m_wieldingUnit->cModule.weight + 20)), sParam->dirUnitVec.y * m_wieldingUnit->cModule.moveSpeed * (100 / (m_wieldingUnit->cModule.weight + 20)));
+			dashMultiplier = m_wieldingUnit->cModule.moveSpeed * (100 / (m_wieldingUnit->cModule.weight + 50));
+			m_wieldingUnit->cModule.pushes.back().first = sf::Vector2f(sParam->dirUnitVec.x * dashMultiplier, sParam->dirUnitVec.y * dashMultiplier);
 			m_wieldingUnit->cModule.pushes.back().second = 0.25;
 				
 			
@@ -49,7 +47,7 @@ void Weapon::m_useSkill(skillParam* sParam, std::vector<unit*> units) {
 
 		for (size_t i = 0; i < units.size(); i++)
 		{
-			if (units[i]->getBody()[0].second >= vectorDistance(units[i]->getBody()[0].first, sParam->dirUnitVec)) {
+			if (units[i]->getBody()->second >= vectorDistance(units[i]->getBody()->first, sParam->dirUnitVec)) {
 				tempASprite.textureID = 0;//Animator::getInstance().getTextureID("blood");
 				tempASprite.position = sParam->dirUnitVec;
 				tempASprite.timeDisplayed = 3;
@@ -80,9 +78,9 @@ void Weapon::m_fire(sf::Vector2f unitVec)
 	//std::cout << unitVec.x << ", " << unitVec.y << std::endl;
 	unitVec = rotateByAngle(sf::Vector2f(0,0), unitVec, r3);
 	//std::cout << unitVec.x << ", " << unitVec.y  << std::endl;
-	m_bullets.push_back(new Bullet(m_wieldingUnit->getBody()[0].first + (unitVec * m_wieldingUnit->getBody()[0].second), unitVec, &m_wieldingUnit->cModule));
+	m_bullets.push_back(new Bullet(m_wieldingUnit->getBody()->first + (unitVec * m_wieldingUnit->getBody()->second), unitVec, &m_wieldingUnit->cModule));
 	m_bullets.back()->cModule = &m_wieldingUnit->cModule;
-	m_bullets.back()->getBody()->setTexture(m_bulletTex);
+	//m_bullets.back()->getBody()->setTexture(m_bulletTex);
 	m_bullets.back()->getBody()->setAnimatorSprite(m_bulletATex);
 #if ADD_PLAYER_VELOCITY_TO_BULLET
 	m_bullets.back()->getBody()->addVelocity(m_wieldingUnit->getVelocity());
@@ -132,7 +130,7 @@ bool Weapon::fire(sf::Vector2f unitVec)
 failCastTypes Weapon::addSkillToQueue(skillParam* sParam)
 {
 	std::cout << sParam->dirUnitVec.x << ", " << sParam->dirUnitVec.y << std::endl;
-	if (vectorDistance(sParam->dirUnitVec, m_wieldingUnit->getBody()[0].first) <= sParam->maxRange ||sParam->sType != meleeAttack) {
+	if (vectorDistance(sParam->dirUnitVec, m_wieldingUnit->getBody()->first) <= sParam->maxRange ||sParam->sType != meleeAttack) {
 		if (m_wieldingUnit->cModule.psiPoints >= sParam->manaCost) {
 			if (m_wieldingUnit->cModule.stamina >= sParam->staminaCost) {
 

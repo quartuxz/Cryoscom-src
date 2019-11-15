@@ -62,14 +62,14 @@ void EnemyAI::update(float timeDelta, std::vector<unit*> targets, MessageBus *ga
         float headRadius = 0;
         bool hasHead = false;
         if(m_followingHead != nullptr){
-            headPos = m_followingHead->getBody()[0].first;
-            headRadius = m_followingHead->getBody()[0].second;
+            headPos = m_followingHead->getBody()->first;
+            headRadius = m_followingHead->getBody()->second;
             hasHead = true;
         }
 
         boost::python::list listElement;
-        listElement.append(chosenTarget->getBody()[0].first.x);
-        listElement.append(chosenTarget->getBody()[0].first.y);
+        listElement.append(chosenTarget->getBody()->first.x);
+        listElement.append(chosenTarget->getBody()->first.y);
         boost::python::list playerPoss;
         playerPoss.append(listElement);
         listElement.pop(0);
@@ -85,10 +85,10 @@ void EnemyAI::update(float timeDelta, std::vector<unit*> targets, MessageBus *ga
 		boost::python::object retVal;
 		{
 			
-			retVal = m_pythonFunc(playerPoss, chosenTarget->getBody()[0].second,
+			retVal = m_pythonFunc(playerPoss, chosenTarget->getBody()->second,
                                                     chosenTarget->getVelocity().x, chosenTarget->getVelocity().y,
                                                     m_controlledWeapon->canFire(),
-                                                    m_controlledUnit->getBody()[0].first.x, m_controlledUnit->getBody()[0].first.y, m_controlledUnit->getBody()[0].second,
+                                                    m_controlledUnit->getBody()->first.x, m_controlledUnit->getBody()->first.y, m_controlledUnit->getBody()->second,
                                                     m_controlledUnit->cModule.bulletSpeed,
                                                     hasHead,
                                                     headPos.x, headPos.y, headRadius,
@@ -101,19 +101,19 @@ void EnemyAI::update(float timeDelta, std::vector<unit*> targets, MessageBus *ga
         shootPos.y = boost::python::extract<float>(retVal[4]);
         shootsNow = boost::python::extract<bool>(retVal[5]);
     }else if(m_followingHead != nullptr){
-        m_moveToPos = m_followingHead->getBody()[0].first + m_followingDistance;
+        m_moveToPos = m_followingHead->getBody()->first + m_followingDistance;
     }
 
 //    if(m_controlledWeapon->canFire() && false){
 //        if((rand() % m_likelyHoodOfAccuracy) == 0 && checksForAccuracy && globalChecksForAccuracy){
-//            distToTarget = vectorDistance(chosenTarget->getPosition(), m_controlledUnit->getBody()[0].first);
+//            distToTarget = vectorDistance(chosenTarget->getPosition(), m_controlledUnit->getBody()->first);
 //            timeToTarget = distToTarget / m_controlledUnit->Amodule->bulletSpeed;
 //            sf::Vector2f newCTargetPos = chosenTarget->predictNextPos(timeToTarget);
 //            float lastTimeToTarget = std::numeric_limits<float>::max();
 //            int maxIterations = m_maxAccuracyIterations;
 //            while (abs(timeToTarget - lastTimeToTarget) > m_accuracyThreshHold) {
 //                //std::cout << "calcDist!" << std::endl;
-//                distToTarget = vectorDistance(newCTargetPos, m_controlledUnit->getBody()[0].first);
+//                distToTarget = vectorDistance(newCTargetPos, m_controlledUnit->getBody()->first);
 //                if (distToTarget > (m_controlledUnit->Amodule->bulletSpeed * m_controlledUnit->Amodule->bulletDuration)) {
 //                    maxIterations--;
 //                }
@@ -149,7 +149,7 @@ void EnemyAI::update(float timeDelta, std::vector<unit*> targets, MessageBus *ga
     }
 
     m_controlledUnit->cModule.moveSpeed *= addedMoveSpeed;
-    if(vectorDistance(m_moveToPos, m_controlledUnit->getBody()[0].first) > 2){
+    if(vectorDistance(m_moveToPos, m_controlledUnit->getBody()->first) > 2){
         m_controlledUnit->applyMoveSpeed(m_controlledUnit->getUnitVecTo(m_moveToPos));
     }else{
         m_controlledUnit->applyInstantVelocity(sf::Vector2f(0,0));

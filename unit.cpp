@@ -9,7 +9,7 @@ using namespace std;
 
 int unit::ownedByIDTracker = 0;
 
-unit::unit(std::vector<std::pair<sf::Vector2f, float>> m_body)
+unit::unit(std::pair<sf::Vector2f, float> m_body)
 {
 	static int IDCounter = 0;
 	animationController->isActive = false;
@@ -19,11 +19,17 @@ unit::unit(std::vector<std::pair<sf::Vector2f, float>> m_body)
 	//texture.setPosition(m_body[0].first);
 	//texture.setFillColor(sf::Color(255, 0, 0));
 	ID = IDCounter++;
+	m_bodyRadiusRaisedBy2 = pow(body.second,2);
 }
 
-std::vector<std::pair<sf::Vector2f, float>> unit::getBody() const
+float unit::getBodyRadiusRaisedBy2() const
 {
-	return body;
+	return m_bodyRadiusRaisedBy2;
+}
+
+const std::pair<sf::Vector2f, float> *unit::getBody()const
+{
+	return &body;
 }
 
 void unit::stopMovement()
@@ -93,7 +99,7 @@ AnimatorSprite unit::getAnimatorSprite()
 	bool defaultedToLast = false;
 	AnimatorSprite retVal;
 	retVal = animatorSprite;
-	retVal.position = body[0].first;
+	retVal.position = body.first;
 	if (animatorValues.usingCompositeTextures) {
 
 		if (!isMoving()) {
@@ -129,9 +135,9 @@ AnimatorSprite unit::getAnimatorSprite()
 			//	retVal = *animationController;
 			//}
 		}
-		retVal.scale *= body[0].second / ((Animator::getInstance().getTexture(retVal.textureID)->getSize().y + Animator::getInstance().getTexture(retVal.textureID)->getSize().x) / 4);
-		retVal.position = body[0].first;
-		retVal.position.y -= body[0].second * 0.5;
+		retVal.scale *= body.second / ((Animator::getInstance().getTexture(retVal.textureID)->getSize().y + Animator::getInstance().getTexture(retVal.textureID)->getSize().x) / 4);
+		retVal.position = body.first;
+		retVal.position.y -= body.second * 0.5;
 	}
 	
 	if (!defaultedToLast) {
@@ -144,38 +150,35 @@ AnimatorSprite unit::getAnimatorSprite()
 void unit::setAnimatorSprite(AnimatorSprite aSprite, float additionalScale)
 {
 
-	aSprite.scale = body[0].second / min(Animator::getInstance().getTexture(aSprite.textureID)->getSize().x / 2, Animator::getInstance().getTexture(aSprite.textureID)->getSize().y / 2);
+	aSprite.scale = body.second / min(Animator::getInstance().getTexture(aSprite.textureID)->getSize().x / 2, Animator::getInstance().getTexture(aSprite.textureID)->getSize().y / 2);
 	aSprite.scale += additionalScale;
 	animatorSprite = aSprite;
 }
 
 sf::Vector2f unit::predictNextPos(float timeDelta)
 {
-	return body[0].first + (velocity*timeDelta);
+	return body.first + (velocity*timeDelta);
 }
 
 sf::Vector2f unit::predictNextPos()
 {
-	return body[0].first + (velocity*lastTime);
+	return body.first + (velocity*lastTime);
 }
 
 void unit::move(sf::Vector2f delta)
 {
     lastLastPos = lastPos;
-    lastPos = body[0].first;
+    lastPos = body.first;
 	currentPos += delta;
-	texture.move(delta);
-	for (size_t i = 0; i < body.size(); i++)
-	{
-		body[i].first += delta;
-	}
+	body.first += delta;
+
 	lastMove = delta;
 
 }
 
 void unit::setPosition(sf::Vector2f pos)
 {
-	move(pos-body[0].first);
+	move(pos-body.first);
 }
 
 sf::Vector2f unit::getPosition() const
@@ -190,14 +193,14 @@ float unit::getVelocityMag() const
 
 sf::Vector2f unit::getUnitVecTo(sf::Vector2f pos)
 {
-	sf::Vector2f dist = sf::Vector2f(pos) - (body[0].first);
+	sf::Vector2f dist = sf::Vector2f(pos) - (body.first);
 	float mag = sqrt(pow(dist.x, 2) + pow(dist.y, 2));
 	return sf::Vector2f(dist.x / mag, dist.y / mag);
 }
 
 void unit::kill(){
     isDead = true;
-    move(-body[0].first);
+    move(-body.first);
     move(graveyard);
 }
 
@@ -339,23 +342,6 @@ void unit::update(float seconds, std::vector<unit*> colliders)
 
 }
 
-sf::Sprite unit::getTexture() const
-{
-	return texture;
-}
-
-void unit::setTexture(sf::Sprite &tex, bool scaleToMatch)
-{
-	texture = tex;
-	texture.setOrigin(sf::Vector2f(texture.getLocalBounds().width / 2, texture.getLocalBounds().height / 2));
-	texture.setPosition(body[0].first);
-	if (scaleToMatch) {
-		texture.scale(sf::Vector2f(body[0].second /(texture.getLocalBounds().width/2), body[0].second / (texture.getLocalBounds().height/2)));
-		texture.setOrigin(sf::Vector2f(texture.getLocalBounds().width / 2, texture.getLocalBounds().height / 2));
-	}
-
-}
-
 float unit::getWeight() const
 {
 	return actualWeight;
@@ -373,28 +359,22 @@ int unit::getID() const
 
 float unit::collides(const unit &collider, sf::Vector2f *evadePos)
 {
-	for (size_t i = 0; i < body.size(); i++)
-	{
-		for (size_t o = 0; o < collider.body.size(); o++)
-		{
-			//std::cout << body[i].first.x << ", " << body[i].first.y << std::endl;
-			//std::cout << collider.body[o].first.x << ", " << collider.body[o].first.y << std::endl;
+	//std::cout << body[i].first.x << ", " << body[i].first.y << std::endl;
+	//std::cout << collider.body[o].first.x << ", " << collider.body[o].first.y << std::endl;
 
-			float xDis = body[i].first.x - collider.body[o].first.x;
-			float yDis = body[i].first.y - collider.body[o].first.y;
-			float xSq = xDis * xDis;
-			float ySq = yDis * yDis;
+	float xDis = body.first.x - collider.body.first.x;
+	float yDis = body.first.y - collider.body.first.y;
+	float xSq = xDis * xDis;
+	float ySq = yDis * yDis;
 
-			float temp = sqrt(xSq + ySq);
+	float temp = sqrt(xSq + ySq);
 
-			//cout << temp << ", " << (body[i].second + collider.body[o].second) << std::endl;
-			if (temp < (body[i].second + collider.body[o].second)) {
-				if (evadePos != nullptr) {
-					*evadePos = body[i].first - collider.body[i].first;
-				}
-				return (body[i].second + collider.body[o].second) - temp;
-			}
+	//cout << temp << ", " << (body[i].second + collider.body[o].second) << std::endl;
+	if (temp < (body.second + collider.body.second)) {
+		if (evadePos != nullptr) {
+			*evadePos = body.first - collider.body.first;
 		}
+		return (body.second + collider.body.second) - temp;
 	}
 	return -1;
 }
@@ -425,4 +405,41 @@ AnimatorSprite unitAnimatorValues::m_getIdleASprite(lookDirection lDir)
 	default:
 		break;
 	}
+}
+
+unit* makePlayer(sf::Vector2f pos, float radius, float weight)
+{
+	std::pair<sf::Vector2f, float> unitBody;
+	unitBody = std::pair<sf::Vector2f, float>(pos, radius);
+	unit* retVal = new unit(unitBody);
+	retVal->typeOfUnit = playerType;
+	retVal->setWeight(weight);
+	/*if (tokens.size() > 5) {
+		AnimatorSprite tempASprtie;
+		tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[5]);
+
+		retVal->setAnimatorSprite(tempASprtie);
+	}*/
+	//m_player->animatorValues.usingCompositeTextures = false;
+	/*AnimatorSprite tempASprite;
+	tempASprite.textureID = 1;
+	m_player->setAnimatorSprite(tempASprite);
+	mutexLock.unlock();
+	return;*/
+	retVal->animatorValues.back_left_idle.textureID = Animator::getInstance().getTextureID("player_back_left_idle.png");
+	retVal->animatorValues.back_left_idle.drawLayer = 2;
+	retVal->animatorValues.back_right_idle.textureID = Animator::getInstance().getTextureID("player_back_right_idle.png");
+	retVal->animatorValues.back_right_idle.drawLayer = 2;
+	retVal->animatorValues.front_left_idle.textureID = Animator::getInstance().getTextureID("player_front_left_idle.png");
+	retVal->animatorValues.front_left_idle.drawLayer = 2;
+	retVal->animatorValues.front_right_idle.textureID = Animator::getInstance().getTextureID("player_front_right_idle.png");
+	retVal->animatorValues.front_right_idle.drawLayer = 2;
+	retVal->animatorValues.front_right_walking = Animator::getInstance().getAnimationPresetID("player_front_right_walk");
+	retVal->animatorValues.front_left_walking = Animator::getInstance().getAnimationPresetID("player_front_left_walk");
+	retVal->animatorValues.back_right_walking = Animator::getInstance().getAnimationPresetID("player_back_right_walk");
+	retVal->animatorValues.back_left_walking = Animator::getInstance().getAnimationPresetID("player_back_left_walk");
+	retVal->animatorValues.usingCompositeTextures = true;
+	retVal->animatorValues.hasWalking = true;
+	retVal->animatorValues.hasRunning = false;
+	return retVal;
 }

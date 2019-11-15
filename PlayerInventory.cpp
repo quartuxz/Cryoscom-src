@@ -17,7 +17,7 @@ void PlayerInventory::removeAmmo(size_t amount)
 				amount -= m_items[i].amount;
 				m_items[i].amount = 1;
 				m_items[i].itemType = emptySlot;
-				m_menuItems[i].setIsButtonTextDisplayed(false);
+				m_menuItems[i]->setIsButtonTextDisplayed(false);
 				if (amount == 0) {
 					return;
 				}
@@ -25,7 +25,7 @@ void PlayerInventory::removeAmmo(size_t amount)
 			}
 			else {
 				m_items[i].amount -= amount;
-				m_menuItems[i].setButtonText(std::to_string(m_items[i].amount), 0.1, sf::Color::White, 0);
+				m_menuItems[i]->setButtonText(std::to_string(m_items[i].amount), 0.1, sf::Color::White, 0);
 				return;
 			}
 		}
@@ -38,7 +38,7 @@ void PlayerInventory::addAmmo(size_t amount)
 	{
 		if (m_items[i].itemType == ammoType) {
 			m_items[i].amount += amount;
-			m_menuItems[i].setButtonText(std::to_string(m_items[i].amount), 0.1, sf::Color::White, 0);
+			m_menuItems[i]->setButtonText(std::to_string(m_items[i].amount), 0.1, sf::Color::White, 0);
 			return;
 		}
 	}
@@ -47,7 +47,7 @@ void PlayerInventory::addAmmo(size_t amount)
 	tempInvItem.itemASprite.textureID = Animator::getInstance().getTextureID("bullet.png");
 	tempInvItem.amount = amount;
 	size_t slotSelected = addItemToInventory(tempInvItem);
-	m_menuItems[slotSelected].setButtonText(std::to_string(m_items[slotSelected].amount), 0.1, sf::Color::White, 0);
+	m_menuItems[slotSelected]->setButtonText(std::to_string(m_items[slotSelected].amount), 0.1, sf::Color::White, 0);
 }
 
 size_t PlayerInventory::addItemToInventory(inventoryItem& item)
@@ -59,7 +59,7 @@ size_t PlayerInventory::addItemToInventory(inventoryItem& item)
 	{
 		if (m_items[i].itemType == emptySlot) {
 			item.itemASprite.isUI = true;
-			m_menuItems[i].fitASpriteToItem(&item.itemASprite);
+			m_menuItems[i]->fitASpriteToItem(&item.itemASprite);
 			//item.itemASprite.position = m_menuItems[i].getPosition();
 			
 
@@ -123,46 +123,46 @@ void PlayerInventory::createStaticMenuLayout()
 			inventoryItem tempInventoryItem;
 			tempInventoryItem.itemType = emptySlot;
 			m_items.push_back(tempInventoryItem);
-			MenuItem tempMenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(float(i)*menuItemSize.x + invStart.x,float(o)*menuItemSize.y + invStart.y),true), getPixelCoordinate(menuItemSize)));
+			MenuItem *tempMenuItem = new MenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(float(i)*menuItemSize.x + invStart.x,float(o)*menuItemSize.y + invStart.y),true), getPixelCoordinate(menuItemSize)));
 			AnimatorSprite tempASprite;
 			tempASprite.textureID = Animator::getInstance().getTextureID("Inventory-Slot (Empty).png");
-			tempMenuItem.setTexture(tempASprite);
-			tempMenuItem.setHasClickTimer(false);
-			m_menuItems.push_back(tempMenuItem);
+			tempMenuItem->setTexture(tempASprite);
+			tempMenuItem->setHasClickTimer(false);
+			addMenuItem(tempMenuItem);
 		}
 	}
 	//helmet m_maxColumns*m_maxRows + 1
-	MenuItem helmetSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x-menuItemSize.x, invStart.y),true), getPixelCoordinate(menuItemSize)));
+	MenuItem *helmetSlot = new MenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x-menuItemSize.x, invStart.y),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite helmetSlotASprite;
 	helmetSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Helmet.png");
-	helmetSlot.setTexture(helmetSlotASprite);
-	m_menuItems.push_back(helmetSlot);
+	helmetSlot->setTexture(helmetSlotASprite);
+	addMenuItem(helmetSlot);
 
 	//chestPiece
-	MenuItem chestpieceSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y),true), getPixelCoordinate(menuItemSize)));
+	MenuItem *chestpieceSlot = new MenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite chestPieceSlotASprite;
 	chestPieceSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Chest Armor.png");
-	chestpieceSlot.setTexture(chestPieceSlotASprite);
-	m_menuItems.push_back(chestpieceSlot);
+	chestpieceSlot->setTexture(chestPieceSlotASprite);
+	addMenuItem(chestpieceSlot);
 
 
-	MenuItem jumpSuitSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*2),true), getPixelCoordinate(menuItemSize)));
+	MenuItem *jumpSuitSlot = new MenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*2),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite jumpSuitSlotASprite;
 	jumpSuitSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Jumpsuit.png");
-	jumpSuitSlot.setTexture(jumpSuitSlotASprite);
-	m_menuItems.push_back(jumpSuitSlot);
+	jumpSuitSlot->setTexture(jumpSuitSlotASprite);
+	addMenuItem(jumpSuitSlot);
 
 
-	MenuItem bootsSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*3),true), getPixelCoordinate(menuItemSize)));
+	MenuItem *bootsSlot = new MenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(invStart.x- menuItemSize.x, invStart.y + menuItemSize.y*3),true), getPixelCoordinate(menuItemSize)));
 	AnimatorSprite bootsSlotASprite;
 	bootsSlotASprite.textureID = Animator::getInstance().getTextureID("Inventory-Boots.png");
-	bootsSlot.setTexture(bootsSlotASprite);
-	m_menuItems.push_back(bootsSlot);
+	bootsSlot->setTexture(bootsSlotASprite);
+	addMenuItem(bootsSlot);
 
 	//weapon
-	MenuItem weaponSlot(sf::FloatRect(getPixelCoordinate(sf::Vector2f(0.05, 0.55),true), getPixelCoordinate(menuItemSize)));
+	MenuItem *weaponSlot = new MenuItem(sf::FloatRect(getPixelCoordinate(sf::Vector2f(0.05, 0.55),true), getPixelCoordinate(menuItemSize)));
 
-	m_menuItems.push_back(weaponSlot);
+	addMenuItem(weaponSlot);
 
 }
 
@@ -175,7 +175,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 
 	if (inputs.isInputEventActive(InputManager::shoot)) {
 		//std::cout << clickedMenuItemIndex << ", " << m_maxColumns * m_maxRows << std::endl;
-		m_menuItems[clickedMenuItemIndex].clearBehaviours();
+		m_menuItems[clickedMenuItemIndex]->clearBehaviours();
 
 		
 
@@ -186,7 +186,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				behaviourParameters tempBParam;
 				tempBParam.behaviourName = removesGearPiece;
 				tempBParam.gearPiece = m_playerGear[gearTypes(clickedMenuItemIndex - (m_maxColumns * m_maxRows))];
-				m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);
+				m_menuItems[clickedMenuItemIndex]->addBehviourParameters(tempBParam);
 
 
 				//add equipped item to inventory
@@ -211,7 +211,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				behaviourParameters tempBParam;
 				tempBParam.behaviourName = equipsGearPiece;
 				tempBParam.gearPiece = m_playerGear[m_items[clickedMenuItemIndex].simpleRep.type];
-				m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);
+				m_menuItems[clickedMenuItemIndex]->addBehviourParameters(tempBParam);
 				//remove the newly equipped item from inventory
 				m_items[clickedMenuItemIndex].itemType = emptySlot;
 			
@@ -222,7 +222,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				behaviourParameters tempBParam;
 				tempBParam.behaviourName = removesGearPiece;
 				tempBParam.gearPiece = m_playerGear[m_items[clickedMenuItemIndex].simpleRep.type];
-				m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);
+				m_menuItems[clickedMenuItemIndex]->addBehviourParameters(tempBParam);
 				//
 
 
@@ -236,7 +236,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				//send behaviour indicating it must equipped
 				tempBParam.behaviourName = equipsGearPiece;
 				tempBParam.gearPiece = m_items[clickedMenuItemIndex].simpleRep;
-				m_menuItems[clickedMenuItemIndex].addBehviourParameters(tempBParam);
+				m_menuItems[clickedMenuItemIndex]->addBehviourParameters(tempBParam);
 			
 			}
 		
@@ -251,7 +251,7 @@ void PlayerInventory::pv_onClick(MenuItem *clickedMenuItem, size_t clickedMenuIt
 				tempASprite.originToCenter = false;
 				tempASprite.textureID = Animator::getInstance().getTextureID("tooltip.png");
 				m_items[clickedMenuItemIndex].itemToolTip.setTexture(tempASprite);
-				m_items[clickedMenuItemIndex].itemToolTip.setPosition(m_menuItems[clickedMenuItemIndex].getPosition() + m_menuItems[clickedMenuItemIndex].getDimension());
+				m_items[clickedMenuItemIndex].itemToolTip.setPosition(m_menuItems[clickedMenuItemIndex]->getPosition() + m_menuItems[clickedMenuItemIndex]->getDimension());
 				m_toDrawToolTip = &m_items[clickedMenuItemIndex].itemToolTip;
 				m_toDrawToolTip->setIsUIElement(true);
 			}
@@ -300,7 +300,7 @@ void PlayerInventory::m_addGearToPlayer(const GearPiece& gearPiece)
 	size_t tempMenuID = m_maxColumns * m_maxRows + gearPiece.type;
 	m_playerGear[gearPiece.type] = gearPiece;
 	m_playerGear[gearPiece.type].tex.isUI = true;
-	m_menuItems[tempMenuID].fitASpriteToItem(&m_playerGear[gearPiece.type].tex);
+	m_menuItems[tempMenuID]->fitASpriteToItem(&m_playerGear[gearPiece.type].tex);
 	
 }
 

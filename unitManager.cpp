@@ -17,109 +17,6 @@ std::recursive_mutex mutexLock;
 MockMutex mutexLock;
 #endif
 
-void MarketMenu::createStaticMenuLayout()
-{
-	//
-
-	MenuItem tempMenuItem = createMenuItem(sf::Vector2f(0.15, 0.05), sf::Vector2f(0.1, 0.05));
-	behaviourParameters tempBParam;
-	tempBParam.behaviourName = removesGearPiece;
-	tempBParam.gearPieceRemoved = "chestPiece";
-	tempBParam.goldCost = m_playerGearCost[tempBParam.gearPieceRemoved];
-	tempMenuItem.addBehviourParameters(tempBParam);
-	addMenuItem(tempMenuItem);
-
-	tempMenuItem = createMenuItem(sf::Vector2f(0.35, 0.05), sf::Vector2f(0.1, 0.05));
-	tempBParam.behaviourName = removesGearPiece;
-	tempBParam.gearPieceRemoved = "helmet";
-	tempBParam.goldCost = m_playerGearCost[tempBParam.gearPieceRemoved];
-	tempMenuItem.addBehviourParameters(tempBParam);
-	addMenuItem(tempMenuItem);
-
-	tempMenuItem = createMenuItem(sf::Vector2f(0.55, 0.05), sf::Vector2f(0.1, 0.05));
-	tempBParam.behaviourName = removesGearPiece;
-	tempBParam.gearPieceRemoved = "boots";
-	tempBParam.goldCost = m_playerGearCost[tempBParam.gearPieceRemoved];
-	tempMenuItem.addBehviourParameters(tempBParam);
-	addMenuItem(tempMenuItem);
-
-	tempMenuItem = createMenuItem(sf::Vector2f(0.75, 0.05), sf::Vector2f(0.1, 0.05));
-	tempBParam.behaviourName = removesGearPiece;
-	tempBParam.gearPieceRemoved = "weapon";
-	tempBParam.goldCost = m_playerGearCost[tempBParam.gearPieceRemoved];
-	tempMenuItem.addBehviourParameters(tempBParam);
-	addMenuItem(tempMenuItem);
-
-	tempMenuItem = createMenuItem(sf::Vector2f(0.15, 0.7),sf::Vector2f(0.1, 0.1));
-	tempBParam.behaviourName = buysItem;
-	tempBParam.itemBought = "healthPotion";
-	tempBParam.goldCost = 10;
-	tempMenuItem.addBehviourParameters(tempBParam);
-	addMenuItem(tempMenuItem);
-}
-
-void MarketMenu::onDraw(bool beforeDraw, sf::Vector2f viewDisplacement)
-{
-	if (beforeDraw) {
-		for (size_t i = 0; i < m_playerGear.size(); i++)
-		{
-			sf::Vector2f initialPosition = m_playerGear[i].getPosition();
-			m_playerGear[i].setPosition(initialPosition + viewDisplacement);
-			m_playerGear[i].draw(*m_window);
-			m_playerGear[i].setPosition(initialPosition);
-		}
-	}
-}
-
-//deprecated
-//void addToolTips(gearPiece playerGear)
-//{
-//	mutexLock.lock();
-//	m_playerGear.clear();
-//
-//	AnimatorSprite tempASprite;
-//	tempASprite.textureID = Animator::getInstance().getTextureID("tooltip.png");
-//	tempASprite.originToCenter = false;
-//	tempASprite.scale = 6;
-//
-//	sf::Vector2f scaleFactor =  getScaleFactor(sf::Vector2f(Animator::getInstance().getTexture(Animator::getInstance().getTextureID("tooltip.png"))->getSize()) * tempASprite.scale, sf::Vector2f(0.2, 0.4));
-//
-//	ToolTip tempToolTip;
-//
-//
-//
-//	tempToolTip.setScale(scaleFactor.x);
-//	tempToolTip.setTexture(tempASprite);
-//
-//	auto gearItems = playerGear.getGearItems();
-//	std::map<std::string, GearPiece>::iterator it;
-//	for (it = gearItems.begin(); it != gearItems.end(); it++){
-//		tempToolTip.clearText();
-//		tempToolTip.makeTooltipForGear(it->second);
-//		m_playerGearCost[it->first] = it->second.goldValue;
-//		if (it->first == "chestPiece") {
-//			tempToolTip.setPosition(getPixelCoordinate(sf::Vector2f(0.1, 0.15)));
-//		}
-//
-//		if (it->first == "helmet") {
-//			tempToolTip.setPosition(getPixelCoordinate(sf::Vector2f(0.3, 0.15)));
-//		}
-//
-//		if (it->first == "boots") {
-//			tempToolTip.setPosition(getPixelCoordinate(sf::Vector2f(0.5, 0.15)));
-//		}
-//
-//		if (it->first == "weapon") {
-//			tempToolTip.setPosition(getPixelCoordinate(sf::Vector2f(0.7, 0.15)));
-//		}
-//		m_playerGear.push_back(tempToolTip);
-//	}
-//	mutexLock.unlock();
-//}
-
-void MarketMenu::update(updateEvent)
-{
-}
 
 void UnitManager::m_updateAIWeapons(std::vector<Weapon*> AIWeapons)
 {
@@ -130,7 +27,7 @@ void UnitManager::m_updateAIWeapons(std::vector<Weapon*> AIWeapons)
 		std::list<Bullet*>::iterator it2;
 		for (it2 = AIWeaponBullets.begin(); it2 != AIWeaponBullets.end(); ++it2)
 		{
-			if (vectorDistance((*it2)->getBody()->getBody()[0].first, m_player->getBody()[0].first) < renderDistance) {
+			if (vectorDistance((*it2)->getBody()->getBody()->first, m_player->getBody()->first) < renderDistance) {
 				if (m_map->collides((*it2)->getBody())) {
 
 					(*it2)->onWallHit();
@@ -178,8 +75,8 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 		m_levelScale = std::atof(tokens[1].c_str());
 	}
 	else if (tokens[0] == "requireTileSizeOrScale") {
-		if (ma_deserialize_uint(tokens[1]) != TileMap::tileSize) {
-			m_levelScale = TileMap::tileSize/ ma_deserialize_uint(tokens[1]);
+		if (ma_deserialize_uint(tokens[1]) != Tile::tileSize) {
+			m_levelScale = Tile::tileSize/ ma_deserialize_uint(tokens[1]);
 
 		}
 	}
@@ -202,8 +99,8 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 	}
 	else if (tokens[0] == "unit") {
 		EnemyAI* tempAI = new EnemyAI();
-		std::vector<std::pair<sf::Vector2f, float>> unitBody;
-		unitBody.push_back(std::pair<sf::Vector2f, float>(sf::Vector2f(std::atof(tokens[1].c_str()) * m_levelScale, std::atof(tokens[2].c_str())) * m_levelScale, std::atof(tokens[3].c_str())));
+		std::pair<sf::Vector2f, float> unitBody;
+		unitBody = std::pair<sf::Vector2f, float>(sf::Vector2f(std::atof(tokens[1].c_str()) * m_levelScale, std::atof(tokens[2].c_str())) * m_levelScale, std::atof(tokens[3].c_str()));
 		unit* tempUnit = new unit(unitBody);
 		tempUnit->typeOfUnit = defaultType;
 		tempUnit->setWeight(std::atof(tokens[4].c_str()));
@@ -292,24 +189,6 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 		}
 
 
-	}else
-	if (tokens[0] == "worldTextureTile") {
-		sf::Texture* tempTexture = new sf::Texture();
-		tempTexture->loadFromFile(tokens[7]);
-		m_toDeleteTextures.push_back(tempTexture);
-		sf::Sprite tempSprite;
-		tempSprite.setTexture(*tempTexture);
-		if (std::atof(tokens[1].c_str()) < 0) {
-			tempSprite.setOrigin(sf::Vector2f(tempSprite.getLocalBounds().width / 2, tempSprite.getLocalBounds().height / 2));
-		}
-		else {
-			tempSprite.setOrigin(sf::Vector2f(std::atof(tokens[1].c_str()), std::atof(tokens[2].c_str())));
-		}
-
-		tempSprite.setPosition(sf::Vector2f(std::atof(tokens[3].c_str()), std::atof(tokens[4].c_str())));
-		tempSprite.setRotation(std::atof(tokens[5].c_str()));
-		tempSprite.scale(std::atof(tokens[6].c_str()) * m_levelScale, std::atof(tokens[6].c_str()) * m_levelScale);
-		m_worldTextures.push_back(tempSprite);
 	}
 	else if (tokens[0] == "") {
 
@@ -400,7 +279,7 @@ inventoryItem UnitManager::pickUpItem()
 {
 	for (size_t i = 0; i < m_mapItems.size(); i++)
 	{
-		if (vectorDistance(m_mapItems[i].first, m_player->getBody()[0].first) < m_pickUpDistance) {
+		if (vectorDistance(m_mapItems[i].first, m_player->getBody()->first) < m_pickUpDistance) {
 			auto retVal = std::move(m_mapItems[i].second);
 			m_mapItems.erase(m_mapItems.begin() + i);
 			return retVal;
@@ -462,7 +341,7 @@ void UnitManager::endLevel()
 float UnitManager::getDistanceToPlayer(sf::Vector2f pos) const
 {
 	mutexLock.lock();
-	float retVal = vectorDistance(pos, m_player->getBody()[0].first);
+	float retVal = vectorDistance(pos, m_player->getBody()->first);
 	mutexLock.unlock();
 	return retVal;
 }
@@ -487,7 +366,7 @@ Menu * UnitManager::interact(MessageBus *bus)
 	mutexLock.lock();
 	for (size_t i = 0; i < m_interactables.size(); i++)
 	{
-		if (vectorDistance(m_interactables[i].position, m_player->getBody()[0].first) < m_interactables[i].activationRadius) {
+		if (vectorDistance(m_interactables[i].position, m_player->getBody()->first) < m_interactables[i].activationRadius) {
 			
 			if (m_interactables[i].isMessaging) {
 				MessageData* tempMessage = new MessageData();
@@ -496,10 +375,7 @@ Menu * UnitManager::interact(MessageBus *bus)
 				mutexLock.unlock();
 				return nullptr;
 			}
-            MarketMenu *tempMarketMenu = dynamic_cast<MarketMenu*>(m_interactables[i].menu);
-            if(tempMarketMenu != nullptr){
-                //tempMarketMenu->addToolTips(m_gear);
-            }
+  
 			mutexLock.unlock();
 			return m_interactables[i].menu;
 		}
@@ -544,7 +420,7 @@ unit *UnitManager::getClosestAIUnit()const{
     return m_closestAIUnit;
 }
 
-//TODO: create a layer render system, to combine effects over the player/bullet etc, integrate with worldTextures and animation
+
 void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *gameBus)
 {
 
@@ -577,7 +453,7 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 
 	for (size_t i = 0; i < m_AIs.size(); i++)
 	{
-	    float tempDistance = vectorDistance(m_AIs[i]->getUnit()->getBody()[0].first, m_player->getBody()[0].first);
+	    float tempDistance = vectorDistance(m_AIs[i]->getUnit()->getBody()->first, m_player->getBody()->first);
 		if ( (tempDistance < renderDistance) && !m_AIs[i]->getUnit()->isDead) {
             if(minDistance > tempDistance){
                 m_closestAIUnit = m_AIs[i]->getUnit();
@@ -636,7 +512,7 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 	std::list<Bullet*>::iterator it2;
 	for (it2 = playerWeaponBullets.begin(); it2 != playerWeaponBullets.end(); ++it2)
 	{
-		if (vectorDistance((*it2)->getBody()->getBody()[0].first, m_player->getBody()[0].first) < renderDistance) {
+		if (vectorDistance((*it2)->getBody()->getBody()->first, m_player->getBody()->first) < renderDistance) {
 			if (m_map->collides((*it2)->getBody())) {
 				(*it2)->onWallHit();
 			}
@@ -665,7 +541,7 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 	{
 
 		m_mapItems[i].second.itemASprite.position = m_mapItems[i].first;
-		if (vectorDistance(m_mapItems[i].first, m_player->getBody()[0].first) < m_toolTipReadDistance) {
+		if (vectorDistance(m_mapItems[i].first, m_player->getBody()->first) < m_toolTipReadDistance && m_showToolTips) {
 			m_mapItems[i].second.itemToolTip.setPosition(m_mapItems[i].first);
 			m_mapItems[i].second.itemToolTip.draw(*Animator::getInstance().getWindow());
 		}
@@ -676,14 +552,13 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 		Animator::getInstance().addOneFrameSprite(m_mapItems[i].second.itemASprite);
 	}
 
-	if (m_showToolTips) {
-		for (size_t i = 0; i < m_toolTips.size(); i++)
-		{
-			if (m_toolTips[i].second && (vectorDistance(m_toolTips[i].first->getPosition(), m_player->getBody()[0].first) < m_toolTips[i].first->readDistance)) {
-				Animator::getInstance().addOneFrameSprite(*m_toolTips[i].first);
-			}
+	for (size_t i = 0; i < m_toolTips.size(); i++)
+	{
+		if (m_toolTips[i].second && (vectorDistance(m_toolTips[i].first->getPosition(), m_player->getBody()->first) < m_toolTips[i].first->readDistance)) {
+			Animator::getInstance().addOneFrameSprite(*m_toolTips[i].first);
 		}
 	}
+
 
 	m_tileMap.addAllSprites();
 
@@ -743,7 +618,7 @@ unit * UnitManager::getPlayer()const
 //		for (size_t i = 0; i < m_mapGearPieces.size(); i++)
 //		{
 //			//std::cout << "size of gear: " << m_mapGearPieces.size() << std::endl;
-//			if (vectorDistance(m_mapGearPieces[i].first, m_player->getBody()[0].first) < m_pickUpDistance) {
+//			if (vectorDistance(m_mapGearPieces[i].first, m_player->getBody()->first) < m_pickUpDistance) {
 //				m_mapGearPieces[i].second.tex.rotation = 0;
 //				//addPlayerGear(m_mapGearPieces[i].second);
 //				m_toolTips[m_itemToolTipID[m_mapGearPieces[i].second]].second = false;
@@ -785,6 +660,7 @@ void UnitManager::spawnPoint(int enemies, sf::Vector2f pos, std::vector<std::str
 
 	for (size_t i = 0; i < enemies; i++)
 	{
+		std::cout << "somethings wrong" << std::endl;
 		size_t lastEnemyUnitID = m_AIs.size();
 		createFromFile(enemyFileName[rand() % enemyFileName.size()]);
 		for (size_t o = lastEnemyUnitID; o < m_AIs.size(); o++)
@@ -844,39 +720,4 @@ UnitManager::~UnitManager()
 	mutexLock.unlock();
 }
 
-unit *makePlayer(sf::Vector2f pos, float radius, float weight)
-{
-	std::vector<std::pair<sf::Vector2f, float>> unitBody;
-	unitBody.push_back(std::pair<sf::Vector2f, float>(pos, radius));
-	unit *retVal = new unit(unitBody);
-	retVal->typeOfUnit = playerType;
-	retVal->setWeight(weight);
-	/*if (tokens.size() > 5) {
-		AnimatorSprite tempASprtie;
-		tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[5]);
 
-		retVal->setAnimatorSprite(tempASprtie);
-	}*/
-	//m_player->animatorValues.usingCompositeTextures = false;
-	/*AnimatorSprite tempASprite;
-	tempASprite.textureID = 1;
-	m_player->setAnimatorSprite(tempASprite);
-	mutexLock.unlock();
-	return;*/
-	retVal->animatorValues.back_left_idle.textureID = Animator::getInstance().getTextureID("player_back_left_idle.png");
-	retVal->animatorValues.back_left_idle.drawLayer = 2;
-	retVal->animatorValues.back_right_idle.textureID = Animator::getInstance().getTextureID("player_back_right_idle.png");
-	retVal->animatorValues.back_right_idle.drawLayer = 2;
-	retVal->animatorValues.front_left_idle.textureID = Animator::getInstance().getTextureID("player_front_left_idle.png");
-	retVal->animatorValues.front_left_idle.drawLayer = 2;
-	retVal->animatorValues.front_right_idle.textureID = Animator::getInstance().getTextureID("player_front_right_idle.png");
-	retVal->animatorValues.front_right_idle.drawLayer = 2;
-	retVal->animatorValues.front_right_walking = Animator::getInstance().getAnimationPresetID("player_front_right_walk");
-	retVal->animatorValues.front_left_walking = Animator::getInstance().getAnimationPresetID("player_front_left_walk");
-	retVal->animatorValues.back_right_walking = Animator::getInstance().getAnimationPresetID("player_back_right_walk");
-	retVal->animatorValues.back_left_walking = Animator::getInstance().getAnimationPresetID("player_back_left_walk");
-	retVal->animatorValues.usingCompositeTextures = true;
-	retVal->animatorValues.hasWalking = true;
-	retVal->animatorValues.hasRunning = false;
-	return retVal;
-}

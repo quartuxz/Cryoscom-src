@@ -2,8 +2,9 @@
 #include <vector>
 #include "AnimatorSprite.h"
 #include "Wall.h"
+#include "Serializable.h"
 
-class Tile
+class Tile : public Serializable
 {
 private:
 	std::vector<AnimatorSprite> m_tileSprites;
@@ -14,6 +15,12 @@ private:
 	sf::Vector2f m_lastMove = sf::Vector2f(0,0);
 
 public:
+
+	void createFrom(const decomposedData&)override;
+	decomposedData serialize()override;
+
+	static constexpr unsigned int tileSize = 64;
+
 	Tile();
 	//adds the tile sprites to the queue for drawing
 	void addSprites();
@@ -38,4 +45,22 @@ public:
 	void setTileSprites(const std::vector<AnimatorSprite>&);
 	~Tile();
 };
+
+inline Tile makeSquareTile() {
+	Tile tempTile;
+	Wall tempWall;
+	tempWall.wall.first = sf::Vector2f(0, Tile::tileSize);
+	tempWall.wall.second = sf::Vector2f(0, 0);
+	tempTile.addBound(tempWall);
+	tempWall.wall.first = sf::Vector2f(Tile::tileSize, Tile::tileSize);
+	tempWall.wall.second = sf::Vector2f(0, Tile::tileSize);
+	tempTile.addBound(tempWall);
+	tempWall.wall.first = sf::Vector2f(Tile::tileSize, 0);
+	tempWall.wall.second = sf::Vector2f(Tile::tileSize, Tile::tileSize);
+	tempTile.addBound(tempWall);
+	tempWall.wall.first = sf::Vector2f(0, 0);
+	tempWall.wall.second = sf::Vector2f(Tile::tileSize, 0);
+	tempTile.addBound(tempWall);
+	return tempTile;
+}
 

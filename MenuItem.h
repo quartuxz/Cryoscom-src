@@ -99,7 +99,8 @@ public:
 
 	void setIsButtonTextDisplayed(bool);
 	bool getIsButtonTextDisplayed()const;
-	void setButtonText(std::string, float, sf::Color, unsigned int);
+	//first argument is text string, second is margins off menuItem borders(in MenuItem`s area %), third is text color and fourth is text style
+	void setButtonText(std::string, float, sf::Color, unsigned int style = 0);
 
 	void reestablishInitialPostion();
 

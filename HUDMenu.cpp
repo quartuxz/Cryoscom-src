@@ -21,35 +21,24 @@ void HUDMenu::createStaticMenuLayout()
 
 	for (size_t i = 0; i < m_hotbarSlotsNumber; i++)
 	{
-		MenuItem hotbarMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(individualHotbarSize.x * i + (0.5 - (individualHotbarSize.x * m_hotbarSlotsNumber) / 2), 0),true), getPixelCoordinate(individualHotbarSize)));
+		MenuItem *hotbarMenuItem = new MenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(individualHotbarSize.x * i + (0.5 - (individualHotbarSize.x * m_hotbarSlotsNumber) / 2), 0),true), getPixelCoordinate(individualHotbarSize)));
 		AnimatorSprite hotbarMenuItemTex;
 		hotbarMenuItemTex.drawLayer = 5;
 		hotbarMenuItemTex.textureID = Animator::getInstance().getTextureID("Inventory-Slot (Empty).png");
-		hotbarMenuItem.setTexture(hotbarMenuItemTex);
-		hotbarMenuItem.setButtonText(std::to_string(i+1).append("  "), 0.1, sf::Color::Red, 0);
-		m_menuItems.push_back(hotbarMenuItem);
+		hotbarMenuItem->setTexture(hotbarMenuItemTex);
+		hotbarMenuItem->setButtonText(std::to_string(i+1).append("  "), 0.1, sf::Color::Red, 0);
+		addMenuItem(hotbarMenuItem);
 	}
 	m_usedSkills.resize(m_hotbarSlotsNumber, nullptr);
-	
 
-	MenuItem tempMenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(0, 1),true), getPixelCoordinate(sf::Vector2f(0.2, 0.5))));
-	m_menuItems.push_back(tempMenuItem);
 
+	MenuItem *healthIndicator = new MenuItem(sf::Rect<float>(getPixelCoordinate(sf::Vector2f(0.5,0.5),true), getPixelCoordinate(sf::Vector2f(0.1,0.1))));
+	AnimatorSprite tempASprite;
+	tempASprite.isInvisible = true;
+	healthIndicator->setTexture(tempASprite);
+	m_healthIndicator = m_menuItems[addMenuItem(healthIndicator)];
 	
 	//m_availablePotions.setTexture();
-	m_updatePotions(0);
-}
-
-void HUDMenu::m_updatePotions(unsigned int availablePotions) {
-	sf::Text tempText;
-	std::stringstream ss;
-	m_availablePotions.clearText();
-	ss << "available potions: " << availablePotions << std::endl;
-	tempText.setString(ss.str());
-	tempText.setPosition(sf::Vector2f(100, 100));
-	tempText.setScale(sf::Vector2f(1, 1));
-	tempText.setFillColor(sf::Color(0, 0, 0, 255));
-	m_availablePotions.addText(tempText);
 }
 
 size_t HUDMenu::addSkill(skillParam *sParam)
@@ -59,7 +48,7 @@ size_t HUDMenu::addSkill(skillParam *sParam)
 		if (m_usedSkills[i] == nullptr) {
 			sParam->skillIcon.isUI = true;
 			m_usedSkills[i] = sParam;
-			m_menuItems[i].fitASpriteToItem(&m_usedSkills[i]->skillIcon);
+			m_menuItems[i]->fitASpriteToItem(&m_usedSkills[i]->skillIcon);
 			return i;
 		}
 	}
@@ -73,10 +62,6 @@ skillParam* HUDMenu::getSkill(size_t skillSlotID)
 
 void HUDMenu::onDraw(bool beforeDraw, sf::Vector2f viewDisplacement) {
 	if (beforeDraw) {
-		sf::Vector2f initialPosition = m_availablePotions.getPosition();
-		m_availablePotions.setPosition(initialPosition + viewDisplacement);
-		m_availablePotions.draw(*m_window);
-		m_availablePotions.setPosition(initialPosition);
 		
 	}
 	else {
@@ -96,7 +81,7 @@ void HUDMenu::onDraw(bool beforeDraw, sf::Vector2f viewDisplacement) {
 		tempText.setFont(*ToolTip::getFont());
 		inGameTextScale = inGameTextScale/ tempText.getCharacterSize();
 		sf::Vector2f offset = getPixelCoordinate(sf::Vector2f(0,1),true);
-		offset.y -= tempText.getCharacterSize() * InGameMessages::getInstance().getLineCap() * inGameTextScale;
+		offset.y -= tempText.getCharacterSize() * (InGameMessages::getInstance().getLineCap()+0.5) * inGameTextScale;
 		for (size_t i = 0; !lines.empty(); i++) {
 			std::stringstream sstream;
 			sstream << "> " << lines.front().message;
@@ -115,16 +100,19 @@ void HUDMenu::onDraw(bool beforeDraw, sf::Vector2f viewDisplacement) {
 
 void HUDMenu::update(updateEvent uEvent)
 {
+	std::stringstream sstream;
 	switch (uEvent.updateEventType)
 	{
 	case lostLife:
-		m_menuItems[m_hotbarSlotsNumber].reestablishInitialPostion();
+		//m_menuItems[m_hotbarSlotsNumber].reestablishInitialPostion();
 		//std::cout << "currentLife: " << uEvent.currentLife << ", maxLife: " << uEvent.maxLife << ", percentage: " << (uEvent.currentLife / uEvent.maxLife) << std::endl;
-		m_menuItems[m_hotbarSlotsNumber].move(sf::Vector2f(0, -m_menuItems[0].getDimension().y * (uEvent.currentLife / uEvent.maxLife)));
+		//m_menuItems[m_hotbarSlotsNumber].move(sf::Vector2f(0, -m_menuItems[0].getDimension().y * (uEvent.currentLife / uEvent.maxLife)));
 		//m_menuItems[0].move(sf::Vector2f(0, (m_menuItems[0].getDimension().y/1) * (uEvent.currentLife/uEvent.maxLife)));
+		
+		sstream << "`" << (uEvent.currentLife / uEvent.maxLife)*100 << "%";
+		m_healthIndicator->setButtonText(sstream.str(),0.1, sf::Color(200,0,0,240));
 		break;
 	case lostPotions:
-		m_updatePotions(uEvent.availablePotions);
 		break;
 	default:
 		break;

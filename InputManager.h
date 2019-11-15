@@ -11,7 +11,7 @@ class InputManager
 public:
 	enum InputEventTypes {
 		noInputEvent, dropItem, windowClosed, moveForward, moveBackward, moveLeft, moveRight, shoot, interactKeyPressed, escapeKeyPressed, inventoryKeyPressed, pickUpKeyPressed, showToolTipsKeyPressed, generalKeyReleased, useItem, dash, shiftKeyPressed, dashForward, dashBackward, dashLeft, dashRight,
-		hotbar1, hotbar2, hotbar3, hotbar4, hotbar5
+		hotbar1, hotbar2, hotbar3, hotbar4, hotbar5, showImportantLinesKeyPressed, windowOutOfFocus
 	};
 
 	struct InputEvent {
@@ -31,7 +31,7 @@ private:
 
 	std::atomic<bool> m_isWindowCreated = false;
 	std::atomic<bool> m_isProgramTerminated = false;
-	void m_addEventToQueue(const InputEvent&);
+	std::atomic<bool> m_isWindowOutOfFocus = false;
 
 	std::vector<InputEventTypes> m_getKeyPressedEvent()const;
 	void m_waitForEvents();
@@ -43,6 +43,8 @@ public:
 	InputEvent getEvent();
 
 	sf::RenderWindow* getWindow();
+
+	void addEventToQueue(const InputEvent&);
 
 	bool isInputEventActive(InputEventTypes)const;
 

@@ -1,0 +1,4 @@
+addTileEntry;horizontalWallTile;{Tile,,{AnimatorSprite,,{,textureName,Grey Wall 5.png,}{,fitTileType,fitTileX,}{,relativePositionToTileX,0.5,}{,relativePositionToTileY,0.5,}}{,WallConfig,square,}};
+addTileEntry;verticalWallTile;{Tile,,{AnimatorSprite,,{,textureName,Grey Wall 2.png,}{,fitTileType,fitTileX,}{,relativePositionToTileX,0.5,}{,relativePositionToTileY,0.5,}}{,WallConfig,square,}};
+addTileEntry;floorTile;{Tile,,{AnimatorSprite,,{,textureName,Darkblue_Tile_1.png,}{,fitTileType,fitTileX,}{,relativePositionToTileX,0.5,}{,relativePositionToTileY,0.5,}}};
+enemySpawnParam;{,,{,spawnChancePerTile,100,}{,maxSpawnChancePerTile,1000,}{,enemies,1,}{,enemyFileName,enemy_test.txt,}{,enemyFileName,enemy_test.txt,}};

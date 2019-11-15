@@ -34,11 +34,15 @@ void Parsable::createFromFile(std::string fileName) {
 			else if (tokens[0] == "end") {
 				break;
 			}
+			else if (tokens[0] == "repeat") {
+				pv_parseStep(m_lastParseStep);
+				continue;
+			}
 			else{
 				pv_parseStep(tokens);
 			}
 			
-
+			m_lastParseStep = tokens;
 		}
 		fileRead.close();
 	}

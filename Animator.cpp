@@ -97,6 +97,9 @@ std::queue<AnimatorSprite> Animator::m_updateAnimRecursive(std::queue<AnimatorSp
 sf::Sprite Animator::m_getSprite(const AnimatorSprite &aSprite)
 {
 	sf::Sprite tempSprite;
+	if (aSprite.isInvisible) {
+		return tempSprite;
+	}
 	tempSprite.setTexture(*m_textures[aSprite.textureID]);
 	if (aSprite.originToCenter) {
 		tempSprite.setOrigin(sf::Vector2f(tempSprite.getLocalBounds().width / 2, tempSprite.getLocalBounds().height / 2));
@@ -182,7 +185,7 @@ unsigned int Animator::addTexture(std::string fileName)
 
 void Animator::addOneFrameSprite(const AnimatorSprite &aSprite)
 {
-	m_allLock.lock();
+	//m_allLock.lock();
     if (m_spritesToDraw.size() < (aSprite.drawLayer + 1)) {
 		m_spritesToDraw.resize(aSprite.drawLayer + 1);
 	}
@@ -190,7 +193,7 @@ void Animator::addOneFrameSprite(const AnimatorSprite &aSprite)
 
 		m_spritesToDraw[aSprite.drawLayer].push(m_getSprite(aSprite));
 	}
-	m_allLock.unlock();
+	//m_allLock.unlock();
 }
 
 void Animator::clearNamedAnimatorSprites()
@@ -344,6 +347,7 @@ void Animator::draw()
 
 void Animator::instantDraw(const AnimatorSprite &aSprite)
 {
-	m_window->draw(m_getSprite(aSprite));
+	sf::Sprite tempSprite = m_getSprite(aSprite);
+	m_window->draw(tempSprite);
 }
 
