@@ -23,6 +23,7 @@
     <ClCompile Include="AnimatorSprite.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CollisionCircle.cpp" />
+    <ClCompile Include="DeleterThreadManager.cpp" />
     <ClCompile Include="EnemyAI.cpp" />
     <ClCompile Include="fileLoader.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CollisionCircle.h" />
     <ClInclude Include="cryoscom_defsAndUtils.h" />
+    <ClInclude Include="DeleterThreadManager.h" />
     <ClInclude Include="EnemyAI.h" />
     <ClInclude Include="fileLoader.h" />
     <ClInclude Include="GameMain.h" />

@@ -21,6 +21,10 @@ public:
 
 	static constexpr unsigned int tileSize = 64;
 
+	static sf::Vector2i convertGlobalPosToTilePos(sf::Vector2f);
+	//converts tile pos to the global pos of that tile`s geometric center
+	static sf::Vector2f convertTilePosToGlobalPos(sf::Vector2i);
+
 	Tile();
 	//adds the tile sprites to the queue for drawing
 	void addSprites();

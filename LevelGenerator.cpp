@@ -118,7 +118,7 @@ UnitManager *LevelGenerator::generateLevel()
 		for (size_t p = 0; p < m_enemySpawnData.size(); p++)
 		{
 			if (generateRandomNumber(0,m_enemySpawnData[p].maxSpawnChancePerTile) < m_enemySpawnData[p].spawnChancePerTile) {
-				level->spawnPoint(m_enemySpawnData[p].enemies, sf::Vector2f(m_floorTiles[i] * int(Tile::tileSize)), m_enemySpawnData[p].enemyFileNames);
+				level->spawnEnemies(m_enemySpawnData[p].enemies, sf::Vector2f(m_floorTiles[i] * int(Tile::tileSize)), m_enemySpawnData[p].enemyFileNames);
 			}
 				
 		}

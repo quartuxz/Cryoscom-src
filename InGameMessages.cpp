@@ -1,49 +1,50 @@
 #include "InGameMessages.h"
 
-void InGameMessages::setShowOnlyImportantLines(bool showOnlyImportantLines)
+
+void InGameMessages::setMessageShowType(lineMessageType messageType)
 {
-	m_showOnlyImportantLines = showOnlyImportantLines;
+	std::lock_guard<std::mutex> tempLockGuard(m_allLock);
+	m_showMessageType = messageType;
+
 }
 
-bool InGameMessages::getShowOnlyImportantLines() const
+lineMessageType InGameMessages::getMessageShowType()
 {
-	return m_showOnlyImportantLines;
+	std::lock_guard<std::mutex> tempLockGuard(m_allLock);
+	return m_showMessageType;
 }
 
 void InGameMessages::addLine(lineMessage line)
 {
-	m_currentAllLines++;
-	m_allLines.push(line);
-	if (m_currentAllLines > m_lineCap) {
-		m_allLines.pop();
+	std::lock_guard<std::mutex> tempLockGuard(m_allLock);
+	m_allLines[lineMessageType::anyType].push(line);
+	if (line.messageType != lineMessageType::anyType) {
+		m_allLines[line.messageType].push(line);
 	}
-	if (line.isImportantMessage) {
-		m_currentImportantLines++;
-		m_importantLines.push(line);
-		if (m_currentImportantLines>m_lineCap) {
-			m_importantLines.pop();
+	for (auto& x : m_allLines)
+	{
+		if (x.second.size()>m_lineCap) {
+			x.second.pop();
 		}
 	}
 }
 
 void InGameMessages::setLineCap(size_t lineCap)
 {
+	std::lock_guard<std::mutex> tempLockGuard(m_allLock);
 	m_lineCap = lineCap;
 }
 
-size_t InGameMessages::getLineCap() const
+size_t InGameMessages::getLineCap()
 {
+	std::lock_guard<std::mutex> tempLockGuard(m_allLock);
 	return m_lineCap;
 }
 
-std::queue<lineMessage> InGameMessages::getLines() const
+std::queue<lineMessage> InGameMessages::getLines()
 {
-	if (m_showOnlyImportantLines) {
-		return m_importantLines;
-	}
-	else {
-		return m_allLines;
-	}
+	std::lock_guard<std::mutex> tempLockGuard(m_allLock);
+	return m_allLines[m_showMessageType];
 	
 }
 

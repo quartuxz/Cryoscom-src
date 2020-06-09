@@ -62,7 +62,6 @@ int setenv(const char* name, const char* value, int overwrite)
 int main()
 {
 
-
     // Allow Python to load modules from the current directory.
     setenv("PYTHONPATH", ".", 1);
     // Initialize Python.
@@ -215,7 +214,7 @@ int main()
 	levelMaker.levelMakerLoop("newFile.txt", "cryo_area_1.png");
 	return 0;
 #endif
-	Animator::getInstance().loadTexturesFromFile("loaded_textures.txt");
+	Animator::getInstance().createFromFile("loaded_textures.txt");
 	GameMain gameMain("master.txt");
 	gameMain.spawnWindow();
 	gameMain.createUIFromFile("mainUI.txt");

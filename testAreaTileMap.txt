@@ -28,5 +28,10 @@ tile;copy;6;2;
 
 tile;empty;1;1;
 tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex2,{std::string,textureName,Darkblue_Tile_1.png,}{float,rotation,0,}};
-
 tile;copyPaint;1;1;10;10;
+
+tile;square;3;1;
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex1,{uint,textureName,Grey Wall 2.png,}};
+tile;copy;3;2;
+tile;copy;3;3;
+tile;copy;3;4;

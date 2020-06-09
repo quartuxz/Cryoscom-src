@@ -8,7 +8,7 @@
 
 
 
-
+const float UnitManager::renderDistance = 10000;//Animator::renderDistance;
 const float UnitManager::m_itemPickupCooldown = 2;
 
 #if MULTITHREADED_SCRIPTING_AND_MESSAGING
@@ -57,20 +57,48 @@ void UnitManager::m_updatePlayer(float timeDelta ,std::vector<unit*> nonPlayerUn
 	mutexLock.unlock();
 }
 
+void UnitManager::m_enemySpawnRun(float timeDelta)
+{
+	m_timeAfterLastSpawn += timeDelta;
+	while (m_totalActiveEnemies < m_activeEnemyCap &&
+			m_timeAfterLastSpawn > m_timeBetweenEnemySpawn &&
+			m_remainingEnemiesToSpawn > 0 &&
+			m_spawnPoints.size() > 0) {
+		m_remainingEnemiesToSpawn--;
+		spawnPoint chosenSpawnPoint;
+		for (size_t i = 0; i < 10000; i++)
+		{
+			chosenSpawnPoint = m_spawnPoints[rand() % m_spawnPoints.size()];
+			if ((rand()%chosenSpawnPoint.spawnChanceDenominator) < chosenSpawnPoint.spawnChanceNumerator) {
+				break;
+			}
+		}
+		m_timeAfterLastSpawn -= m_timeBetweenEnemySpawn;
+		spawnEnemies(1, chosenSpawnPoint.pos, std::vector<std::string>(1, chosenSpawnPoint.enemyTemplateName));
+	}
+}
+
 void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 {
 	mutexLock.lock();
-	if (tokens[0] == "spawnPoint") {
-		std::vector<std::string> enemyFileName;
+	if (tokens[0] == "spawnEnemies") {
+		std::vector<std::string> enemyTemplateName;
 		for (size_t i = 4; i < tokens.size(); i++)
 		{
-			enemyFileName.push_back(tokens[i]);
+			enemyTemplateName.push_back(tokens[i]);
 		}
 
-		spawnPoint(ma_deserialize_int(tokens[1]), sf::Vector2f(ma_deserialize_float(tokens[2]), ma_deserialize_float(tokens[3])), enemyFileName);
+		spawnEnemies(ma_deserialize_int(tokens[1]), sf::Vector2f(ma_deserialize_float(tokens[2]), ma_deserialize_float(tokens[3])), enemyTemplateName);
 
 	}
-
+	else if (tokens[0] == "spawnPoint") {
+		spawnPoint tempSpawnPoint;
+		tempSpawnPoint.enemyTemplateName = tokens[1];
+		tempSpawnPoint.pos = sf::Vector2f(ma_deserialize_float(tokens[2]), ma_deserialize_float(tokens[3]));
+		tempSpawnPoint.spawnChanceNumerator = ma_deserialize_uint(tokens[4]);
+		tempSpawnPoint.spawnChanceDenominator = ma_deserialize_uint(tokens[5]);
+		m_spawnPoints.push_back(tempSpawnPoint);
+	}
 	else if (tokens[0] == "scaleFactor") {
 		m_levelScale = std::atof(tokens[1].c_str());
 	}
@@ -97,33 +125,34 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 		tempASprite.drawLayer = std::atoi(tokens[6].c_str());
 		Animator::getInstance().getNamedAnimatorSprites()->insert(std::make_pair(tokens[1], std::move(tempASprite)));
 	}
-	else if (tokens[0] == "unit") {
+	else if (tokens[0] == "addEnemyTemplate") {
 		EnemyAI* tempAI = new EnemyAI();
 		std::pair<sf::Vector2f, float> unitBody;
-		unitBody = std::pair<sf::Vector2f, float>(sf::Vector2f(std::atof(tokens[1].c_str()) * m_levelScale, std::atof(tokens[2].c_str())) * m_levelScale, std::atof(tokens[3].c_str()));
+		unitBody = std::pair<sf::Vector2f, float>(sf::Vector2f(std::atof(tokens[2].c_str()) * m_levelScale, std::atof(tokens[3].c_str())) * m_levelScale, std::atof(tokens[4].c_str()));
 		unit* tempUnit = new unit(unitBody);
 		tempUnit->typeOfUnit = defaultType;
-		tempUnit->setWeight(std::atof(tokens[4].c_str()));
+		tempUnit->setWeight(std::atof(tokens[5].c_str()));
 
 		tempUnit->cModule.moveSpeed = 100;
 		tempUnit->cModule.damage = 5;
 
 		tempAI->setUnit(tempUnit);
-		m_AIs.push_back(tempAI);
-		if (tokens.size() > 5) {
+		if (tokens.size() > 6) {
 			AnimatorSprite tempASprtie;
-			tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[5]);
+			tempASprtie.textureID = Animator::getInstance().getTextureID(tokens[6]);
 
 			tempAI->getUnit()->setAnimatorSprite(tempASprtie);
 		}
-		if (tokens.size() > 6) {
-			tempAI->createFromFile(tokens[6]);
-		}
 		if (tokens.size() > 7) {
-			tempAI->setHead(m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[7].c_str())]->getUnit(), sf::Vector2f(std::atof(tokens[8].c_str()), std::atof(tokens[9].c_str())));
+			tempAI->createFromFile(tokens[7]);
 		}
-
-	}else if (tokens[0] == "interactable") {
+		if (tokens.size() > 8) {
+			tempAI->setHead(m_AIs[(m_AIs.size() - 1) - std::atoi(tokens[8].c_str())]->getUnit(), sf::Vector2f(std::atof(tokens[9].c_str()), std::atof(tokens[10].c_str())));
+		}
+		tempAI->setWeapon(new Weapon(tempUnit));
+		m_enemyTemplates[tokens[1]] = tempAI;
+	}
+	else if (tokens[0] == "interactable") {
 		
 		if (tokens[1] == "messageSender") {
 			interactable tempInteractable;
@@ -162,7 +191,6 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 	if (tokens[0] == "player") {
 
 		m_player = makePlayer(sf::Vector2f(ma_deserialize_float(tokens[1]), ma_deserialize_float(tokens[2])), ma_deserialize_float(tokens[3]), ma_deserialize_float(tokens[4]));
-
 		
 
 	}
@@ -190,9 +218,6 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 
 
 	}
-	else if (tokens[0] == "") {
-
-	}
 	else if (tokens[0] == "loadLootTable") {
 		m_lootTable.createFromFile(tokens[1]);
 	}
@@ -206,32 +231,6 @@ void UnitManager::pv_parseStep(std::vector<std::string> tokens)
 	mutexLock.unlock();
 }
 
-void UnitManager::addHealthPotions(unsigned int amount)
-{
-	mutexLock.lock();
-	m_healthPotions += amount;
-	mutexLock.unlock();
-}
-
-void UnitManager::addGold(unsigned int amount)
-{
-	mutexLock.lock();
-	m_gold += amount;
-	mutexLock.unlock();
-}
-
-bool UnitManager::subtractGold(int amount)
-{
-	mutexLock.lock();
-	if (m_gold >= amount) {
-		m_gold -= amount;
-		mutexLock.unlock();
-		return true;
-	}
-	mutexLock.unlock();
-	return false;
-}
-
 bool UnitManager::removeGearPiece(std::string gearPieceName)
 {
 	mutexLock.lock();
@@ -239,16 +238,6 @@ bool UnitManager::removeGearPiece(std::string gearPieceName)
 	bool retVal = false;
 	mutexLock.unlock();
 	return retVal;
-}
-
-void UnitManager::drinkPotion()
-{
-	mutexLock.lock();
-	if (m_healthPotions > 0) {
-		m_player->cModule.hitpoints += 100;
-		m_healthPotions--;
-	}
-	mutexLock.unlock();
 }
 
 void UnitManager::setToolTipsShow(bool toolTipsShown)
@@ -301,7 +290,6 @@ void UnitManager::saveGearProgression()
 {
 	mutexLock.lock();
 	std::ofstream editFile(m_progressionFileName, std::ios::app);
-	editFile << "bag;" << m_healthPotions << ";" << m_gold << ";" << std::endl;
 	editFile.close();
 	mutexLock.unlock();
 }
@@ -321,10 +309,6 @@ void UnitManager::startLevel()
 {
 	mutexLock.lock();
 	//assignPlayerGear();
-	GearPiece tempGearPiece;
-	tempGearPiece.tex.textureID = Animator::getInstance().getTextureID("chestPiece.png");
-	tempGearPiece.tex.textureID = 2;
-	tempGearPiece;
 	//m_lootTable.addLootEntry(tempGearPiece);
 	m_needsAnUpdate = true;
 	mutexLock.unlock();
@@ -411,8 +395,26 @@ void UnitManager::setPlayerWeapon(Weapon *weapon)
 	mutexLock.unlock();
 }
 
-unsigned int UnitManager::getHealthPotions()const{
-    return m_healthPotions;
+std::map<std::string, EnemyAI*> UnitManager::getEnemyTemplates() const
+{
+	return m_enemyTemplates;
+}
+
+unsigned int UnitManager::getRemainingEnemiesTotal() const
+{
+	return m_totalActiveEnemies + m_remainingEnemiesToSpawn;
+}
+
+unsigned int UnitManager::getCurrentRound() const
+{
+	return m_currentRound;
+}
+
+void UnitManager::startNewRound(unsigned int enemiesTotal)
+{
+	m_timeAfterLastSpawn = 0;
+	m_remainingEnemiesToSpawn = enemiesTotal;
+	m_currentRound++;
 }
 
 unit *UnitManager::getClosestAIUnit()const{
@@ -438,15 +440,12 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 	}
 	//std::cout << "bullet speed: " << m_player->Amodule->bulletSpeed << ", bullet duration: " << m_player->Amodule->bulletDuration << ", fire rate: " << m_player->Amodule->fireRate << std::endl;
 
-	std::vector<std::thread*> threads;
+	m_enemySpawnRun(timeDelta);
+
 	int numberOfThreads = 1;
 
 	std::vector<unit*> nonPlayerUnits;
 	std::vector<Weapon*> AIWeapons;
-	std::vector<std::vector<unit*>> nonPlayerUnitsThreaded;
-	nonPlayerUnitsThreaded.resize(numberOfThreads);
-	std::vector<std::vector<Weapon*>> AIWeaponsThreaded;
-	AIWeaponsThreaded.resize(numberOfThreads);
 
     float minDistance = std::numeric_limits<float>::max();
 
@@ -459,39 +458,20 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
                 m_closestAIUnit = m_AIs[i]->getUnit();
                 minDistance = tempDistance;
             }
-			m_AIs[i]->update(timeDelta, std::vector<unit*>(1, m_player), gameBus);
+			m_AIs[i]->update(timeDelta, std::vector<unit*>(1, m_player), gameBus, m_tileMap);
 
 			m_AIs[i]->drawBullets(window);
-			//window.draw(m_AIs[i]->getUnit()->getTexture());
-			nonPlayerUnitsThreaded[i%numberOfThreads].push_back(m_AIs[i]->getUnit());
 			nonPlayerUnits.push_back(m_AIs[i]->getUnit());
-			AIWeaponsThreaded[i%numberOfThreads].push_back(m_AIs[i]->getWeapon());
 			AIWeapons.push_back(m_AIs[i]->getWeapon());
 		}else if(m_AIs[i]->getUnit()->recentlyDead && m_AIs[i]->getUnit()->isDead){
+			m_totalActiveEnemies--;
+			m_AIs[i]->onUnitKilled(std::vector<unit*>(1, m_player));
             m_AIs[i]->getUnit()->recentlyDead = false;
             killedUnits.push_back(m_AIs[i]->getUnit());
         }
 	}
 
-	//std::thread tempThread(&UnitManager::m_updateAI, this, timeDelta, nonPlayerUnitsThreaded[0], nonPlayerUnits);
-
-	for (size_t i = 0; i < numberOfThreads; i++)
-	{
-		//threads.push_back(new std::thread(&UnitManager::m_updateAI, this, timeDelta, nonPlayerUnitsThreaded[i], nonPlayerUnits));
-		//threads.push_back(new std::thread(&UnitManager::m_updateAIWeapons, this, AIWeaponsThreaded[i]));
-	}
-
-
-
-	for (size_t i = 0; i < threads.size(); i++)
-	{
-		//threads[i]->join();
-	}
-
 	m_updateAI(timeDelta, nonPlayerUnits, nonPlayerUnits);
-    for (size_t i = 0; i < m_AIs.size(); i++){
-
-    }
 	m_updateAIWeapons(AIWeapons);
 	m_updatePlayer(timeDelta, nonPlayerUnits);
 
@@ -519,12 +499,6 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 		}
 	}
 
-	//tempThread.join();
-
-	for (size_t i = 0; i < threads.size(); i++)
-	{
-		//threads[i]->join();
-	}
 
 
 	for (size_t i = 0; i < nonPlayerUnits.size(); i++)
@@ -653,22 +627,20 @@ void UnitManager::addAI(EnemyAI *newAI)
 	mutexLock.unlock();
 }
 
-void UnitManager::spawnPoint(int enemies, sf::Vector2f pos, std::vector<std::string> enemyFileName)
+void UnitManager::spawnEnemies(int enemies, sf::Vector2f pos, std::vector<std::string> enemyTemplateNames)
 {
-	constexpr unsigned int displacementScale = 1;
-
+	m_totalActiveEnemies++;
 
 	for (size_t i = 0; i < enemies; i++)
 	{
-		std::cout << "somethings wrong" << std::endl;
 		size_t lastEnemyUnitID = m_AIs.size();
-		createFromFile(enemyFileName[rand() % enemyFileName.size()]);
+		m_AIs.push_back(new EnemyAI(*m_enemyTemplates[enemyTemplateNames[rand()%enemyTemplateNames.size()]]));
 		for (size_t o = lastEnemyUnitID; o < m_AIs.size(); o++)
 		{
 			//((rand() % (displacementScale * 10)) / displacementScale) * ((rand() % 2) ? -1 : 1)
-			const float microDisplacementX = (rand() % enemies);
-			const float microDisplacementY = (rand() % enemies);
-			m_AIs[o]->getUnit()->move(sf::Vector2f(pos.x + microDisplacementX, pos.y + microDisplacementY));
+			//const float microDisplacementX = (rand() % enemies);
+			//const float microDisplacementY = (rand() % enemies);
+			m_AIs[o]->getUnit()->setPosition(sf::Vector2f(pos.x, pos.y));
 			for (size_t p = 0; p < m_AIs.size(); p++) {
 				m_AIs[o]->getUnit()->collideOne(m_AIs[p]->getUnit());
 			}
@@ -717,6 +689,11 @@ UnitManager::~UnitManager()
 	{
 		delete m_toolTips[i].first;
 	}
+
+	for (auto const& i : m_enemyTemplates) {
+		delete i.second;
+	}
+
 	mutexLock.unlock();
 }
 

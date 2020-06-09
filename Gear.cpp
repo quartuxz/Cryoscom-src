@@ -2,7 +2,6 @@
 #include <fstream>
 #include <random>
 #include "Animator.h"
-#include "InGameMessages.h"
 
 size_t bodyPartOrMove::m_uniqueIDCounter = 0;
 
@@ -79,29 +78,14 @@ decomposedData combatModule::serialize()
 //TODO, make combat more indepth
 void combatModule::attack(combatModule *cModule)
 {
-	static size_t timesFunctionCalled = 1;
-	
-	lineMessage inGameMessage;
-	inGameMessage.message = to_string(timesFunctionCalled);
-	inGameMessage.messageColor = sf::Color(255%timesFunctionCalled,0,0,255);
-	InGameMessages::getInstance().addLine(inGameMessage);
-
-	if ((timesFunctionCalled % 10) == 0) {
-		inGameMessage.message = "important message";
-		inGameMessage.messageColor=sf::Color::Red;
-		inGameMessage.isImportantMessage = true;
-		InGameMessages::getInstance().addLine(inGameMessage);
-	}
-
 	cModule->hitpoints -= damage;
-	timesFunctionCalled++;
 }
 
 combatModule::combatModule(bool initToZero): Serializable()
 {
 	hitpoints = 0;
 	hitpointCap = 0;
-	psiPoints = 0;
+	psiPoints = 0; 
 	psiPointCap = 0;
 	stamina = 0;
 	staminaCap = 0;
@@ -145,6 +129,14 @@ std::vector<std::pair<size_t, bodyPartOrMove>> combatModule::getBodyPartsOrMoves
 
 void combatModule::update(float timeDelta)
 {
+	for (auto const& x : m_damageTimers)
+	{
+		m_damageTimers[x.first].duration -= timeDelta;
+		if (m_damageTimers[x.first].duration <= 0) {
+			hitpoints -= m_damageTimers[x.first].amount;
+			m_damageTimers.erase(x.first);
+		}
+	}
 	stamina += staminaRegen * timeDelta;
 	if (stamina > 100) {
 		stamina = 100;
@@ -189,6 +181,27 @@ void combatModule::processEffects(float timeDelta) {
 		}
 	}
 
+}
+
+void combatModule::applyDamageInstance(unsigned int ID, float damageInflicted, float delay, bool stopTimer)
+{
+	map<unsigned int, effect>::iterator it = m_damageTimers.find(ID);
+	//elements that both exist and dont need to be removed are let to run
+	//naturally until their time expires and they are applied as damage
+	if (it != m_damageTimers.end())
+	{
+		//if element exists and needs to be removed:
+		if (stopTimer) {
+			m_damageTimers.erase(ID);
+		}
+	}//if element doesnt exist and needs to be created:
+	else if(!stopTimer){
+		effect tempEffect;
+		tempEffect.duration = delay;
+		tempEffect.amount = damageInflicted;
+		m_damageTimers[ID] = tempEffect;
+	}
+	
 }
 
 void GearPiece::createFrom(const decomposedData& DData)

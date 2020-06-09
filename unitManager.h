@@ -17,7 +17,14 @@
 #include "Gear.h"
 #include "lootTable.h"
 
+struct spawnPoint {
+	sf::Vector2f pos;
+	std::string enemyTemplateName;
+	//the quotient percentage chance this spawn location is chosen
+	unsigned int spawnChanceNumerator;
+	unsigned int spawnChanceDenominator;
 
+};
 
 enum endLevelTypes {
 	levelActive, playerDied, goalReached
@@ -36,6 +43,7 @@ struct interactable {
 class UnitManager : public Parsable
 {
 private:
+	
 	Map *m_map;
 	Weapon* m_playerWeapon = nullptr;
 	unit *m_player = nullptr;
@@ -54,11 +62,13 @@ private:
 	TileMap m_tileMap;
 	std::vector<sf::Sprite> m_worldTextures;
 	
+	std::vector<spawnPoint> m_spawnPoints;
+
 	std::vector<sf::Texture*> m_toDeleteTextures;
 
 	sf::RectangleShape m_levelEnd;
 	bool m_needsAnUpdate = true;
-	const float renderDistance = 10000;
+	static const float renderDistance;
 
 	const float m_interactDistance = 50;
 	std::vector<interactable> m_interactables;
@@ -75,9 +85,6 @@ private:
 
 	std::map<GearPiece, unsigned int, GearPiece::GearPieceCompare> m_itemToolTipID;
 
-	unsigned int m_healthPotions = 10;
-	unsigned int m_gold = 0;
-
 	float m_levelScale = 1;
 
 	void m_updateAIWeapons(std::vector<Weapon*>);
@@ -86,22 +93,31 @@ private:
 
     unit *m_closestAIUnit = nullptr;
 
+	unsigned int m_remainingEnemiesToSpawn = 0;
+	unsigned int m_totalActiveEnemies = 0;
+	unsigned int m_currentRound = 0;
+	unsigned int m_activeEnemyCap = 30;
+	float m_timeBetweenEnemySpawn = 0.5;
+	float m_timeAfterLastSpawn = 0;
+	//spawns enemies according to the above variables
+	void m_enemySpawnRun(float);
+
+	std::map<std::string, EnemyAI*> m_enemyTemplates;
 
 	void pv_parseStep(std::vector<std::string>)override;
 
 public:
 
+	std::map<std::string, EnemyAI*> getEnemyTemplates()const;
+
+	unsigned int getRemainingEnemiesTotal()const;
+	unsigned int getCurrentRound()const;
+	//starts a new round with the specified number of enemies
+	void startNewRound(unsigned int);
 
     unit *getClosestAIUnit()const;
 
-    unsigned int getHealthPotions()const;
-
-	void addHealthPotions(unsigned int);
-	void addGold(unsigned int);
-	bool subtractGold(int);
-
 	bool removeGearPiece(std::string);
-	void drinkPotion();
 
 	//sets wether the tooltips are shown or not
 	void setToolTipsShow(bool);
@@ -161,7 +177,7 @@ public:
 	void addAI(EnemyAI*);
 
 	//first argument is position second is the names of the player files
-	void spawnPoint(int, sf::Vector2f, std::vector<std::string>);
+	void spawnEnemies(int, sf::Vector2f, std::vector<std::string>);
 
 
 	float getLevelScale() const;

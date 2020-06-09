@@ -6,10 +6,12 @@
 #include <tuple>
 #include <queue>
 #include <list>
+#include <thread>
 #include <mutex>
 #include "cryoscom_defsAndUtils.h"
 #include "AnimatorSprite.h"
 #include "ToolTip.h"
+#include "Parsable.h"
 
 
 inline sf::Text zoomText(const sf::Text &text, sf::RenderWindow *window, sf::Vector2f viewDisplacement) {
@@ -26,18 +28,44 @@ inline sf::Text zoomText(const sf::Text &text, sf::RenderWindow *window, sf::Vec
 	return tempText;
 }
 
-class Animator
+class Animator: public Parsable
 {
+private:
+	//set to false to disable multithreaded:
+	static constexpr bool m_multithreaded = false;
+	bool m_firstUse = false;
+	
+	void m_workOneFrameSprite(const AnimatorSprite&);
+	std::recursive_mutex m_renderWorkMutex;
+	std::recursive_mutex m_renderDataMutex;
+	std::mutex m_getSpritesLock;
+
+	std::thread* m_renderThread;
+	std::queue<AnimatorSprite> m_renderThreadWork;
+	void m_renderThreadFunction();
+	std::atomic<bool> m_isProgramEnded = false;
+	std::atomic<bool> m_startWorking = false;
+	std::atomic<float> m_playerXPos;
+	std::atomic<float> m_playerYPos;
+
+	void pv_parseStep(std::vector<std::string>)override;
+
 public:
 	static Animator& getInstance()
 	{
+		
 		static Animator instance; // Guaranteed to be destroyed.
-								// Instantiated on first use.
+		if (instance.m_firstUse && m_multithreaded) {
+			instance.m_renderThread = new std::thread(&Animator::m_renderThreadFunction, &instance);
+		}
+		instance.m_firstUse = false;
+		// Instantiated on first use.
 		return instance;
 	}
 private:
 	Animator() {}                    // Constructor? (the {} brackets) are needed here.
 
+	
 	float nonUIScale = 2;
 
 	sf::RenderWindow *m_window;
@@ -51,15 +79,6 @@ private:
 
 	std::map<unsigned int, std::queue<AnimatorSprite>> m_animationPresets;
 
-	//member description
-	//each list element is an animation sequence, represented by a queue of tuples,
-	//of which the first element is the texture currently being displayed,
-	//the second the time its displayed for,
-	//the third the position,
-	//the fourth is the layer it is to be rendered on and
-	//the fifth the scale of the object
-	//the sixth the time elapsed since the texture was first displayed.
-	//if(the second < the sixth) then the animation should pass to the next frame.
 	std::list<std::pair<std::queue<AnimatorSprite>, AnimatorSprite*>> m_animations;
 
 	std::list<std::pair<std::queue<AnimatorSprite>, AnimatorSprite*>> m_simpleAnimations;
@@ -83,13 +102,19 @@ private:
 
 	unsigned int m_addRawTexture(sf::Texture*, std::string);
 
-	std::recursive_mutex m_allLock;
+
+
+
 	//MockMutex m_allLock;
 public:
 	Animator(Animator const&) = delete;
 	void operator=(Animator const&) = delete;
+	//the render distance from the player position in pixels.
+	static constexpr  float renderDistance = 1000;
 
 	sf::RenderWindow *getWindow()const;
+
+	void setPlayerPos(const sf::Vector2f&);
 
 	void clearTextures();
 
@@ -99,7 +124,6 @@ public:
 
 	void eraseInactiveAnimatorPresets();
 
-	void loadTexturesFromFile(std::string);
 	//pass the name of the texture file, returns the unique ID of the texture
 	unsigned int addTexture(std::string);
 	//pass the ID of the texture you wish to instanciate, together with the position you want to draw it on, its draw layer and its scale

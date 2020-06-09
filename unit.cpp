@@ -7,7 +7,7 @@
 using namespace std;
 
 
-int unit::ownedByIDTracker = 0;
+unsigned int unit::ownedByIDTracker = 0;
 
 unit::unit(std::pair<sf::Vector2f, float> m_body)
 {
@@ -20,6 +20,30 @@ unit::unit(std::pair<sf::Vector2f, float> m_body)
 	//texture.setFillColor(sf::Color(255, 0, 0));
 	ID = IDCounter++;
 	m_bodyRadiusRaisedBy2 = pow(body.second,2);
+}
+
+unit::unit(const unit& other) : unit(other.body)
+{
+
+	actualWeight = other.actualWeight;
+	lastAnimatorSprite = other.lastAnimatorSprite;
+	animatorSprite = other.animatorSprite;
+	currentPos = other.currentPos;
+	acceleration = other.acceleration;
+	velocity = other.velocity;
+	animatorValues = other.animatorValues;
+	cModule = other.cModule;
+	typeOfUnit = other.typeOfUnit;
+
+
+}
+
+unit& unit::operator=(const unit &other)
+{
+	if (this != &other) {
+		*this = unit(other);
+	}
+	return *this;
 }
 
 float unit::getBodyRadiusRaisedBy2() const
@@ -282,6 +306,8 @@ AnimatorSprite unit::m_getAnimatorSpriteHelper(lookDirection lDir)
 	lastLookDir = lDir;
 	return retVal;
 }
+
+
 
 void unit::update(float seconds, std::vector<unit*> colliders)
 {

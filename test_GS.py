@@ -59,7 +59,7 @@ def gameScript(askingForName, messageType, senderID, intendedReceiverID, paramLi
     tempChildren = decomposedData_python.decomposedData()
     tempChildren.type = "std::string"
     tempChildren.name = "textureID"
-    tempChildren.data.append("8")
+    tempChildren.data.append("0")
     #tempChildren.data.append(str(random.randint(-250,500))) #the x and y positions of the image
     #tempChildren.data.append(str(random.randint(-250,500)))
     retDData.childrenObjects.append(tempChildren)

@@ -34,6 +34,9 @@ void Parsable::createFromFile(std::string fileName) {
 			else if (tokens[0] == "end") {
 				break;
 			}
+			else if (tokens[0] == "load") {
+				createFromFile(tokens[1]);
+			}
 			else if (tokens[0] == "repeat") {
 				pv_parseStep(m_lastParseStep);
 				continue;

@@ -1,6 +1,8 @@
-scaleFactor;3;
+scaleFactor;1;
 
-player;100;100;24;20;player.png;
+addEnemyTemplate;defaultAIUnit;0;0;25;10;enemyAI.png;defaultScript;
+
+player;400;94;24;20;player.png;
 bulletTexture;bullet_1.png;-1;
 
 loadLootTable;lootTable1.txt;
@@ -9,10 +11,12 @@ loadLootTable;lootTable1.txt;
 
 tooltip;;0;0;5;press [f] to go to the next level;100;
 
-spawnPoint;5;200;200;enemy_test.txt;enemy_test.txt;
+//;spawnEnemies;5;200;200;enemy_test.txt;enemy_test.txt;
+spawnPoint;defaultAIUnit;94;94;1;1;
+
 
 //;namedAnimatorSprite;perm_playerTex;player.png;289;540;1;2;
-namedWall;283;556;283;524;starting_door;
+//;namedWall;283;556;283;524;starting_door;
 //;interactable;messageSender;283;540;{,,messages,3,0,{,,editNamedWall,3,0,{,,starting_door,0,}}{,,editNamedAnimatorSprite,3,0,{,,perm_playerTex,,0,,,}}};10000;
 interactable;messageSender;0;0;{,,advanceLevel,3,0,};100;
 

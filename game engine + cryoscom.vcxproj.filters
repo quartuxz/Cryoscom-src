@@ -189,6 +189,9 @@
     <ClCompile Include="CollisionCircle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeleterThreadManager.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="CollisionCircle.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleterThreadManager.h">
+      <Filter>Source Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

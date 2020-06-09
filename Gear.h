@@ -25,7 +25,7 @@ public:
 };
 
 enum effectTypes {
-	staminaRegenEffect, damageOverTimeEffect, rootEffect
+	staminaRegenEffect, damageOverTimeEffect, rootEffect, damageAfterTimeEffect
 };
 
 struct effect {
@@ -47,6 +47,7 @@ struct GearPiece;
 struct combatModule : public Serializable {
 private:
 	std::vector<std::pair<size_t, bodyPartOrMove>> m_bodyPartsOrMoves;
+	std::map<unsigned int, effect> m_damageTimers;
 public:
 
 	float hitpoints = 100;
@@ -67,7 +68,7 @@ public:
 	void attack(combatModule*);
 
 	float weight = 0;
-	float ammo = 100;
+	float ammo = 1000;
 	combatModule(bool);
 	combatModule();
 
@@ -81,15 +82,22 @@ public:
 	std::vector<effect> effects;
 	std::vector<std::pair<sf::Vector2f, float>> pushes;
 
+	//initiates a time counter for some form of damage
+	//(unique id of damage source, total damage, duration before damage(in seconds), stop timer[true if so])
+	void applyDamageInstance(unsigned int, float, float, bool);
+
 	float damage = 20;
 	bool isMelee = false;
+	//the range from the outer collision unit edge to the target`s
+	float meleeRange = 50;
+	float meleeDelay = 0.5;
 	float bulletSpeed = 200;
 	float bulletSize = 2;
 	float bulletDuration = 4;
 	float fireRate = 10;
 	float inaccuracy = 10;
-	unsigned int magSize = 5;
-	float reloadTime = 2;
+	unsigned int magSize = 20;
+	float reloadTime = 1;
 
 
 	friend struct GearPiece;

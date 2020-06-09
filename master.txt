@@ -1,4 +1,1 @@
-generator_test.txt
 testArea.txt
-large_map.txt
-

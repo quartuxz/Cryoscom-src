@@ -14,10 +14,12 @@ bool Map::m_isInRangeOfWall(const Wall &wall, const unit &passedUnit) const
 	if (distanceSquared(wall.middlePoint, passedUnit.getBody()->first) > (passedUnit.getBodyRadiusRaisedBy2() + wall.distanceBetweenPointsDividedBy2RaisedBy2)) {
 		return false;
 	}
+
 	//if (vectorDistance(wall.middlePoint, body.first) > (body.second + wall.distanceBetweenPoints / 2)) {
 		//return false;
 	//}
 	return true;
+
 }
 
 Map::Map()
@@ -39,13 +41,19 @@ void Map::update(unit *units)
 {
 	for (size_t o = 0; o < walls.size(); o++)
 	{
+
 		if (!walls[o].isActive) {
 			continue;
 		}
-		auto body = units->getBody();
+
 		if (!m_isInRangeOfWall(walls[o], *units)) {
 			continue;
 		}
+
+		
+		
+		
+		auto body = units->getBody();
 		#if CRYOSCOM_DEBUG || MAKING_LEVELS
 			sf::VertexArray lines(sf::LinesStrip, 2);
 			lines[0].position = sf::Vector2f(walls[o].wall.first.x, walls[o].wall.first.y);
@@ -95,11 +103,13 @@ bool Map::collides(unit *units)
 {
 	for (size_t o = 0; o < walls.size(); o++)
 	{
-		auto body = units->getBody();
+		if (!walls[o].isActive) {
+			continue;
+		}
 		if (!m_isInRangeOfWall(walls[o], *units)) {
 			continue;
 		}
-		
+		auto body = units->getBody();
 		sf::Vector2f proj;
 		float dist = minimum_distance(walls[o].wall.first, walls[o].wall.second, body->first, &proj);
 		if (dist < body->second) {

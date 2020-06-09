@@ -2,11 +2,16 @@
 #include <random>
 #include <iostream>
 
-std::map<int, Bullet*> Bullet::allBullets;
+std::map<unsigned int, Bullet*> Bullet::allBullets;
 
-std::map<int, Bullet*> Bullet::getAllBullets()
+std::map<unsigned int, Bullet*> Bullet::getAllBullets()
 {
 	return allBullets;
+}
+
+void Bullet::eraseBulletElement(unsigned int itemID)
+{
+	allBullets.erase(itemID);
 }
 
 void Bullet::create(sf::Vector2f startPos, sf::Vector2f moveDir)

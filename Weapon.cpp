@@ -1,11 +1,27 @@
 #include "Weapon.h"
+#include <limits>
 #include <iostream>
 #include "Animator.h"
 #include "cryoscom_defsAndUtils.h"
-#include <limits>
+#include "DeleterThreadManager.h"
 
 
 
+
+
+Weapon::Weapon(const Weapon &other)
+{
+	m_bulletATex = other.m_bulletATex;
+	m_bulletSpeed = other.m_bulletSpeed;
+}
+
+Weapon& Weapon::operator=(const Weapon &other)
+{
+	if (this != &other) {
+		*this = Weapon(other);
+	}
+	return *this;
+}
 
 void Weapon::setbulletAnimatorTex(AnimatorSprite aSprite)
 {
@@ -164,7 +180,9 @@ std::vector<unsigned int> Weapon::update(float timeDelta, std::vector<unit*> uni
 			retVal.push_back(tempID);
 		}
 		if ((*it)->getBody()->isDead) {
-			delete Bullet::getAllBullets()[(*it)->getID()];
+			DeleterThreadManager::getInstance().deleteSomething(Bullet::getAllBullets()[(*it)->getID()]);
+			Bullet::eraseBulletElement((*it)->getID());
+			//delete Bullet::getAllBullets()[(*it)->getID()];
 			m_bullets.erase(it++);
 		}
 		else {

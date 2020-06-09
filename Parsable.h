@@ -13,7 +13,7 @@ public:
 	Parsable();
 	void createFromFile(std::string);
 	//use to only read a single line, be sure that line is valid and doesnt contain special tokens
-	//such as //;, end; or repeat;
+	//such as //;, end; load; or repeat;
 	void createFromSingleLine(std::vector<std::string>);
 	virtual ~Parsable();
 };

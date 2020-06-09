@@ -1,13 +1,18 @@
 #pragma once
 #include <queue>
 #include <string>
+#include <mutex>
 #include <SFML/Graphics.hpp>
 
+enum class lineMessageType {
+	gameImportant, anyType, debugMessage
+};
 
 struct lineMessage {
 	std::string message;
 	sf::Color messageColor;
-	bool isImportantMessage = false;
+	lineMessageType messageType = lineMessageType::anyType;
+
 };
 
 class InGameMessages
@@ -19,24 +24,23 @@ public:
 	}
 private:
 	InGameMessages(){}
-	std::queue<lineMessage> m_allLines;
-	std::queue<lineMessage> m_importantLines;
-	size_t m_currentAllLines = 0;
-	size_t m_currentImportantLines;
-	bool m_showOnlyImportantLines = false;
+	std::map<lineMessageType, std::queue<lineMessage>> m_allLines;
+	lineMessageType m_showMessageType = lineMessageType::anyType;
 	size_t m_lineCap = 15;
+
+	std::mutex m_allLock;
 public:
 	InGameMessages(InGameMessages const&) = delete;
 	void operator=(InGameMessages const&) = delete;
 
-	void setShowOnlyImportantLines(bool);
-	bool getShowOnlyImportantLines()const;
+	void setMessageShowType(lineMessageType);
+	lineMessageType getMessageShowType();
 
 	void addLine(lineMessage);
 	void setLineCap(size_t);
-	size_t getLineCap()const;
+	size_t getLineCap();
 
-	std::queue<lineMessage> getLines()const;
+	std::queue<lineMessage> getLines();
 
 };
 

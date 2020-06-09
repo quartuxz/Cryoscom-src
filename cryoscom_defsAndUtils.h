@@ -1,6 +1,6 @@
 #pragma once
 #define MAKING_LEVELS false
-#define CRYOSCOM_DEBUG false
+#define CRYOSCOM_DEBUG true
 #define ADD_PLAYER_VELOCITY_TO_BULLET false
 #define MULTITHREADED_SCRIPTING_AND_MESSAGING false
 #include <limits>
@@ -55,10 +55,9 @@ inline float dotProduct(const sf::Vector2f& first, const sf::Vector2f& second) {
 	return first.x * second.x + first.y * second.y;
 }
 
-
-inline float minimum_distance(const sf::Vector2f& v, const sf::Vector2f& w, const sf::Vector2f& p, sf::Vector2f* proj)
+// Return minimum distance between line segment vw and point p
+inline float minimum_distance(const sf::Vector2f& v, const sf::Vector2f& w, const sf::Vector2f& p, sf::Vector2f* proj = nullptr)
 {
-	// Return minimum distance between line segment vw and point p
 	const float l2 = distanceSquared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
 	if (l2 == 0.0) return vectorDistance(p, v);   // v == w case
 											// Consider the line extending the segment, parameterized as v + t (w - v).
@@ -73,6 +72,31 @@ inline float minimum_distance(const sf::Vector2f& v, const sf::Vector2f& w, cons
 	return vectorDistance(p, projection);
 }
 
+
+inline sf::Vector2f rotateByAngle(sf::Vector2f o, sf::Vector2f p, float angle)
+{
+	float s = sin(angle * (M_PI / 180));
+	float c = cos(angle * (M_PI / 180));;
+
+	// translate point back to origin:
+	p.x -= o.x;
+	p.y -= o.y;
+
+	// rotate point
+	float xnew = p.x * c - p.y * s;
+	float ynew = p.x * s + p.y * c;
+
+	// translate point back:
+	p.x = xnew + o.x;
+	p.y = ynew + o.y;
+	return p;
+}
+
+//first param is the origin of rotation and the second param is the point to be rotated
+inline sf::Vector2f rotate90(sf::Vector2f o, sf::Vector2f p)
+{
+	return rotateByAngle(o, p, 90);
+}
 
 inline sf::Vector2f reflect(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p)
 {
@@ -95,45 +119,7 @@ inline sf::Vector2f reflect(sf::Vector2f v, sf::Vector2f w, sf::Vector2f p)
 	p.y = ynew + proj.y;
 	return p;
 }
-//first param is the origin of rotation and the second param is the point to be rotated
-inline sf::Vector2f rotate90(sf::Vector2f o, sf::Vector2f p)
-{
-	float s = 1;
-	float c = 0;
 
-	// translate point back to origin:
-	p.x -= o.x;
-	p.y -= o.y;
-
-	// rotate point
-	float xnew = p.x * c - p.y * s;
-	float ynew = p.x * s + p.y * c;
-
-	// translate point back:
-	p.x = xnew + o.x;
-	p.y = ynew + o.y;
-	return p;
-}
-
-
-inline sf::Vector2f rotateByAngle(sf::Vector2f o, sf::Vector2f p, float angle)
-{
-	float s = sin(angle * (M_PI / 180));
-	float c = cos(angle * (M_PI / 180));;
-
-	// translate point back to origin:
-	p.x -= o.x;
-	p.y -= o.y;
-
-	// rotate point
-	float xnew = p.x * c - p.y * s;
-	float ynew = p.x * s + p.y * c;
-
-	// translate point back:
-	p.x = xnew + o.x;
-	p.y = ynew + o.y;
-	return p;
-}
 
 inline float getAngleInDegrees(const sf::Vector2f &unitVec)
 {

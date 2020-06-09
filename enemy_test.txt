@@ -1,4 +1,0 @@
-animatorTexture;enemyAI.png;
-
-unit;0;0;25;10;enemyAI.png;defaultScript;
-bulletTexture;bullet_1.png;0;

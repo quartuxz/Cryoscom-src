@@ -1,6 +1,7 @@
 #include "GameMain.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 #include <boost/uuid/uuid.hpp>            // uuid class
 #include <boost/uuid/uuid_generators.hpp> // generators
@@ -11,8 +12,7 @@
 #include "Serializable.h"
 #include "InGameMessages.h"
 #include "LevelGenerator.h"
-
-
+#include "DeleterThreadManager.h"
 
 
 
@@ -63,9 +63,17 @@ void GameMain::m_loadLevelGameMainBits(std::string fileName) {
 	fileRead.close();
 }
 
+void GameMain::m_createNewPlayerInventory()
+{
+	m_playerInventory = new PlayerInventory(m_window);
+	m_gameMenus["inventory"] = m_playerInventory;
+	m_gameMenus["inventory"]->createStaticMenuLayout();
+}
+
 void GameMain::m_setActiveLevel()
 {
 
+	//we delete and create a new play inventory:
 	
 	
 	//m_gameBus = MessageBus();
@@ -75,17 +83,22 @@ void GameMain::m_setActiveLevel()
 	m_currentLevel->endLevel();
 	delete m_currentLevel;
 
+	//generates levels from a level generator config file
+	/*
 	LevelGenerator tempLevelGenerator;
 	tempLevelGenerator.createFromFile(m_gameLevels[m_activeLevel]);
 	//UnitManager tempUnitManager = tempLevelGenerator.generateLevel();
 	m_currentLevel = tempLevelGenerator.generateLevel();
+	*/
 
-
-	//m_currentLevel = new UnitManager();
-	//m_currentLevel->createFromFile(m_gameLevels[m_activeLevel]);
+	//creates levels exactly as specified, not randomly generated
+	m_currentLevel = new UnitManager();
+	m_currentLevel->createFromFile(m_gameLevels[m_activeLevel]);
+	/* deprecated level load
 	//m_currentLevel->setProgressionFile(m_progressionFile);
 	////m_currentLevel->loadGearProgression();
-	//m_loadLevelGameMainBits(m_gameLevels[m_activeLevel]);
+	*/
+	m_loadLevelGameMainBits(m_gameLevels[m_activeLevel]);
 
 	MessageData *mData = new MessageData();
 	mData->messageType = "levelStart";
@@ -95,6 +108,7 @@ void GameMain::m_setActiveLevel()
 	//m_currentLevel->getPlayer()->cModule.isMelee = false;
 }
 
+//we spawn the window and all UI
 void GameMain::spawnWindow(std::string fontFile)
 {
 
@@ -102,15 +116,16 @@ void GameMain::spawnWindow(std::string fontFile)
 	//m_window->create(sf::VideoMode(1200, 1000), "SFML works!");
 	//m_window->setFramerateLimit(60);
 
+
+
 	m_inputManager.launchWindowIOThread();
 	m_window = m_inputManager.getWindow();
 	m_window->setActive(true);
 
-	m_playerInventory = new PlayerInventory(m_window);
-	m_gameMenus["inventory"] = m_playerInventory;
-	m_gameMenus["inventory"]->createStaticMenuLayout();
+	m_createNewPlayerInventory();
 
 
+	/*deprecated inventory load
 	ifstream inFile;
 	inFile.open("inventorySave.txt", std::ifstream::app);
 	std::string line;
@@ -122,6 +137,8 @@ void GameMain::spawnWindow(std::string fontFile)
 	}
 	
 	inFile.close();
+	*/
+
 
 	//inventory test bed
 	/*GearPiece tempGearPiece;
@@ -272,11 +289,12 @@ void GameMain::onProgramEnd()
 	//m_currentLevel->saveGearProgression();
 	Animator::getInstance().draw();
 
+	/*deprecated inventory save
 	ofstream outFile;
 	outFile.open("inventorySave.txt", std::ofstream::trunc);
 	outFile << m_playerInventory->serialize().serialize() << std::endl;
 	outFile.close();
-
+	*/
 	m_window->close();
 }
 
@@ -469,6 +487,29 @@ void GameMain::gameLoop()
 	std::cout << "mainLoop" << std::endl;
 	while (m_window->isOpen())
 	{
+		//"zombie" style rounds
+		if (m_currentLevel->getRemainingEnemiesTotal() <= 0) {
+			unsigned int currentRound = m_currentLevel->getCurrentRound();
+			auto enemyTemplates = m_currentLevel->getEnemyTemplates();
+			for (auto const& i : enemyTemplates) {
+				double enemyHealth = 100 + 2*currentRound + pow(1.1, currentRound);
+				i.second->getUnit()->cModule.hitpointCap = enemyHealth;
+				i.second->getUnit()->cModule.hitpoints = enemyHealth;
+				i.second->getUnit()->cModule.moveSpeed = std::min(400, int(100+20*currentRound));
+			}
+			m_currentLevel->startNewRound(1);
+			lineMessage tempLineMessage;
+			tempLineMessage.messageType = lineMessageType::gameImportant;
+			tempLineMessage.messageColor = sf::Color::Red;
+			stringstream sstream;
+			sstream << "ROUND: " << m_currentLevel->getCurrentRound();
+			tempLineMessage.message = sstream.str();
+			InGameMessages::getInstance().addLine(tempLineMessage);
+		}
+		//
+
+
+		Animator::getInstance().setPlayerPos(m_currentLevel->getPlayer()->getBody()->first);
 		m_gameBus.startFrame(currentTime.asSeconds());
 		if (m_gameBus.canMessage()) {
 			MessageData* playerData = new MessageData();
@@ -516,7 +557,13 @@ void GameMain::gameLoop()
 			switch (inputEvent.InputEventType)
 			{
 			case InputManager::showImportantLinesKeyPressed:
-				InGameMessages::getInstance().setShowOnlyImportantLines(!InGameMessages::getInstance().getShowOnlyImportantLines());
+				if (InGameMessages::getInstance().getMessageShowType() != lineMessageType::gameImportant) {
+					InGameMessages::getInstance().setMessageShowType(lineMessageType::gameImportant);
+				}
+				else {
+					InGameMessages::getInstance().setMessageShowType(lineMessageType::anyType);
+				}
+				
 				break;
 			case InputManager::dashBackward:
 				if (lastDash >= 2) {
@@ -679,7 +726,6 @@ void GameMain::gameLoop()
 
 		if (m_inputManager.isInputEventActive(InputManager::useItem)) {
 			//UnitManagerSingleton::getInstance().requestUpdate();
-			m_currentLevel->drinkPotion();
 		}
 
         std::cout << 1/currentTime.asSeconds() << std::endl;
@@ -752,6 +798,7 @@ void GameMain::gameLoop()
 
 		m_window->display();
 		m_gameBus.endFrame();
+		DeleterThreadManager::getInstance().endFrame();
 	}
 	
 
@@ -762,9 +809,6 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputMa
     tempEvent.updateEventType = lostLife;
     tempEvent.currentLife = m_currentLevel->getPlayer()->cModule.hitpoints;
     tempEvent.maxLife = m_currentLevel->getPlayer()->cModule.hitpointCap;
-    m_gameMenus[UIName]->update(tempEvent);
-    tempEvent.updateEventType = lostPotions;
-    tempEvent.availablePotions = m_currentLevel->getHealthPotions();
     m_gameMenus[UIName]->update(tempEvent);
 
     m_gameMenus[UIName]->draw(m_viewDisplacement);
@@ -789,11 +833,6 @@ void GameMain::updateUI(std::string UIName, sf::Vector2i mousePos, const InputMa
 			m_gameBus.addMessage(tempMessageData);
 			break;
         case buysItem:
-            if (tempBehaviourParam[i].itemBought == "healthPotion" && inputs.isInputEventActive(InputManager::shoot)) {
-                if (m_currentLevel->subtractGold(tempBehaviourParam[i].goldCost)) {
-                    m_currentLevel->addHealthPotions(1);
-                }
-            }
             break;
         case removesGearPiece:
 			tempBehaviourParam[i].gearPiece.unequipGearPiece(&m_currentLevel->getPlayer()->cModule);
@@ -817,10 +856,10 @@ bool GameMain::runOnce(float timeDelta, sf::Vector2i mousePos, const InputManage
 	if (m_activeMenu.empty()) {
 		m_currentLevel->update(timeDelta, *m_window, &m_gameBus);
 		if (m_currentLevel->hasLevelEnded() == playerDied) {
-			m_currentLevel->setProgressionFile(m_progressionFile);
-			m_currentLevel->saveGearProgression();
-			delete m_currentLevel;
-			m_currentLevel = new UnitManager();
+			//m_currentLevel->setProgressionFile(m_progressionFile);
+			//m_currentLevel->saveGearProgression();
+			
+
 			if (m_levelJump) {
 				m_setActiveLevel();
 				m_levelJump = false;

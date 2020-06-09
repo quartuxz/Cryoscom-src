@@ -10,11 +10,12 @@ private:
 	unit *bulletBody;
 
 	int ID;
-	static std::map<int ,Bullet*> allBullets;
+	static std::map<unsigned int ,Bullet*> allBullets;
 
 	float timeSinceCreation;
 public:
-	static std::map<int, Bullet*> getAllBullets();
+	static std::map<unsigned int, Bullet*> getAllBullets();
+	static void eraseBulletElement(unsigned int);
 
 	combatModule* cModule;
 

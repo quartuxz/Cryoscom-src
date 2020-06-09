@@ -68,6 +68,17 @@ decomposedData Tile::serialize()
 	return decomposedData();
 }
 
+sf::Vector2i Tile::convertGlobalPosToTilePos(sf::Vector2f pos)
+{
+	return sf::Vector2i(std::floor(pos.x / Tile::tileSize), std::floor(pos.y / Tile::tileSize));
+}
+
+sf::Vector2f Tile::convertTilePosToGlobalPos(sf::Vector2i tilePos)
+{
+	return sf::Vector2f(tilePos.x*tileSize + tileSize/2, tilePos.y*tileSize + tileSize/2);
+}
+
+
 Tile::Tile()
 {
 }

@@ -96,7 +96,7 @@ void TileMap::setTile(const Tile& tile, sf::Vector2i pos)
 	m_lastAddedTile->moveSprites(offset);
 }
 
-std::vector<Wall> TileMap::getWallRep()
+std::vector<Wall> TileMap::getWallRep()const
 {
 	std::vector<Wall> retVal;
 	for (size_t i = 0; i < m_tiles.size(); i++)
@@ -110,6 +110,11 @@ std::vector<Wall> TileMap::getWallRep()
 		}
 	}
 	return retVal;
+}
+
+std::vector<std::vector<Tile>> *TileMap::getAllTiles()
+{
+	return &m_tiles;
 }
 
 

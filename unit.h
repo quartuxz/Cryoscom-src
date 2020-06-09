@@ -13,7 +13,7 @@
 #include "AnimatorSprite.h"
 #include "cryoscom_defsAndUtils.h"
 
-const sf::Vector2f graveyard = sf::Vector2f(-10000, -10000);
+const sf::Vector2f graveyard = sf::Vector2f(0, 0);
 
 
 
@@ -58,7 +58,7 @@ private:
 	std::pair<sf::Vector2f, float> body;
 	float actualWeight = 100;
 
-
+	//the last update cycle time
 	float lastTime = 0;
 
 	AnimatorSprite lastAnimatorSprite;
@@ -70,7 +70,7 @@ private:
 	sf::Vector2f acceleration;
 	sf::Vector2f velocity = sf::Vector2f(0,0);
 
-	int ID;
+	unsigned int ID;
 
 	AnimatorSprite *animationController = new AnimatorSprite();
 
@@ -87,29 +87,22 @@ private:
 	AnimatorSprite m_getAnimatorSpriteHelper(lookDirection);
 
 public:
-	static int ownedByIDTracker;
+	static unsigned int ownedByIDTracker;
 
+	unit(const unit&);
+	unit& operator =(const unit&);
 
 	unitAnimatorValues animatorValues;
-
-	//idle textures
-	AnimatorSprite back_left_idle;
-	AnimatorSprite back_right_idle;
-	AnimatorSprite front_left_idle;
-	AnimatorSprite front_right_idle;
 
 	sf::Vector2f lastMove;
 
     sf::Vector2f lastPos;
     sf::Vector2f lastLastPos;
 
-	bool needsAnUpdate = false;
-
 	AnimatorSprite *getAnimationController()const;
 	void setAnimationController(AnimatorSprite*);
 
 	combatModule cModule;
-	//Weapon weapon;
 
 	bool isMoving(float threshHold = 0.1)const;
 

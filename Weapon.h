@@ -40,7 +40,7 @@ private:
 
 	std::list<Bullet*> m_bullets;
 	unit *m_wieldingUnit;
-	float m_fireRate = 5;
+	//an extra modifier for the bullet speed, multiplicative
 	float m_bulletSpeed = 1;
 
     unsigned int m_magBulletsUsed = 0;
@@ -52,6 +52,10 @@ private:
 
 	float m_accumulatedFireTime = 0;
 public:
+
+	Weapon(const Weapon&);
+	Weapon& operator = (const Weapon&);
+
 	void setbulletAnimatorTex(AnimatorSprite);
 
     void reload();

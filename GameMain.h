@@ -61,7 +61,7 @@ private:
 
 	bool m_HUDActive = true;
 
-	
+	void m_createNewPlayerInventory();
 
 	sf::View view;
 	float m_zoom = 1;
