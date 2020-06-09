@@ -2,6 +2,11 @@
 #include "Serializable.h"
 #include "Animator.h"
 
+
+sf::Vector2f convertFromLocalTileToGlobalCoord(sf::Vector2f pos) {
+	return sf::Vector2f(pos.x * Tile::tileSize, pos.y * Tile::tileSize);
+}
+
 void TileMap::pv_parseStep(std::vector<std::string> line)
 {
 	if (line[0] == "tile") {
@@ -37,13 +42,13 @@ void TileMap::pv_parseStep(std::vector<std::string> line)
 				}
 			}
 		}
-		else {
+		else if(line[1] == "custom"){
 
-			for (size_t i = 2; i < line.size(); i += 4)
+			for (size_t i = 4; i < line.size(); i += 4)
 			{
 				Wall tempWall;
-				tempWall.wall.first = sf::Vector2f(ma_deserialize_float(line[i]) * Tile::tileSize, ma_deserialize_float(line[i + 1])*Tile::tileSize);
-				tempWall.wall.second = sf::Vector2f(ma_deserialize_float(line[i+ 2])*Tile::tileSize, ma_deserialize_float(line[i + 3])*Tile::tileSize);
+				tempWall.wall.first = convertFromLocalTileToGlobalCoord(sf::Vector2f(ma_deserialize_float(line[i]), ma_deserialize_float(line[i+1])));
+				tempWall.wall.second = convertFromLocalTileToGlobalCoord(sf::Vector2f(ma_deserialize_float(line[i+2]), ma_deserialize_float(line[i + 3])));
 				tempTile.addBound(tempWall);
 			}
 			

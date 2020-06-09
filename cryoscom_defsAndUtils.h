@@ -1,6 +1,6 @@
 #pragma once
 #define MAKING_LEVELS false
-#define CRYOSCOM_DEBUG true
+#define CRYOSCOM_DEBUG false
 #define ADD_PLAYER_VELOCITY_TO_BULLET false
 #define MULTITHREADED_SCRIPTING_AND_MESSAGING false
 #include <limits>

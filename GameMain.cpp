@@ -497,7 +497,7 @@ void GameMain::gameLoop()
 				i.second->getUnit()->cModule.hitpoints = enemyHealth;
 				i.second->getUnit()->cModule.moveSpeed = std::min(400, int(100+20*currentRound));
 			}
-			m_currentLevel->startNewRound(1);
+			m_currentLevel->startNewRound(5);
 			lineMessage tempLineMessage;
 			tempLineMessage.messageType = lineMessageType::gameImportant;
 			tempLineMessage.messageColor = sf::Color::Red;

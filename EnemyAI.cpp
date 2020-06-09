@@ -45,7 +45,7 @@ void displayTextTileMapRep(const std::vector<std::vector<Tile>>& tileMapRep) {
 //the check for wether the specified radius can pass trough(currently oversimplified)
 bool tileIsPassable(sf::Vector2u pos, const std::vector<std::vector<Tile>>& tileMapRep, float radius = Tile::tileSize) {
 
-    return !tileMapRep[pos.x][pos.y].isEmpty();
+    return tileMapRep[pos.x][pos.y].isEmpty();
 }
 
 //returns wether the function found the endPos and the distance map from staetPos for pathfinding
@@ -89,7 +89,7 @@ DistanceMap getDistancesFromStartPoint(sf::Vector2i startPos,
                 sf::Vector2i ioV2iRep = sf::Vector2i(i, o);
                 //checks if the tile has ANY collideable geometry(should
                 //improve this later to check if the tile is PASSABLE!!!)
-                if (tileIsPassable(sf::Vector2u(i,o), tileMapRep) || ioV2iRep == currentPos || ioV2iRep == startPos) {
+                if (!tileIsPassable(sf::Vector2u(i,o), tileMapRep) || ioV2iRep == currentPos || ioV2iRep == startPos) {
                     continue;
                 }
                 float distanceFromCurrent = vectorDistance(sf::Vector2f(ioV2iRep), sf::Vector2f(currentPos));
@@ -198,7 +198,7 @@ bool EnemyAI::m_checkIfPathfindingIsNeccesary(const sf::Vector2f &movePos, const
                     if (minimum_distance(m_controlledUnit->getBody()->first, m_moveToPos, Tile::convertTilePosToGlobalPos(sf::Vector2i(i,o))) <= Tile::tileSize) {
                         //checks if the tile has ANY collideable geometry(should
                         //improve this later to check if the tile is PASSABLE!!!)
-                        if (tileIsPassable(sf::Vector2u(i,o), tileMapRep, m_controlledUnit->getBody()->second)) {
+                        if (!tileIsPassable(sf::Vector2u(i,o), tileMapRep, m_controlledUnit->getBody()->second)) {
                             return true;
                         }
                     }
@@ -285,6 +285,14 @@ void EnemyAI::update(float timeDelta, std::vector<unit*> targets, MessageBus *ga
 
 	//without_gil no_gil;
 	with_gil gil;
+
+    //anything you need to do once per enemyAI, where that thing happens 
+    //after the object is ready to update for the first time
+    if (m_firstUpdate) {
+        //m_controlledUnitLastTilePos = Tile::convertGlobalPosToTilePos(m_controlledUnit->getBody()->first);
+        m_firstUpdate = false;
+    }
+
 	m_currentAITimeToInterval += timeDelta;
 	//code for more than one target
     unit* chosenTarget = targets[0];
@@ -366,10 +374,20 @@ void EnemyAI::update(float timeDelta, std::vector<unit*> targets, MessageBus *ga
             tempLineMessage.messageColor = sf::Color(rand()%255,rand()%255,rand()%255);
             InGameMessages::getInstance().addLine(tempLineMessage);
             */
-            
-            std::vector<sf::Vector2i> shortestPath = getShortestPathTo(Tile::convertGlobalPosToTilePos(m_controlledUnit->getBody()->first),
+            sf::Vector2i controlledUnitTilePos = Tile::convertGlobalPosToTilePos(m_controlledUnit->getBody()->first);
+            /*
+            //this alligns the AI with its current tile so that it doesnt bump into corners(deprecated)
+            if (vectorDistance(m_controlledUnit->getBody()->first, Tile::convertTilePosToGlobalPos(controlledUnitTilePos))>(Tile::tileSize/30)) {
+                controlledUnitTilePos = m_controlledUnitLastTilePos;
+            }
+            else {
+                m_controlledUnitLastTilePos = controlledUnitTilePos;
+            }
+            */
+            std::vector<sf::Vector2i> shortestPath = getShortestPathTo(controlledUnitTilePos,
                 Tile::convertGlobalPosToTilePos(m_moveToPos), *tileMapRep);
             newMoveToPos = Tile::convertTilePosToGlobalPos(shortestPath.back());
+            
             /*
             for (size_t i = 0; i < shortestPath.size(); i++)
             {

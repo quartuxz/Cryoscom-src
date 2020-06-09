@@ -34,4 +34,5 @@ tile;square;3;1;
 tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex1,{uint,textureName,Grey Wall 2.png,}};
 tile;copy;3;2;
 tile;copy;3;3;
-tile;copy;3;4;
+tile;custom;3;4;0.5;1;0;0;1;0;0.5;1;
+tileTex;0.5;0.5;fitTileX;{animatorSprite,tileTex1,{uint,textureName,Grey Wall 2.png,}};

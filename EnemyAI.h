@@ -35,6 +35,9 @@ private:
 
     sf::Vector2f m_moveToPos = sf::Vector2f(0,0);
 
+	//deprecated
+	//sf::Vector2i m_controlledUnitLastTilePos;
+	bool m_firstUpdate = true;
 
 	//update function variables
 	float addedMoveSpeed = 0;
