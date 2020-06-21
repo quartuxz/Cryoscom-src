@@ -442,7 +442,6 @@ void UnitManager::update(float timeDelta, sf::RenderWindow &window, MessageBus *
 
 	m_enemySpawnRun(timeDelta);
 
-	int numberOfThreads = 1;
 
 	std::vector<unit*> nonPlayerUnits;
 	std::vector<Weapon*> AIWeapons;

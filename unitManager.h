@@ -8,7 +8,6 @@
 #include <queue>
 #include <list>
 #include <fstream>
-#include <thread>
 #include "Menu.h"
 #include "ToolTip.h"
 #include "TileMap.h"

@@ -2,15 +2,17 @@
 #include <atomic>
 #include <mutex>
 #include <queue>
+#include <condition_variable>
 #include "Bullet.h"
 
 class DeleterThreadManager
 {
 private:
 	std::mutex m_deleterMutex;
-	std::atomic<bool> m_startWorking = false;
-	std::atomic<bool> m_firstUse = true;
-	std::atomic<bool> m_isProgramEnded = false;
+	std::condition_variable cv;
+	bool m_startWorking = false;
+	bool m_firstUse = true;
+	bool m_isProgramEnded = false;
 	std::thread* m_deleterThread;
 	std::queue<Bullet*> m_toBeDeletedBullets;
 

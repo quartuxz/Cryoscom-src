@@ -208,7 +208,6 @@ int main()
 
 	//template test
 
-
 #if MAKING_LEVELS
     LevelMaker levelMaker;
 	levelMaker.levelMakerLoop("newFile.txt", "cryo_area_1.png");

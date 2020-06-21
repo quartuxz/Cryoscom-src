@@ -6,6 +6,7 @@
 #include "Serializable.h"
 #include "InGameMessages.h"
 
+//MULTITHREADED USES 99% OF CPU, BAD BAD!!!
 Animator::~Animator()
 {
 	m_isProgramEnded = false;

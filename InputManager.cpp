@@ -86,15 +86,17 @@ std::vector<InputManager::InputEventTypes> InputManager::m_getKeyPressedEvent()c
 
 void InputManager::m_waitForEvents()
 {
-	sf::Event event;
-	m_window = new sf::RenderWindow();
-	m_window->create(sf::VideoMode(1900, 900), "SFML works!");
-	//m_window->setFramerateLimit(60);
-	m_window->setActive(false);
-	m_isWindowCreated = true;
-
+	{
+		std::lock_guard<std::mutex> lk(m_windowCreationLock);
+		m_window = new sf::RenderWindow();
+		m_window->create(sf::VideoMode(1900, 900), "SFML works!");
+		//m_window->setFramerateLimit(60);
+		m_window->setActive(false);
+		m_isWindowCreated = true;
+	}
+	m_isWindowCreatedCV.notify_one();
 	
-
+	sf::Event event;
 	std::cout << "wait loop started"<< std::endl;
 
 	while (m_window->waitEvent(event)) {
@@ -214,9 +216,8 @@ void InputManager::launchWindowIOThread()
 	std::cout << "createdWindow" << std::endl;
 	std::lock_guard<std::mutex> tl(m_allLock);
     m_eventThread = new std::thread(&InputManager::m_waitForEvents, this);
-	while (!m_isWindowCreated) {
-
-	}
+	std::unique_lock<std::mutex> lk(m_windowCreationLock);
+	m_isWindowCreatedCV.wait(lk, [this] {return m_isWindowCreated; });
 }
 
 

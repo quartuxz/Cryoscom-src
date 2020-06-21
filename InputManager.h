@@ -5,6 +5,7 @@
 #include <queue>
 #include <thread>
 #include <atomic>
+#include <condition_variable>
 
 class InputManager
 {
@@ -29,7 +30,10 @@ private:
 	std::queue<InputEvent> m_IOEvents;
 	sf::RenderWindow *m_window;
 
-	std::atomic<bool> m_isWindowCreated = false;
+	bool m_isWindowCreated = false;
+	std::condition_variable m_isWindowCreatedCV;
+	std::mutex m_windowCreationLock;
+
 	std::atomic<bool> m_isProgramTerminated = false;
 	std::atomic<bool> m_isWindowOutOfFocus = false;
 

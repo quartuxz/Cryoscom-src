@@ -482,7 +482,7 @@ void GameMain::gameLoop()
 	m_HUDMenu->addSkill(HUDSParam);
 	//m_window = m_inputManager.getWindow();
 
-	m_window->setFramerateLimit(0);
+	m_window->setFramerateLimit(60);
 
 	std::cout << "mainLoop" << std::endl;
 	while (m_window->isOpen())
@@ -732,7 +732,10 @@ void GameMain::gameLoop()
 
 		//m_gameBus.notify();
 
+		//clears the screen to white
 		m_window->clear(sf::Color::White);
+		//temp, clearing the screen to other colors:
+		//m_window->clear(sf::Color(255,255,255,255));
 
 		if (m_isPaused) {
 
